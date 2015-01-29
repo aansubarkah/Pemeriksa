@@ -229,10 +229,9 @@ echo $this->fetch('css');
                         type: 'post',
                         data: {
                             start: function () {
-                                return $('#start').val();
-                            },
-                            end: function () {
-                                return $('#end').val();
+                                var start =  $('#start').val();
+                                start.length === 0 ? start = "<?php echo date('Y-m-d'); ?>" : start = $('#start').val();
+                                return start;
                             },
                             description: function () {
                                 return $('#description').val();

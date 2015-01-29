@@ -151,7 +151,8 @@ class ActivitiesUsersController extends AppController
                 'Calendarview.end <=' => $end,
                 'Calendarview.user_id' => $this->Auth->user('id'),
                 'Calendarview.active' => 1,
-                'Calendarview.activityactive' => 1
+                'Calendarview.activityactive' => 1,
+                'Calendarview.activitydraft' => 0
             )
         ));
 

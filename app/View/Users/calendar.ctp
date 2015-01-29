@@ -26,7 +26,7 @@ echo $this->fetch('script');
     $(function () {
         $('.tooltipevent').hide();
         $('#calendar').fullCalendar({
-            height: 450,
+            height: 420,
             lang: 'id',
             events: '<?php echo Router::url('/activitiesUsers/calendar.json', true); ?>',
             eventMouseover: function (calEvent, jsEvent) {

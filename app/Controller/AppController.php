@@ -43,9 +43,14 @@ class AppController extends Controller
     protected $departementSap3 = 5;
     protected $departementSap4 = 6;
 
-    protected $letterSP2FormatNo = '/SP2/XVIII.JATIM/';
+    protected $dutyPemapar = 8;
+    protected $dutyPeserta = 9;
+
+    protected $letterSP2FormatNo = '/SP2/XVIII.SBY/';
 
     protected $letterCategorySP2Expose = 1;
+
+    protected $typeSP2 = 6;
 
     protected $city = 'Sidoarjo';
     protected $monthInRoman = array(

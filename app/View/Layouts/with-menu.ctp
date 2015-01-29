@@ -78,7 +78,7 @@
                 <!-- menu di sini -->
                 <div class="col-md-3">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Surat Tugas</div>
+                        <div class="panel-heading">Surat Penugasan</div>
                         <div class="list-group">
                             <?php
                             echo $this->Html->link(
@@ -96,6 +96,21 @@
                                 array(
                                     'controller' => 'letters',
                                     'action' => 'addAudit'
+                                ),
+                                array(
+                                    'class' => 'list-group-item'
+                                )
+                            );
+                            ?>
+                        </div>
+                        <div class="panel-heading">Kegiatan</div>
+                        <div class="list-group">
+                            <?php
+                            echo $this->Html->link(
+                                'Kalender',
+                                array(
+                                    'controller' => 'users',
+                                    'action' => 'calendar'
                                 ),
                                 array(
                                     'class' => 'list-group-item'

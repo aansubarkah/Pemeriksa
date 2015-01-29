@@ -113,8 +113,13 @@ class DepartementsUsersController extends AppController
     {
         if (!empty($this->request->query['q'])) {
             $q = trim(strtolower($this->request->query['q']));
+            if($q=='all') {
+                $conditions = array('NOT' => array(
+                    'Usercareerviews.'
+                ));
+            }
 
-            if ($q == 'all') {
+            /*if ($q == 'all') {
                 $conditions = array('NOT' => array(
                     'DepartementsUser.active' => 0,
                     'DepartementsUser.departement_id' => $this->departementSekretariat
@@ -123,12 +128,12 @@ class DepartementsUsersController extends AppController
             } else {
                 $conditions = array('DepartementsUser.active' => 1,
                     'DepartementsUser.departement_id' => $q);
-            }
+            }*/
 
-            $tags = $this->DepartementsUser->find('all', array(
+            /*$tags = $this->DepartementsUser->find('all', array(
                 'recursive' => 1,
                 'conditions' => $conditions
-            ));
+            ));*/
 
 
             $data = array();

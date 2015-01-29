@@ -158,7 +158,7 @@ class ActivitiesController extends AppController
                 'description' => $description,
                 'start' => $start,
                 'end' => $end,
-                'uploader' => $this->Auth->user('id')
+                'uploader_id' => $this->Auth->user('id')
             );
 
             //add to activities table
