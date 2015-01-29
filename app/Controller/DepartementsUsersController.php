@@ -113,11 +113,33 @@ class DepartementsUsersController extends AppController
     {
         if (!empty($this->request->query['q'])) {
             $q = trim(strtolower($this->request->query['q']));
-            if($q=='all') {
-                $conditions = array('NOT' => array(
-                    'Usercareerviews.'
-                ));
+            if ($q == 'all') {
+                $conditions = array(
+                    'NOT' => array(
+                        'Userdepartementview.active' => false,
+                        'Userdepartementview.useractive' => false,
+                        'Userdepartementview.departement_id' => $this->departementPerwakilan,
+                        'Userdepartementview.departement_id' => $this->departementSekretariat
+                    ),
+                    'Userdepartementview.end' => null
+                );
+            } else {
+                $conditions = array(
+                    'Userdepartementview.active' => true,
+                    'Userdepartementview.useractive' => true,
+                    'Userdepartementview.departement_id' => $q
+                );
             }
+
+            $tags = $this->DepartementsUser->User->Userdepartementview->find('all', array(
+                'recursive' => -1,
+                'conditions' => $conditions,
+                'fields' => array(
+                    'Userdepartementview.user_id',
+                    'Userdepartementview.username'
+                )
+            ));
+
 
             /*if ($q == 'all') {
                 $conditions = array('NOT' => array(
@@ -140,8 +162,10 @@ class DepartementsUsersController extends AppController
             $i = 0;
             foreach ($tags as $tag) {
                 //$data[$i] = $tag['User']['name'];
-                $data[$i]['value'] = $tag['User']['id'];
-                $data[$i]['text'] = $tag['User']['name'];
+                //$data[$i]['value'] = $tag['User']['id'];
+                //$data[$i]['text'] = $tag['User']['name'];
+                $data[$i]['value'] = $tag['Userdepartementview']['user_id'];
+                $data[$i]['text'] = $tag['Userdepartementview']['username'];
                 $i++;
             }
 

@@ -163,6 +163,9 @@ class LettersController extends AppController
 
     private function addExposeAddToActivitiesUsers($data) {
         if(!empty($data)) {
+            //remove same value on employee
+            $data['employees'] = array_diff($data['employees'], $data['personInCharge']);
+
             $countPersonInCharge = count($data['personInCharge']);
             $countEmployees = count($data['employees']);
 
