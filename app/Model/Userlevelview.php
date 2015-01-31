@@ -60,14 +60,6 @@ class Userlevelview extends AppModel
                 'start <= \'2014-01-20\'',
                 'end >= \'2014-01-20\''
             );
-
-            //SELECT IFNULL((SELECT levelname FROM userlevelviews WHERE userlevelviews.user_id = 7 AND userlevelviews.end > '2015-7-01' AND '2015-7-01' > userlevelviews.start), (SELECT levelname FROM userlevelviews WHERE userlevelviews.user_id = 7 AND userlevelviews.end IS NULL))
-            //$query['fields'] = "IFNULL((SELECT levelname FROM userlevelviews WHERE userlevelviews.user_id = 7 AND userlevelviews.end > '2015-7-01' AND '2015-7-01' > userlevelviews.start), (SELECT levelname FROM userlevelviews WHERE userlevelviews.user_id = 7 AND userlevelviews.end IS NULL))";
-            /*$query['conditions'] = array(
-                'user_id = 7'
-            );*/
-
-
             return $query;
         }
 
@@ -77,6 +69,69 @@ class Userlevelview extends AppModel
     public function cust()
     {
         $data = $this->query("SELECT IFNULL((SELECT levelname FROM userlevelviews WHERE userlevelviews.user_id = 7 AND userlevelviews.end > '2015-7-01' AND '2015-7-01' > userlevelviews.start), (SELECT levelname FROM userlevelviews WHERE userlevelviews.user_id = 7 AND userlevelviews.end IS NULL));");
+
+        return $data;
+    }
+
+    /**
+     * @param array $userArr user_id
+     * @param integer $letterDate letterDate
+     */
+    public function asLetterDate($userArr = array(), $letterDate = null)
+    {
+        $data = array();
+        $i = 0;
+        foreach($userArr as $user) {
+            //level first
+            $userLevel = $this->find('first', array(
+                'recursive' => -1,
+                'conditions' => array(
+                    'Usercareerview.id' => $user,
+                    'Usercareerview.levelactive' => true,
+                    'Usercareerview.levelstart <' => $letterDate,
+                    'Usercareerview.levelend >' => $letterDate
+                )
+            ));
+
+            if(empty($userLevel)) {
+                $userLevel = $this->find('first', array(
+                    'recursive' => -1,
+                    'conditions' => array(
+                        'Usercareerview.id' => $user,
+                        'Usercareerview.levelactive' => true,
+                        'Usercareerview.levelend ' => null
+                    )
+                ));
+            }
+
+            $userRole = $this->find('first', array(
+                'recursive' => -1,
+                'conditions' => array(
+                    'Usercareerview.id' => $user,
+                    'Usercareerview.roleactive' => true,
+                    'Usercareerview.rolestart <' => $letterDate,
+                    'Usercareerview.roleend >' => $letterDate
+                )
+            ));
+
+            if(empty($userRole)) {
+                $userRole = $this->find('first', array(
+                    'recursive' => -1,
+                    'conditions' => array(
+                        'Usercareerview.id' => $user,
+                        'Usercareerview.roleactive' => true,
+                        'Usercareerview.roleend' => null
+                    )
+                ));
+            }
+
+            $data[$i]['Usercareerview']['name'] = $userLevel['Usercareerview']['name'];
+            $data[$i]['Usercareerview']['levelname'] = $userLevel['Usercareerview']['levelname'];
+            $data[$i]['Usercareerview']['leveldescription'] = $userLevel['Usercareerview']['leveldescription'];
+            $data[$i]['Usercareerview']['rolname'] = $userRole['Usercareerview']['rolename'];
+            $data[$i]['Usercareerview']['roledescription'] = $userRole['Usercareerview']['roledescription'];
+            $i++;
+        }
 
         return $data;
     }

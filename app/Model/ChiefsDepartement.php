@@ -81,4 +81,33 @@ class ChiefsDepartement extends AppModel
             'order' => ''
         )
     );
+
+    public function asDate($departementId = null, $date = null) {
+        $this->unbindModel(array(
+            'belongsTo' => array('Departement')
+        ));
+
+        $data = $this->find('first', array(
+            'recursive' => 2,
+            'conditions' => array(
+                'ChiefsDepartement.departement_id' => $departementId,
+                'ChiefsDepartement.start <' => $date,
+                'ChiefsDepartement.end >' => $date,
+                'ChiefsDepartement.active' => true
+            )
+        ));
+
+        if(empty($data)) {
+            $data = $this->find('first', array(
+                'recursive' => 2,
+                'conditions' => array(
+                    'ChiefsDepartement.departement_id' => $departementId,
+                    'ChiefsDepartement.end' => null,
+                    'ChiefsDepartement.active' => true
+                )
+            ));
+        }
+
+        return $data;
+    }
 }
