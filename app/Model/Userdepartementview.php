@@ -8,6 +8,9 @@ App::uses('AppModel', 'Model');
  */
 class Userdepartementview extends AppModel {
 
+	/*public $findMethods = array(
+		'custom' => true
+	);*/
 /**
  * Display field
  *
@@ -39,4 +42,16 @@ class Userdepartementview extends AppModel {
 			'order' => ''
 		)
 	);
+
+	/*protected function _findCustom() {
+		if($state == 'before') {
+			$query['fields'] = array(
+				$this->alias . '.' . $this->primaryKey,
+				'levelname'
+			);
+		}
+	}
+	/*public function custom() {
+		return $this->query("SELECT IFNULL((SELECT levelname FROM userlevelviews WHERE userlevelviews.user_id = 7 AND userlevelviews.end > '2011-7-01' AND '2011-7-01' > userlevelviews.start), (SELECT levelname FROM userlevelviews WHERE userlevelviews.user_id = 7 AND userlevelviews.end IS NULL))");
+	}*/
 }

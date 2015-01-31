@@ -9,6 +9,7 @@ App::uses('AppModel', 'Model');
  * @property Lettercategory $Lettercategory
  * @property Uploader $Uploader
  * @property Departement $Departement
+ * @property Entity $Entity
  */
 class Letter extends AppModel
 {
@@ -53,6 +54,13 @@ class Letter extends AppModel
         'Uploader' => array(
             'className' => 'Uploader',
             'foreignKey' => 'uploader_id',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
+        ),
+        'Entity' => array(
+            'className' => 'Entity',
+            'foreignKey' => 'entity_id',
             'conditions' => '',
             'fields' => '',
             'order' => ''
