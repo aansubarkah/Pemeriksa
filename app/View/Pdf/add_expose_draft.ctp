@@ -149,7 +149,6 @@ foreach ($users as $user) {
     //add role
     $roles[$user['role_id']] = $user['rolename'];
 }
-//$roles = array_unique($roles);
 ksort($roles);
 
 $table .= '</tbody></table>';
@@ -387,9 +386,6 @@ $table .= '&nbsp;(Pelaksana:&nbsp;';
 $rolesCount = count($roles);
 $i = 0;
 foreach ($roles as $key => $values) {
-//for ($i = 0; $i < $rolesCount; $i++) {
-    //$table .= $roles[$i]['Userroleview']['rolename'];
-    //$table .= $roles[$i]['rolename'];
     $table .= $values;
     if ($i == $rolesCount - 3) {
         $table .= '&nbsp;dan&nbsp;';
@@ -460,7 +456,6 @@ $i = 1;
 foreach ($departements as $departement) {
     $table .= '<tr>';
     $table .= '<td width="15">' . $i . '.</td>';
-    //$table .= '<td width="635">' . 'Kepala&nbsp;' . $departement['Userdepartementview']['departementdescription'] . '</td>';
     $table .= '<td width="635">' . 'Kepala&nbsp;' . $departement['departementdescription'] . '</td>';
     $table .= '</tr>';
     $i++;
