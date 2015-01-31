@@ -240,6 +240,8 @@ class LettersController extends AppController
             )
         ));
 
+        //consider to use this query
+        //SELECT IFNULL((SELECT levelname FROM userlevelviews WHERE userlevelviews.user_id = 7 AND userlevelviews.end > '2015-7-01' AND '2015-7-01' > userlevelviews.start), (SELECT levelname FROM userlevelviews WHERE userlevelviews.user_id = 7 AND userlevelviews.end IS NULL))
         $users = $this->Letter->Uploader->User->Usercareerview->find('all', array(
             'recursive' => -1,
             'conditions' => array(
@@ -278,7 +280,8 @@ class LettersController extends AppController
             'recursive' => -1,
             'conditions' => array(
                 'Userdepartementview.user_id' => $officerIds,
-                'Userdepartementview.active' => true
+                'Userdepartementview.active' => true,
+                'Userdepartementview.end' => null
             ),
             'fields' => array('Userdepartementview.departementdescription'),
             'group' => array('Userdepartementview.departement_id'),
@@ -324,6 +327,27 @@ class LettersController extends AppController
 
         $this->set(compact('data'));
         $this->set('_serialize', 'data');
+    }
+
+    public function test1() {
+        //App::uses('ConnectionManager', 'Model');
+        //App::import('ConnectionManager');
+        $this->autoRender = false;
+        //$q = "SELECT IFNULL((SELECT levelname FROM userlevelviews WHERE userlevelviews.user_id = 7 AND userlevelviews.end > '2011-7-01' AND '2011-7-01' > userlevelviews.start), (SELECT levelname FROM userlevelviews WHERE userlevelviews.user_id = 7 AND userlevelviews.end IS NULL))";
+        //$db = ConnectionManager::getDataSource('default');
+        //$myData = $db->query($q);
+        //print_r($myData[0][0]);
+        //SELECT IFNULL((SELECT levelname FROM userlevelviews WHERE userlevelviews.user_id = 7 AND userlevelviews.end > '2015-7-01' AND '2015-7-01' > userlevelviews.start), (SELECT levelname FROM userlevelviews WHERE userlevelviews.user_id = 7 AND userlevelviews.end IS NULL))
+
+        $test = $this->Letter->Departement->User->Userlevelview->find('custom');
+        print_r($test);
+    }
+
+    public function coba() {
+        $this->autoRender = false;
+        //echo 'halo';
+        $test = $this->Letter->Departement->User->Userlevelview->cust();
+        print_r($test);
     }
 
 /**
