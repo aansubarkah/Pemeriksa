@@ -64,32 +64,43 @@ $table = '
     </thead>
     <tbody>';
 
-$roles = array();
-$departements = array();
 $i = 1;
-foreach ($officers as $officer) {
+if (count($officers) < 2) {
     $table .= '<tr nobr="true"><td nobr="true" width="30" align="center">';
     $table .= $i;
     $table .= '</td>';
     $table .= '<td nobr="true" width="200">';
-    $table .= '&nbsp;' . $officer['name'] . '</td>';
+    $table .= '&nbsp;' . $officers[0]['u']['name'] . '</td>';
     $table .= '<td nobr="true" width="160" align="center">';
-    $table .= $officer['leveldescription'] . ' (' . $officer['levelname'] . ')';
+    $table .= $officers[0]['Usercareerview']['leveldescription'] . ' (' . $officers[0]['Usercareerview']['levelname'] . ')';
     $table .= '</td>';
     $table .= '<td nobr="true" width="125" align="center">';
-    $table .= $officer['positionlevelname'];
+    $table .= $officers[0]['Usercareerview']['positionlevelname'];
     $table .= '</td>';
     $table .= '<td nobr="true" width="135" align="center">';
-    $table .= $officer['roledescription'];
+    $table .= $officers[0]['Usercareerview']['roledescription'];
     $table .= '</td>';
     $table .= '</tr>';
-    $i++;
-    //add role
-    $roles[$officer['role_id']] = $officer['rolename'];
-    //add departement
-    $departements[]['departementdescription'] = $officer['departementdescription'];
+} else {
+    foreach ($officers as $officer) {
+        $table .= '<tr nobr="true"><td nobr="true" width="30" align="center">';
+        $table .= $i;
+        $table .= '</td>';
+        $table .= '<td nobr="true" width="200">';
+        $table .= '&nbsp;' . $officer['Usercareerview']['name'] . '</td>';
+        $table .= '<td nobr="true" width="160" align="center">';
+        $table .= $officer['Usercareerview']['leveldescription'] . ' (' . $officer['Usercareerview']['levelname'] . ')';
+        $table .= '</td>';
+        $table .= '<td nobr="true" width="125" align="center">';
+        $table .= $officer['Usercareerview']['positionlevelname'];
+        $table .= '</td>';
+        $table .= '<td nobr="true" width="135" align="center">';
+        $table .= $officer['Usercareerview']['roledescription'];
+        $table .= '</td>';
+        $table .= '</tr>';
+        $i++;
+    }
 }
-$departements = array_unique($departements);
 
 $table .= '</tbody></table>';
 
@@ -128,29 +139,42 @@ $table = '
     <tbody>';
 
 $i = 1;
-
-foreach ($users as $user) {
+if (count($users) < 2) {
     $table .= '<tr nobr="true"><td nobr="true" width="30" align="center">';
     $table .= $i;
     $table .= '</td>';
     $table .= '<td nobr="true" width="200">';
-    $table .= '&nbsp;' . $user['name'] . '</td>';
+    $table .= '&nbsp;' . $users[0]['u']['name'] . '</td>';
     $table .= '<td nobr="true" width="160" align="center">';
-    $table .= $user['leveldescription'] . ' (' . $user['levelname'] . ')';
+    $table .= $users[0]['Usercareerview']['leveldescription'] . ' (' . $users[0]['Usercareerview']['levelname'] . ')';
     $table .= '</td>';
     $table .= '<td nobr="true" width="125" align="center">';
-    $table .= $user['positionlevelname'];
+    $table .= $users[0]['Usercareerview']['positionlevelname'];
     $table .= '</td>';
     $table .= '<td nobr="true" width="135" align="center">';
-    $table .= $user['roledescription'];
+    $table .= $users[0]['Usercareerview']['roledescription'];
     $table .= '</td>';
     $table .= '</tr>';
-    $i++;
-    //add role
-    $roles[$user['role_id']] = $user['rolename'];
+} else {
+    foreach ($users as $user) {
+        $table .= '<tr nobr="true"><td nobr="true" width="30" align="center">';
+        $table .= $i;
+        $table .= '</td>';
+        $table .= '<td nobr="true" width="200">';
+        $table .= '&nbsp;' . $user['Usercareerview']['name'] . '</td>';
+        $table .= '<td nobr="true" width="160" align="center">';
+        $table .= $user['Usercareerview']['leveldescription'] . ' (' . $user['Usercareerview']['levelname'] . ')';
+        $table .= '</td>';
+        $table .= '<td nobr="true" width="125" align="center">';
+        $table .= $user['Usercareerview']['positionlevelname'];
+        $table .= '</td>';
+        $table .= '<td nobr="true" width="135" align="center">';
+        $table .= $user['Usercareerview']['roledescription'];
+        $table .= '</td>';
+        $table .= '</tr>';
+        $i++;
+    }
 }
-//$roles = array_unique($roles);
-ksort($roles);
 
 $table .= '</tbody></table>';
 
@@ -200,12 +224,10 @@ $table = '
         <td width="650" colspan="2">Tembusan:</td>';
 $table .= '</tr>';
 $i = 1;
-
 foreach ($departements as $departement) {
     $table .= '<tr>';
     $table .= '<td width="15">' . $i . '.</td>';
-    //$table .= '<td width="635">' . 'Kepala&nbsp;' . $departement['Userdepartementview']['departementdescription'] . '</td>';
-    $table .= '<td width="635">' . 'Kepala&nbsp;' . $departement['departementdescription'] . '</td>';
+    $table .= '<td width="635">' . 'Kepala&nbsp;' . $departement['Userdepartementview']['departementdescription'] . '</td>';
     $table .= '</tr>';
     $i++;
 }
@@ -245,24 +267,41 @@ $table = '
     <tbody>';
 
 $i = 1;
-
-foreach ($officers as $officer) {
+if (count($officers) < 2) {
     $table .= '<tr nobr="true"><td nobr="true" width="30" align="center">';
     $table .= $i;
     $table .= '</td>';
     $table .= '<td nobr="true" width="200">';
-    $table .= '&nbsp;' . $officer['name'] . '</td>';
+    $table .= '&nbsp;' . $officers[0]['u']['name'] . '</td>';
     $table .= '<td nobr="true" width="160" align="center">';
-    $table .= $officer['leveldescription'] . ' (' . $officer['levelname'] . ')';
+    $table .= $officers[0]['Usercareerview']['leveldescription'] . ' (' . $officers[0]['Usercareerview']['levelname'] . ')';
     $table .= '</td>';
     $table .= '<td nobr="true" width="125" align="center">';
-    $table .= $officer['positionlevelname'];
+    $table .= $officers[0]['Usercareerview']['positionlevelname'];
     $table .= '</td>';
     $table .= '<td nobr="true" width="135" align="center">';
-    $table .= $officer['roledescription'];
+    $table .= $officers[0]['Usercareerview']['roledescription'];
     $table .= '</td>';
     $table .= '</tr>';
-    $i++;
+} else {
+    foreach ($officers as $officer) {
+        $table .= '<tr nobr="true"><td nobr="true" width="30" align="center">';
+        $table .= $i;
+        $table .= '</td>';
+        $table .= '<td nobr="true" width="200">';
+        $table .= '&nbsp;' . $officer['Usercareerview']['name'] . '</td>';
+        $table .= '<td nobr="true" width="160" align="center">';
+        $table .= $officer['Usercareerview']['leveldescription'] . ' (' . $officer['Usercareerview']['levelname'] . ')';
+        $table .= '</td>';
+        $table .= '<td nobr="true" width="125" align="center">';
+        $table .= $officer['Usercareerview']['positionlevelname'];
+        $table .= '</td>';
+        $table .= '<td nobr="true" width="135" align="center">';
+        $table .= $officer['Usercareerview']['roledescription'];
+        $table .= '</td>';
+        $table .= '</tr>';
+        $i++;
+    }
 }
 
 $table .= '</tbody></table>';
@@ -302,24 +341,41 @@ $table = '
     <tbody>';
 
 $i = 1;
-
-foreach ($users as $user) {
+if (count($users) < 2) {
     $table .= '<tr nobr="true"><td nobr="true" width="30" align="center">';
     $table .= $i;
     $table .= '</td>';
     $table .= '<td nobr="true" width="200">';
-    $table .= '&nbsp;' . $user['name'] . '</td>';
+    $table .= '&nbsp;' . $users[0]['u']['name'] . '</td>';
     $table .= '<td nobr="true" width="160" align="center">';
-    $table .= $user['leveldescription'] . ' (' . $user['levelname'] . ')';
+    $table .= $users[0]['Usercareerview']['leveldescription'] . ' (' . $users[0]['Usercareerview']['levelname'] . ')';
     $table .= '</td>';
     $table .= '<td nobr="true" width="125" align="center">';
-    $table .= $user['positionlevelname'];
+    $table .= $users[0]['Usercareerview']['positionlevelname'];
     $table .= '</td>';
     $table .= '<td nobr="true" width="135" align="center">';
-    $table .= $user['roledescription'];
+    $table .= $users[0]['Usercareerview']['roledescription'];
     $table .= '</td>';
     $table .= '</tr>';
-    $i++;
+} else {
+    foreach ($users as $user) {
+        $table .= '<tr nobr="true"><td nobr="true" width="30" align="center">';
+        $table .= $i;
+        $table .= '</td>';
+        $table .= '<td nobr="true" width="200">';
+        $table .= '&nbsp;' . $user['Usercareerview']['name'] . '</td>';
+        $table .= '<td nobr="true" width="160" align="center">';
+        $table .= $user['Usercareerview']['leveldescription'] . ' (' . $user['Usercareerview']['levelname'] . ')';
+        $table .= '</td>';
+        $table .= '<td nobr="true" width="125" align="center">';
+        $table .= $user['Usercareerview']['positionlevelname'];
+        $table .= '</td>';
+        $table .= '<td nobr="true" width="135" align="center">';
+        $table .= $user['Usercareerview']['roledescription'];
+        $table .= '</td>';
+        $table .= '</tr>';
+        $i++;
+    }
 }
 
 $table .= '</tbody></table>';
@@ -347,7 +403,7 @@ $pdf->writeHTML($table, true, false, false, false, '');
 //++++++++++++++++++++++++++++++++++++++++ AUDIENCE'S AND OFFICER'S DUTY TABLE +++++++++++++++++++++++++++++++++++++++++
 $pdf->SetFont('times', '', 10);
 
-$table = '
+$table ='
 <table nobr="true">
 <tbody>
 <tr>
@@ -360,7 +416,7 @@ $table .= '
 $table .= '<tr>';
 $table .= '<td width="650">';
 $table .= 'Telah menyelesaikan penugasan berdasarkan SP2 No&nbsp;';
-$table .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $numberFormat . $arrDate[1] . '/' . $arrDate[0];
+$table .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $numberFormat . $arrDate[1] . '/' . date('Y');
 $table .= '&nbsp;dengan hasil kegiatan sebagai berikut:';
 $table .= '</td>';
 $table .= '</tr>';
@@ -385,12 +441,9 @@ $table .= $description;
 $table .= '&nbsp;(Pelaksana:&nbsp;';
 
 $rolesCount = count($roles);
-$i = 0;
-foreach ($roles as $key => $values) {
-//for ($i = 0; $i < $rolesCount; $i++) {
-    //$table .= $roles[$i]['Userroleview']['rolename'];
-    //$table .= $roles[$i]['rolename'];
-    $table .= $values;
+
+for ($i = 0; $i < $rolesCount; $i++) {
+    $table .= $roles[$i]['Userroleview']['rolename'];
     if ($i == $rolesCount - 3) {
         $table .= '&nbsp;dan&nbsp;';
     } elseif ($i == $rolesCount - 2) {
@@ -400,7 +453,7 @@ foreach ($roles as $key => $values) {
     } else {
         $table .= ',&nbsp;';
     }
-    $i++;
+
 }
 
 $table .= ')';
@@ -460,8 +513,7 @@ $i = 1;
 foreach ($departements as $departement) {
     $table .= '<tr>';
     $table .= '<td width="15">' . $i . '.</td>';
-    //$table .= '<td width="635">' . 'Kepala&nbsp;' . $departement['Userdepartementview']['departementdescription'] . '</td>';
-    $table .= '<td width="635">' . 'Kepala&nbsp;' . $departement['departementdescription'] . '</td>';
+    $table .= '<td width="635">' . 'Kepala&nbsp;' . $departement['Userdepartementview']['departementdescription'] . '</td>';
     $table .= '</tr>';
     $i++;
 }
