@@ -118,8 +118,7 @@ class DepartementsUsersController extends AppController
                     'NOT' => array(
                         'Userdepartementview.active' => false,
                         'Userdepartementview.useractive' => false,
-                        'Userdepartementview.departement_id' => $this->departementPerwakilan,
-                        'Userdepartementview.departement_id' => $this->departementSekretariat
+                        'Userdepartementview.departement_id' => array($this->departementPerwakilan, $this->departementSekretariat)
                     ),
                     'Userdepartementview.end' => null
                 );
