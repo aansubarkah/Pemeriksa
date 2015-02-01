@@ -86,9 +86,7 @@ class PagesController extends AppController
                     'ActivitiesUser.active' => 1
                 ),
                 'limit' => 10,
-                'order' => array(
-                    'Activity.start' => 'DESC'
-                )
+                'order' => 'Activity.start DESC'
             );
 
             $activities = $this->Paginator->paginate('ActivitiesUser');
@@ -106,9 +104,7 @@ class PagesController extends AppController
                     'Activity.active' => 1
                 ),
                 'limit' => 10,
-                'order' => array(
-                    'Activity.start' => 'DESC'
-                )
+                'order' => 'Activity.start DESC'
             );
 
             $activities = $this->Paginator->paginate('Activity');

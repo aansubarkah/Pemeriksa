@@ -36,8 +36,16 @@ class LettersController extends AppController
 
     }
 
-    public function indexExpose()
+    public function indexExpose($draft = null)
     {
+        /**
+         * This controller use Activity model
+         *
+         * @var array
+         * @var Activity $Activity
+         */
+        $this->uses = array('Letteruserview');
+
         $title_for_layout = 'SP2 Ekspose';
         $breadCrumb = $this->breadCrumb;
         $breadCrumb[1] = array(
@@ -46,7 +54,29 @@ class LettersController extends AppController
             'action' => 'indexExpose'
         );
 
-        $this->set(compact('title_for_layout', 'breadCrumb', 'data'));
+        $conditions = array(
+            'Letteruserview.active' => true,
+            'Letteruserview.activityactive' => true,
+            'Letteruserview.lettercategory_id' => $this->letterCategorySP2Expose,
+            'Letteruserview.user_id' => $this->Auth->user('id'),
+            'Letteruserview.activityusertagged' => true
+        );
+        if ($draft == 'onlyDraft') {
+            $conditions['Letteruserview.activitydraft'] = true;
+        } elseif ($draft == 'noDraft') {
+            $conditions['Letteruserview.activitydraft'] = false;
+        }
+
+        $this->Paginator->settings = array(
+            'recursive' => -1,
+            'conditions' => $conditions,
+            'limit' => 10,
+            'order' => array('Letteruserview.date' => 'DESC')
+        );
+
+        $letters = $this->Paginator->paginate('Letteruserview');
+
+        $this->set(compact('title_for_layout', 'breadCrumb', 'letters'));
     }
 
     public function addExpose()
@@ -118,7 +148,8 @@ class LettersController extends AppController
 
             //4th save to evidences table
             $dataToEvidences = array(
-                'name' => $name,
+                //'name' => $name,
+                'name' => 'Draft SP2',
                 'extension' => 'pdf',
                 'type_id' => $this->typeSP2,
                 'uploader_id' => $this->Auth->user('id'),
@@ -170,10 +201,6 @@ class LettersController extends AppController
     private function addExposeAddToActivitiesUsers($data)
     {
         if (!empty($data)) {
-            //remove same value on employee
-            //$data['employees'] = array_diff($data['employees'], $data['personInCharge']);
-            //$data['employees'] = array_values($data['employees']);//rearrange index key
-
             $countPersonInCharge = count($data['personInCharge']);
             $countEmployees = count($data['employees']);
 
@@ -270,22 +297,115 @@ class LettersController extends AppController
         $this->set(compact('title_for_layout', 'breadCrumb', 'fileId'));
     }
 
-    public function isLetterNotExists()
+    public function addExposeNumber($letterId = null)
     {
-        $description = trim(strtolower($this->request->data['description']));
-        $description = '%' . $description . '%';
-        $start = trim($this->request->data['start']);
+        if ($this->request->is(array('post', 'put'))) {
+            if (!$this->Letter->exists($this->request->data['Letter']['id'])) {
+                return false;
+                //return $this->flash('tidak ada');
+                //return $this->
+            }
 
-        empty($start) ? $start = date('Y-m-d') : $start = $start;
+            $this->request->data['Letter']['name'] = trim($this->request->data['Letter']['name']);
+            //first save to letters table
+            $this->Letter->read(null, $this->request->data['Letter']['id']);
+            $this->Letter->set('name', $this->request->data['Letter']['name']);
+            if(!empty($this->request->data['Letter']['date'])) {
+                $this->Letter->set('date', $this->request->data['Letter']['date']);
+            }
 
-        $countData = $this->Letter->Activity->find('count', array(
+            if(!$this->Letter->save()) {
+                $this->Session->setFlash(__('Nomor SP2 tidak dapat disimpan, silahkan ulangi.'));
+                return $this->redirect(array('action' => 'indexExpose'));
+            }
+
+
+            //second save to activity table
+            $activity = $this->Letter->find('first', array(
+               'recursive' => -1,
+                'conditions' => array(
+                    'Letter.id' => $this->request->data['Letter']['id']
+                ),
+                'fields' => array('Letter.activity_id')
+            ));
+            $this->Letter->Activity->read(null, $activity['Letter']['activity_id']);
+            $this->Letter->Activity->set(array(
+               'name' => $this->request->data['Letter']['name'],
+                'draft' => false
+            ));
+            $this->Letter->Activity->save();
+            if(!$this->Letter->Activity->save()) {
+                $this->Session->setFlash(__('Nomor SP2 tidak dapat disimpan, silahkan ulangi.'));
+                return $this->redirect(array('action' => 'indexExpose'));
+            }
+
+            return $this->redirect(array('action' => 'indexExpose'));
+        }
+
+        $title_for_layout = 'Nomor SP2 Ekspose';
+        $breadCrumb = $this->breadCrumb;
+        $breadCrumb[1] = array(
+            'title' => 'SP2 Ekspose',
+            'controller' => 'letters',
+            'action' => 'indexExpose'
+        );
+        $breadCrumb[2] = array(
+            'title' => 'Nomor',
+            'controller' => 'letters',
+            'action' => 'addExposeNumber'
+        );
+
+        $letter = $this->Letter->Activity->Letteruserview->find('first', array(
+            'recursive' => -1,
             'conditions' => array(
-                'Activity.active' => 1,
-                'Activity.draft' => 0,
-                'Activity.start' => $start,
-                'Activity.description LIKE' => $description
+                'Letteruserview.id' => $letterId,
+                'Letteruserview.active' => true,
+                'Letteruserview.user_id' => $this->Auth->user('id')
             )
         ));
+
+        if ($this->Auth->user('group_id') == $this->groupAdmin) {
+            $letter = $this->Letter->Activity->Letteruserview->find('first', array(
+                'recursive' => -1,
+                'conditions' => array(
+                    'Letteruserview.id' => $letterId,
+                    'Letteruserview.active' => true
+                )
+            ));
+        }
+
+        if (!empty($letter)) {
+            $this->set(compact('title_for_layout', 'breadCrumb', 'letter'));
+        } else {
+            $this->redirect(array('action' => 'indexExpose'));
+        }
+        //$this->set(compact('title_for_layout', 'breadCrumb', 'letter'));
+    }
+
+    public function isLetterNotExists()
+    {
+        $start = trim($this->request->data['start']);
+        empty($start) ? $start = date('Y-m-d') : $start = $start;
+
+        $conditions = array(
+            'Activity.active' => 1,
+            'Activity.draft' => 0,
+            'Activity.start' => $start
+        );
+        if (isset($this->request->data['name'])) {
+            $name = trim(strtolower($this->request->data['name']));
+            $name = '%' . $name . '%';
+            $conditions['Activity.name LIKE'] = $name;
+        } else {
+            $description = trim(strtolower($this->request->data['description']));
+            $description = '%' . $description . '%';
+            $conditions['Activity.description LIKE'] = $description;
+        }
+
+        $countData = $this->Letter->Activity->find('count', array(
+                'conditions' => $conditions
+            )
+        );
 
         $countData > 0 ? $data = false : $data = true;
 
