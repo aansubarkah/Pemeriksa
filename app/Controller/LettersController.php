@@ -302,40 +302,37 @@ class LettersController extends AppController
         if ($this->request->is(array('post', 'put'))) {
             if (!$this->Letter->exists($this->request->data['Letter']['id'])) {
                 return false;
-                //return $this->flash('tidak ada');
-                //return $this->
             }
 
-            $this->request->data['Letter']['name'] = trim($this->request->data['Letter']['name']);
+            $name = trim($this->request->data['Letter']['name']);
             //first save to letters table
             $this->Letter->read(null, $this->request->data['Letter']['id']);
-            $this->Letter->set('name', $this->request->data['Letter']['name']);
-            if(!empty($this->request->data['Letter']['date'])) {
+            $this->Letter->set('name', $name);
+            if (!empty($this->request->data['Letter']['date'])) {
                 $this->Letter->set('date', $this->request->data['Letter']['date']);
             }
 
-            if(!$this->Letter->save()) {
+            if (!$this->Letter->save()) {
                 $this->Session->setFlash(__('Nomor SP2 tidak dapat disimpan, silahkan ulangi.'));
                 return $this->redirect(array('action' => 'indexExpose'));
             }
 
-
             //second save to activity table
             $activity = $this->Letter->find('first', array(
-               'recursive' => -1,
+                'recursive' => -1,
                 'conditions' => array(
                     'Letter.id' => $this->request->data['Letter']['id']
                 ),
                 'fields' => array('Letter.activity_id')
             ));
-            $this->Letter->Activity->read(null, $activity['Letter']['activity_id']);
+            $this->Letter->Activity->id = $activity['Letter']['activity_id'];
             $this->Letter->Activity->set(array(
-               'name' => $this->request->data['Letter']['name'],
+                'name' => $name,
                 'draft' => false
             ));
-            $this->Letter->Activity->save();
-            if(!$this->Letter->Activity->save()) {
-                $this->Session->setFlash(__('Nomor SP2 tidak dapat disimpan, silahkan ulangi.'));
+
+            if (!$this->Letter->Activity->save()) {
+                $this->Session->setFlash(__($activity['Letter']['activity_id']));
                 return $this->redirect(array('action' => 'indexExpose'));
             }
 
@@ -360,6 +357,7 @@ class LettersController extends AppController
             'conditions' => array(
                 'Letteruserview.id' => $letterId,
                 'Letteruserview.active' => true,
+                'Letteruserview.activitydraft' => true,
                 'Letteruserview.user_id' => $this->Auth->user('id')
             )
         ));
@@ -369,7 +367,8 @@ class LettersController extends AppController
                 'recursive' => -1,
                 'conditions' => array(
                     'Letteruserview.id' => $letterId,
-                    'Letteruserview.active' => true
+                    'Letteruserview.active' => true,
+                    'Letteruserview.activitydraft' => true
                 )
             ));
         }
@@ -379,7 +378,6 @@ class LettersController extends AppController
         } else {
             $this->redirect(array('action' => 'indexExpose'));
         }
-        //$this->set(compact('title_for_layout', 'breadCrumb', 'letter'));
     }
 
     public function isLetterNotExists()
