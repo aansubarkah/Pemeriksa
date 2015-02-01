@@ -1,7 +1,6 @@
 <?php
 /**
  * @var View $this
- * @todo find how to validating tags input
  */
 echo $this->element('typeahead_style');
 ?>

@@ -24,18 +24,6 @@
         </tr>
         <tr>
             <td>
-                <?php
-                if (count($users) > 0) {
-                    foreach ($users as $user) {
-                        echo $user;
-                        echo '<br>';
-                    }
-                }
-                ?>
-            </td>
-        </tr>
-        <tr>
-            <td>
                 <p>Dokumen:
                     <small><a href="<?php echo Router::url('/evidences/add/') . $activity['Activity']['id']; ?>"><span
                                 class="glyphicon glyphicon-plus-sign"></span></a></small>
@@ -46,6 +34,18 @@
                         empty($file['Evidence']['name']) ? $fileName = $file['Type']['name'] : $fileName = $file['Evidence']['name'];
                         $fileLink = '/evidences/download/' . $file['Evidence']['id'] . '/' . $activity['Activity']['name'];
                         echo $this->Html->link($fileName, $fileLink);
+                        echo '<br>';
+                    }
+                }
+                ?>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <?php
+                if (count($users) > 0) {
+                    foreach ($users as $user) {
+                        echo $user;
                         echo '<br>';
                     }
                 }

@@ -2,6 +2,29 @@
 /**
  * @var View $this
  */
+$currentController = $this->request->params['controller'];
+$currentAction = $this->request->params['action'];
+$arrMenu = array();
+$arrMenu[0]['title'] = 'Ekspose';
+$arrMenu[0]['controller'] = 'letters';
+$arrMenu[0]['action'] = 'indexExpose';
+$arrMenu[1]['title'] = 'Pemeriksaan';
+$arrMenu[1]['controller'] = 'letters';
+$arrMenu[1]['action'] = 'indexAudit';
+/*$arrMenu[1]['title'] = 'Informasi Dasar';
+$arrMenu[1]['action'] = 'basicinfo';
+$arrMenu[2]['title'] = 'Pangkat/Golongan';
+$arrMenu[2]['action'] = 'level';
+$arrMenu[3]['title'] = 'Jabatan';
+$arrMenu[3]['action'] = 'positionlevel';
+$arrMenu[4]['title'] = 'Unit Kerja';
+$arrMenu[4]['action'] = 'departement';
+$arrMenu[5]['title'] = 'Atasan';
+$arrMenu[5]['action'] = 'chief';
+$arrMenu[6]['title'] = 'Ubah Password';
+$arrMenu[6]['action'] = 'password';*/
+
+//$countArrMenu = count($arrMenu);
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -81,26 +104,21 @@
                         <div class="panel-heading">Surat Penugasan</div>
                         <div class="list-group">
                             <?php
-                            echo $this->Html->link(
-                                'Ekspose',
-                                array(
-                                    'controller' => 'letters',
-                                    'action' => 'addExpose'
-                                ),
-                                array(
-                                    'class' => 'list-group-item'
-                                )
-                            );
-                            echo $this->Html->link(
-                                'Pemeriksaan',
-                                array(
-                                    'controller' => 'letters',
-                                    'action' => 'addAudit'
-                                ),
-                                array(
-                                    'class' => 'list-group-item'
-                                )
-                            );
+                            for ($i = 0; $i < 2; $i++) {
+                                $menuClass = 'list-group-item';
+
+                                if ($currentController == 'letters' && $i == 0 && $currentAction == 'indexExpose') $menuClass .= ' disabled';
+                                if ($currentController == 'letters' && $i == 1 && $currentAction == 'indexAudit') $menuClass .= ' disabled';
+                                echo $this->Html->link($arrMenu[$i]['title'],
+                                    array(
+                                        'controller' => $arrMenu[$i]['controller'],
+                                        'action' => $arrMenu[$i]['action']
+                                    ),
+                                    array(
+                                        'class' => $menuClass
+                                    )
+                                );
+                            }
                             ?>
                         </div>
                         <div class="panel-heading">Kegiatan</div>
