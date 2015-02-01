@@ -68,7 +68,7 @@ class LettersController extends AppController
         if ($this->request->is(array('post', 'put'))) {
             empty($this->request->data['Letter']['start']) ? $start = date('Y-m-d') : $start = $this->request->data['Letter']['start'];
             empty($this->request->data['Letter']['end']) ? $end = date('Y-m-d') : $end = $this->request->data['Letter']['end'];
-            empty($this->request->data['Letter']['date']) ? $date = date('Y-m-d') : $date = $this->request->data['Letter']['date'];
+            empty($this->request->data['Letter']['date']) ? $date = $start : $date = $this->request->data['Letter']['date'];
             $description = $this->request->data['Letter']['description'];
             $personInCharge = explode(',', $this->request->data['Letter']['personInCharge']);
             $employees = explode(',', $this->request->data['Letter']['employees']);
