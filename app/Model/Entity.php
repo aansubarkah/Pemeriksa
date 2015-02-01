@@ -5,6 +5,7 @@ App::uses('AppModel', 'Model');
  *
  * @property Entitycategory $Entitycategory
  * @property Letter $Letter
+ * @property Letterview $Letterview
  */
 class Entity extends AppModel {
 
@@ -41,6 +42,19 @@ class Entity extends AppModel {
 	public $hasMany = array(
 		'Letter' => array(
 			'className' => 'Letter',
+			'foreignKey' => 'entity_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'Letterview' => array(
+			'className' => 'Letterview',
 			'foreignKey' => 'entity_id',
 			'dependent' => false,
 			'conditions' => '',

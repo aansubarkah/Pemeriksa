@@ -5,6 +5,8 @@ App::uses('AppModel', 'Model');
  * Lettercategory Model
  *
  * @property Letter $Letter
+ * @property Letterview $Letterview
+ * @property Letteruserview $Letteruserview
  */
 class Lettercategory extends AppModel
 {
@@ -27,6 +29,32 @@ class Lettercategory extends AppModel
     public $hasMany = array(
         'Letter' => array(
             'className' => 'Letter',
+            'foreignKey' => 'lettercategory_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
+        'Letterview' => array(
+            'className' => 'Letterview',
+            'foreignKey' => 'lettercategory_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
+        'Letteruserview' => array(
+            'className' => 'Letteruserview',
             'foreignKey' => 'lettercategory_id',
             'dependent' => false,
             'conditions' => '',

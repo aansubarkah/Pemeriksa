@@ -15,6 +15,7 @@ App::uses('AppModel', 'Model');
  * @property Simplecategorytreeview $Simplecategorytreeview
  * @property Transaction $Transaction
  * @property Prefix $Prefix
+ * @property Letterview $Letterview
  */
 class Categorytree extends AppModel
 {
@@ -183,6 +184,19 @@ class Categorytree extends AppModel
         ),
         'Transaction' => array(
             'className' => 'Transaction',
+            'foreignKey' => 'categorytree_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
+        'Letterview' => array(
+            'className' => 'Letterview',
             'foreignKey' => 'categorytree_id',
             'dependent' => false,
             'conditions' => '',

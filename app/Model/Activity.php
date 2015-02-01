@@ -11,6 +11,8 @@ App::uses('AppModel', 'Model');
  * @property Evidence $Evidence
  * @property Calendarview $Calendarview
  * @property Letter $Letter
+ * @property Letterview $Letterview
+ * @property Letteruserview $Letteruserview
  */
 class Activity extends AppModel
 {
@@ -160,6 +162,32 @@ class Activity extends AppModel
         ),
         'Letter' => array(
             'className' => 'Letter',
+            'foreignKey' => 'activity_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
+        'Letterview' => array(
+            'className' => 'Letterview',
+            'foreignKey' => 'activity_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
+        'Letteruserview' => array(
+            'className' => 'Letteruserview',
             'foreignKey' => 'activity_id',
             'dependent' => false,
             'conditions' => '',

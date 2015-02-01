@@ -5,6 +5,7 @@ App::uses('AppModel', 'Model');
  * Duty Model
  *
  * @property ActivitiesUser $ActivitiesUser
+ * @property Letteruserview $Letteruserview
  */
 class Duty extends AppModel
 {
@@ -27,6 +28,19 @@ class Duty extends AppModel
     public $hasMany = array(
         'ActivitiesUser' => array(
             'className' => 'ActivitiesUser',
+            'foreignKey' => 'duty_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
+        'Letteruserview' => array(
+            'className' => 'Letteruserview',
             'foreignKey' => 'duty_id',
             'dependent' => false,
             'conditions' => '',

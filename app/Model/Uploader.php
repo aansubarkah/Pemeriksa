@@ -7,6 +7,8 @@ App::uses('AppModel', 'Model');
  * @property User $User
  * @property Evidence $Evidence
  * @property Letter $Letter
+ * @property Letterview $Letterview
+ * @property Letteruserview $Letteruserview
  */
 class Uploader extends AppModel
 {
@@ -77,6 +79,32 @@ class Uploader extends AppModel
         ),
         'Letter' => array(
             'className' => 'Letter',
+            'foreignKey' => 'uploader_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
+        'Letterview' => array(
+            'className' => 'Letterview',
+            'foreignKey' => 'uploader_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
+        'Letteruserview' => array(
+            'className' => 'Letteruserview',
             'foreignKey' => 'uploader_id',
             'dependent' => false,
             'conditions' => '',

@@ -6,6 +6,8 @@ App::uses('AppModel', 'Model');
  *
  * @property Evidence $Evidence
  * @property Letter $Letter
+ * @property Letterview $Letterview
+ * @property Letteruserview $Letteruserview
  */
 class Type extends AppModel
 {
@@ -61,6 +63,32 @@ class Type extends AppModel
         ),
         'Letter' => array(
             'className' => 'Letter',
+            'foreignKey' => 'type_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
+        'Letterview' => array(
+            'className' => 'Letterview',
+            'foreignKey' => 'type_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
+        'Letteruserview' => array(
+            'className' => 'Letteruserview',
             'foreignKey' => 'type_id',
             'dependent' => false,
             'conditions' => '',
