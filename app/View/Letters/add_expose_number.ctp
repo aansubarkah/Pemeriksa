@@ -50,7 +50,7 @@ $options = array(
     'div' => 'form-group col-sm-9',
     'class' => 'form-control',
     'id' => 'btnSave',
-    'type' => 'button'
+    'type' => 'submit'
 );
 
 echo $this->Form->end($options);
@@ -92,7 +92,7 @@ echo $this->fetch('css');
                 }
             },
             messages: {
-                'data[Letter][description]': {
+                'data[Letter][name]': {
                     remote: 'SP2 dengan nomor tersebuttersebut telah ada'
                 }
             }
