@@ -50,7 +50,7 @@ echo $this->Form->input('date', array(
     'div' => 'form-group col-sm-9',
     'class' => 'form-control',
     'id' => 'date',
-    'placeholder' => 'Tanggal SP2 (Jika dikosongkan sistem akan menggunakan tanggal hari ini)'
+    'placeholder' => 'Tanggal SP2 (Jika dikosongkan sistem akan menggunakan Tanggal Mulai)'
 ));
 
 echo $this->Form->input('description', array(
