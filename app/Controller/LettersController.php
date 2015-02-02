@@ -306,7 +306,8 @@ class LettersController extends AppController
 
             $name = trim($this->request->data['Letter']['name']);
             //first save to letters table
-            $this->Letter->read(null, $this->request->data['Letter']['id']);
+            //$this->Letter->read(null, $this->request->data['Letter']['id']);
+            $this->Letter->id = $this->request->data['Letter']['id'];
             $this->Letter->set('name', $name);
             if (!empty($this->request->data['Letter']['date'])) {
                 $this->Letter->set('date', $this->request->data['Letter']['date']);
@@ -333,7 +334,12 @@ class LettersController extends AppController
 
             if (!$this->Letter->Activity->save()) {
                 $this->Session->setFlash(__($activity['Letter']['activity_id']));
-                return $this->redirect(array('action' => 'indexExpose'));
+                //return $this->redirect(array('action' => 'indexExpose'));
+                //$this->view
+                return $this->redirect(array(
+                    'controller' => 'messages',
+                    'action' => 'savingSuccess'
+                ));
             }
 
             return $this->redirect(array('action' => 'indexExpose'));
