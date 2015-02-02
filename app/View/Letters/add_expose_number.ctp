@@ -93,7 +93,7 @@ echo $this->fetch('css');
             },
             messages: {
                 'data[Letter][name]': {
-                    remote: 'SP2 dengan nomor tersebuttersebut telah ada'
+                    remote: 'SP2 dengan nomor tersebut telah ada'
                 }
             }
         });
