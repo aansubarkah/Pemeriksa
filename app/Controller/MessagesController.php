@@ -35,7 +35,7 @@ class MessagesController extends AppController
 
     }
 
-    public function savingSuccess($message = null, $goToLink = null, $redirectLink = null) {
+    public function savingSuccess() {
         $title_for_layout = 'Pesan';
         $breadCrumb = $this->breadCrumb;
         $breadCrumb[1] = array(

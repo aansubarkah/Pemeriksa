@@ -37,7 +37,7 @@ class PagesController extends AppController
      * @var array
      * @var Activity $Activity
      */
-    public $uses = array('Activity', 'ActivitiesUser');
+    public $uses = array('Activity', 'ActivitiesUser', 'Letteruserview');
 
     /**
      * Components
@@ -66,30 +66,21 @@ class PagesController extends AppController
         $title_for_layout = 'Beranda';
 
         if ($this->Auth->loggedIn()) {
-            $this->ActivitiesUser->unbindModel(
-                array(
-                    'belongsTo' => array('User')
-                )
-            );
-            $this->Activity->unbindModel(
-                array(
-                    'hasAndBelongsToMany' => array('User'),
-                    'belongsTo' => array('Categorytree'),
-                    'hasMany' => array('ActivitiesUser', 'Transaction')
-                )
-            );
-
+            $this->view = 'display_user';
             $this->Paginator->settings = array(
-                'recursive' => 2,
+                'recursive' => -1,
                 'conditions' => array(
-                    'ActivitiesUser.user_id' => $this->Auth->user('id'),
-                    'ActivitiesUser.active' => 1
+                    'Letteruserview.activityactive' => true,
+                    'Letteruserview.user_id' => $this->Auth->user('id'),
+                    'Letteruserview.activityusertagged' => true,
+                    'Letteruserview.activitydraft' => false
                 ),
                 'limit' => 10,
-                'order' => 'Activity.start DESC'
+                'order' => array('Letteruserview.date' => 'DESC')
             );
 
-            $activities = $this->Paginator->paginate('ActivitiesUser');
+            $letters = $this->Paginator->paginate('Letteruserview');
+            $this->set(compact('title_for_layout','letters'));
         } else {
             $this->Activity->unbindModel(
                 array(
@@ -101,6 +92,7 @@ class PagesController extends AppController
 
             $this->Paginator->settings = array(
                 'conditions' => array(
+                    'Activity.draft' => 0,
                     'Activity.active' => 1
                 ),
                 'limit' => 10,
@@ -108,9 +100,8 @@ class PagesController extends AppController
             );
 
             $activities = $this->Paginator->paginate('Activity');
+            $this->set(compact('title_for_layout', 'activities'));
         }
-
-        $this->set(compact('title_for_layout', 'activities'));
     }
 
     public function register()
