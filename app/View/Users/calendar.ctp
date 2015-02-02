@@ -44,6 +44,14 @@ echo $this->fetch('script');
             eventMouseout: function (calEvent, jsEvent) {
                 $(this).css('z-index', 8);
                 $('.tooltipevent').remove();
+            },
+            eventClick: function(event) {
+                if(event.id) {
+                    var url = '<?php echo Router::url('/activities/view/', true); ?>';
+                    url += event.id;
+                    window.open(url);
+                    return false;
+                }
             }
         });
     });

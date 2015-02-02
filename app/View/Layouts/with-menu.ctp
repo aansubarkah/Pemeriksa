@@ -11,6 +11,12 @@ $arrMenu[0]['action'] = 'indexExpose';
 $arrMenu[1]['title'] = 'Pemeriksaan';
 $arrMenu[1]['controller'] = 'letters';
 $arrMenu[1]['action'] = 'indexAudit';
+$arrMenu[2]['title'] = 'Kegiatan';
+$arrMenu[2]['controller'] = 'activities';
+$arrMenu[2]['action'] = 'index';
+$arrMenu[3]['title'] = 'Kalender';
+$arrMenu[3]['controller'] = 'users';
+$arrMenu[3]['action'] = 'calendar';
 /*$arrMenu[1]['title'] = 'Informasi Dasar';
 $arrMenu[1]['action'] = 'basicinfo';
 $arrMenu[2]['title'] = 'Pangkat/Golongan';
@@ -124,16 +130,21 @@ $arrMenu[6]['action'] = 'password';*/
                         <div class="panel-heading">Kegiatan</div>
                         <div class="list-group">
                             <?php
-                            echo $this->Html->link(
-                                'Kalender',
-                                array(
-                                    'controller' => 'users',
-                                    'action' => 'calendar'
-                                ),
-                                array(
-                                    'class' => 'list-group-item'
-                                )
-                            );
+                            for ($i = 2; $i < 4; $i++) {
+                                $menuClass = 'list-group-item';
+
+                                if ($currentController == 'activities' && $i == 2 && $currentAction == 'index') $menuClass .= ' disabled';
+                                if ($currentController == 'users' && $i == 3 && $currentAction == 'calendar') $menuClass .= ' disabled';
+                                echo $this->Html->link($arrMenu[$i]['title'],
+                                    array(
+                                        'controller' => $arrMenu[$i]['controller'],
+                                        'action' => $arrMenu[$i]['action']
+                                    ),
+                                    array(
+                                        'class' => $menuClass
+                                    )
+                                );
+                            }
                             ?>
                         </div>
                     </div>
