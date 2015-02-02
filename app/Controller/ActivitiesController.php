@@ -18,15 +18,46 @@ class ActivitiesController extends AppController
     public $components = array('Paginator');
 
     /**
+     * Breadcrumb for all
+     *
+     * @var array
+     */
+    private $breadCrumb = array(
+        0 => array(
+            'title' => 'Kegiatan',
+            'controller' => 'activities',
+            'action' => '/'
+        )
+    );
+
+    /**
      * index method
      *
      * @return void
      */
     public function index()
     {
-        $this->Activity->recursive = 0;
-        $this->set('activities', $this->Paginator->paginate());
+        $breadCrumb = $this->breadCrumb;
+
+        $this->uses = array('Letteruserview');
+        $title_for_layout = 'Kegiatan';
+
+        $this->Paginator->settings = array(
+            'recursive' => -1,
+            'conditions' => array(
+                'Letteruserview.activityactive' => true,
+                'Letteruserview.user_id' => $this->Auth->user('id'),
+                'Letteruserview.activityusertagged' => true,
+                'Letteruserview.activitydraft' => false
+            ),
+            'limit' => 10,
+            'order' => array('Letteruserview.date' => 'DESC')
+        );
+
+        $letters = $this->Paginator->paginate('Letteruserview');
+        $this->set(compact('title_for_layout', 'breadCrumb', 'letters'));
     }
+
 
     /**
      * view method
@@ -37,6 +68,13 @@ class ActivitiesController extends AppController
      */
     public function view($id = null)
     {
+        $breadCrumb = $this->breadCrumb;
+        $breadCrumb[1] = array(
+            'title' => 'Lihat',
+            'controller' => 'activities',
+            'action' => 'view'
+        );
+
         if (!$this->Activity->exists($id)) {
             throw new NotFoundException(__('Invalid activity'));
         }
@@ -66,7 +104,7 @@ class ActivitiesController extends AppController
         $users = array();
         if (count($activity['User']) > 0) $users = $this->sortName($activity['User']);
 
-        $this->set(compact('title_for_layout', 'files', 'activity', 'users'));
+        $this->set(compact('title_for_layout', 'files', 'activity', 'users', 'breadCrumb'));
     }
 
     private function sortName($source)

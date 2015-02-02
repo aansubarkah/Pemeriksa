@@ -206,10 +206,23 @@ class UsersController extends AppController
 
     public function calendar()
     {
+        $breadCrumb = array(
+            0 => array(
+                'title' => 'Kegiatan',
+                'controller' => 'activities',
+                'action' => 'index'
+            ),
+            1 => array(
+                'title' => 'Kalender',
+                'controller' => 'users',
+                'action' => 'calendar'
+            )
+        );
+
         $title_for_layout = 'Kalender Kegiatan';
 
-        $this->set(compact('title_for_layout'));
-        $this->set(array('title_for_layout'));
+        $this->set(compact('title_for_layout', 'breadCrumb'));
+        $this->set(array('title_for_layout', 'breadCrumb'));
     }
 }
 /**
