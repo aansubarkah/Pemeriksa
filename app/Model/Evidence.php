@@ -79,4 +79,43 @@ class Evidence extends AppModel
             'order' => ''
         )
     );
+
+    public function createZip($activityId = null) {
+        $files = $this->find('all', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'Evidence.activity_id' => $activityId,
+                'Evidence.active' => 1
+            )
+        ));
+        if (empty($files)) return false;
+
+        App::uses('Folder', 'Utility');
+        App::uses('File', 'Utility');
+
+        $zipFolder = WWW_ROOT . 'files' . DS . 'activity';
+        $zipPath = $zipFolder . DS . $activityId . '.zip';
+        $zipFile = new File($zipPath, false, 0777);
+
+        //first delete zip file if exists
+        if ($zipFile->exists()) {
+            $zipFile->delete();
+        }
+
+        //2nd create zip
+        $zip = new ZipArchive();
+        if ($zip->open($zipPath, ZipArchive::CREATE) !== true) return false;
+
+        //3rd add file to zip
+        foreach ($files as $file) {
+            $filePath = WWW_ROOT . 'files' . DS . $file['Evidence']['id'] . '.' . $file['Evidence']['extension'];
+            $fileLocalName = str_replace('/', '-', $file['Evidence']['name']) . '.' . $file['Evidence']['extension'];
+            $zip->addFile($filePath, $fileLocalName);
+        }
+
+        //$zip->addFile(WWW_ROOT . 'files'. DS . '36.pdf', '36.pdf');
+        $zip->close();
+        //return true if all ok
+        return true;
+    }
 }
