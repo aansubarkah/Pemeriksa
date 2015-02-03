@@ -33,7 +33,7 @@ class LettersController extends AppController
 
     public function index()
     {
-
+$this->redirect('indexExpose');
     }
 
     public function indexExpose($draft = null)

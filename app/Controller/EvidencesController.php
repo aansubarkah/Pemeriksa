@@ -151,9 +151,9 @@ class EvidencesController extends AppController
 
     public function upload()
     {
-        App::import('Vendor', 'UploadHandler', array('file' => 'file.upload/UploadHandler.php'));
+        App::import('Vendor', 'UploadHandler', array('file' => 'file.upload' . DS . 'UploadHandler.php'));
         $options = array(
-            'upload_dir' => 'files/',
+            'upload_dir' => WWW_ROOT . 'files' . DS,
             'accept_file_types' => '/\.(gif|jpe?g|png|txt|pdf|doc|docx|xls|xlsx|ppt|pptx|rar|zip|odt|tar|gz)$/i'
         );
 
@@ -162,18 +162,34 @@ class EvidencesController extends AppController
         exit;
     }
 
-    public function download($id = null)
+    public function download($type = null, $id = null)
     {
-        $file = $this->Evidence->find('first', array(
-            'recursive' => 0,
-            'conditions' => array(
-                'Evidence.id' => $id,
-                'Evidence.active' => 1
-            )
-        ));
+        if($type == 'file') {
+            $file = $this->Evidence->find('first', array(
+                'recursive' => 0,
+                'conditions' => array(
+                    'Evidence.id' => $id,
+                    'Evidence.active' => 1
+                )
+            ));
+        }elseif($type == 'zip') {
+            $file = $this->Evidence->Activity->find('first', array(
+                'recursive' => -1,
+                'conditions' => array(
+                    'Activity.id' => $id,
+                    'Activity.active' => 1
+                )
+            ));
+        }
 
         if (!empty($file)) {
-            $this->viewClass = 'Media';
+            if($type == 'file') $filePath = WWW_ROOT . 'files' . DS . $id . '.' . $file['Evidence']['extension'];
+            if($type == 'zip') $filePath = WWW_ROOT . 'files' . DS . 'activity' . DS . $id . '.zip';
+
+            $this->response->file($filePath);
+            return $this->response;
+
+            /*$this->viewClass = 'Media';
             $docNameOnServer = $file['Evidence']['id'] . '.' . $file['Evidence']['extension'];
             if (!empty($file['Evidence']['name'])) {
                 $docNameForUser = $file['Evidence']['name'];
@@ -189,13 +205,62 @@ class EvidencesController extends AppController
                 'path' => 'files' . DS
             );
 
-            $this->set($params);
+            $this->set($params);*/
         } else {
             return $this->flash(
                 'Berkas tidak tersedia.',
                 Router::url('/', true),
                 3
             );
+        }
+    }
+
+    /*private function createZip($activityId = null)
+    {
+        $files = $this->Evidence->find('all', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'Evidence.activity_id' => $activityId,
+                'Evidence.active' => 1
+            )
+        ));
+        if (empty($files)) return false;
+
+        App::uses('Folder', 'Utility');
+        App::uses('File', 'Utility');
+
+        $zipFolder = WWW_ROOT . 'files' . DS . 'activity';
+        $zipPath = $zipFolder . DS . $activityId . '.zip';
+        $zipFile = new File($zipPath, false, 0777);
+
+        //first delete zip file if exists
+        if ($zipFile->exists()) {
+            $zipFile->delete();
+        }
+
+        //2nd create zip
+        $zip = new ZipArchive();
+        if ($zip->open($zipPath, ZipArchive::CREATE) !== true) return false;
+
+        //3rd add file to zip
+        foreach ($files as $file) {
+            $filePath = WWW_ROOT . 'files' . DS . $file['Evidence']['id'] . '.' . $file['Evidence']['extension'];
+            $fileLocalName = str_replace('/', '-', $file['Evidence']['name']) . '.' . $file['Evidence']['extension'];
+            $zip->addFile($filePath, $fileLocalName);
+        }
+        $zip->close();
+        //return true if all ok
+        return true;
+    }*/
+
+    public function downloadAll($activityId = null)
+    {
+        //if ($this->createZip($activityId)) {
+        if($this->Evidence->createZip($activityId)){
+            //$zipPath = $this->filePath . DS . $this->fileActivityPath . DS . $activityId . '.zip';
+            $zipPath = WWW_ROOT . 'files' . DS . 'activity' . DS . $activityId . '.zip';
+            $this->response->file($zipPath);
+            return $this->response;
         }
     }
 }

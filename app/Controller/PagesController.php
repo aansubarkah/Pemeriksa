@@ -66,7 +66,11 @@ class PagesController extends AppController
         $title_for_layout = 'Beranda';
 
         if ($this->Auth->loggedIn()) {
-            $this->view = 'display_user';
+            $this->redirect(array(
+                'controller' => 'activities',
+                'action' => 'index'
+            ));
+            /*$this->view = 'display_user';
             $this->Paginator->settings = array(
                 'recursive' => -1,
                 'conditions' => array(
@@ -80,7 +84,7 @@ class PagesController extends AppController
             );
 
             $letters = $this->Paginator->paginate('Letteruserview');
-            $this->set(compact('title_for_layout','letters'));
+            $this->set(compact('title_for_layout','letters'));*/
         } else {
             $this->Activity->unbindModel(
                 array(

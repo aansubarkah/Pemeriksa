@@ -52,6 +52,9 @@ class AppController extends Controller
 
     protected $typeSP2 = 6;
 
+    protected $filePath = 'files';
+    protected $fileActivityPath = 'activity';
+
     protected $city = 'Sidoarjo';
     protected $monthInRoman = array(
         1 => 'I',

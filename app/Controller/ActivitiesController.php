@@ -194,6 +194,7 @@ class ActivitiesController extends AppController
             $activitiesData = array(
                 'name' => $name,
                 'description' => $description,
+                'draft' => false,
                 'start' => $start,
                 'end' => $end,
                 'uploader_id' => $this->Auth->user('id')
@@ -263,9 +264,11 @@ class ActivitiesController extends AppController
             $this->Activity->Evidence->create();
 
             if ($this->Activity->Evidence->save($dataToSave)) {
-                $filePathNew = 'files/' . $this->Activity->Evidence->getInsertID() . '.' . $ext;
+                //rename uploaded file with evidences table id
+                $filePathNew = WWW_ROOT . 'files' . DS . $this->Activity->Evidence->getInsertID() . '.' . $ext;
                 rename($filePath, $filePathNew);
-                $ret = true;
+                //create zip file
+                if($this->Activity->Evidence->createZip($activityId)) $ret = true;
             }
         }
 
