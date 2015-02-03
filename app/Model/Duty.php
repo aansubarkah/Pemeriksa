@@ -6,6 +6,7 @@ App::uses('AppModel', 'Model');
  *
  * @property ActivitiesUser $ActivitiesUser
  * @property Letteruserview $Letteruserview
+ * @property Activityuserview $Activityuserview
  */
 class Duty extends AppModel
 {
@@ -41,6 +42,19 @@ class Duty extends AppModel
         ),
         'Letteruserview' => array(
             'className' => 'Letteruserview',
+            'foreignKey' => 'duty_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
+        'Activityuserview' => array(
+            'className' => 'Activityuserview',
             'foreignKey' => 'duty_id',
             'dependent' => false,
             'conditions' => '',

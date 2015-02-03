@@ -27,6 +27,7 @@ App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
  * @property Userdepartementview $Userdepartementview
  * @property Userroleview $Userroleview
  * @property Letteruserview $Letteruserview
+ * @property Activityuserview $Activityuserview
  */
 class User extends AppModel
 {
@@ -270,6 +271,19 @@ class User extends AppModel
         ),
         'Letteruserview' => array(
             'className' => 'Letteruserview',
+            'foreignKey' => 'user_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
+        'Activityuserview' => array(
+            'className' => 'Activityuserview',
             'foreignKey' => 'user_id',
             'dependent' => false,
             'conditions' => '',

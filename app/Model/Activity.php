@@ -13,6 +13,7 @@ App::uses('AppModel', 'Model');
  * @property Letter $Letter
  * @property Letterview $Letterview
  * @property Letteruserview $Letteruserview
+ * @property Activityuserview $Activityuserview
  */
 class Activity extends AppModel
 {
@@ -188,6 +189,19 @@ class Activity extends AppModel
         ),
         'Letteruserview' => array(
             'className' => 'Letteruserview',
+            'foreignKey' => 'activity_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
+        'Activityuserview' => array(
+            'className' => 'Activityuserview',
             'foreignKey' => 'activity_id',
             'dependent' => false,
             'conditions' => '',
