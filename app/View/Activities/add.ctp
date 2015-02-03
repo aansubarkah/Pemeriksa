@@ -20,9 +20,6 @@ echo $this->element('typeahead_style');
     </div>
 </div>
 
-<div class="page-header">
-    <h1>Tambahkan Penugasan</h1>
-</div>
 <?php
 echo $this->Form->create('Activity', array(
     "role" => "form"

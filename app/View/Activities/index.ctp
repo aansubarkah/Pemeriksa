@@ -23,20 +23,32 @@
                     <tr>
                         <td>
                             <?php
-                            $linkName = $letter['Letteruserview']['lettername'];
-                            $link = '/activities/view/' . $letter['Letteruserview']['activity_id'] . '/' . $letter['Letteruserview']['activityname'];
+                            $linkName = $letter['Activityuserview']['activityname'];
+                            $link = '/activities/view/' . $letter['Activityuserview']['activity_id'] . '/' . $letter['Activityuserview']['activityname'];
                             echo $no . '. ';
 
                             echo $this->Html->link($linkName, $link);
                             echo '&nbsp;Mengikuti Kegiatan&nbsp;';
-                            echo $letter['Letteruserview']['activitydescription'];
+                            echo $letter['Activityuserview']['activitydescription'];
                             echo '&nbsp;sebagai&nbsp;';
-                            echo '<strong>' . $letter['Letteruserview']['dutyname'] . '</strong>';
+                            echo '<strong>' . $letter['Activityuserview']['dutyname'] . '</strong>';
                             echo '&nbsp;pada&nbsp;';
-                            echo $this->Time->format($letter['Letteruserview']['activitystart'], '%e %B %Y');
-                            if ($letter['Letteruserview']['activitystart'] != $letter['Letteruserview']['activityend']) {
+                            echo $this->Time->format($letter['Activityuserview']['activitystart'], '%e %B %Y');
+                            if ($letter['Activityuserview']['activitystart'] != $letter['Activityuserview']['activityend']) {
                                 echo '&nbsp;s.d.&nbsp;';
-                                echo $this->Time->format($letter['Letteruserview']['activityend'], '%e %B %Y');
+                                echo $this->Time->format($letter['Activityuserview']['activityend'], '%e %B %Y');
+                            }
+                            if ($letter['Activityuserview']['evidenceactive']) {
+                                $spanDownload = ' <span class="glyphicon glyphicon-download-alt"></span>';
+                                echo $this->Html->link($spanDownload,
+                                    array(
+                                        'controller' => 'evidences',
+                                        'action' => 'download',
+                                        'zip',
+                                        //$activity['Activity']['Evidence'][0]['id']
+                                        $letter['Activityuserview']['activity_id']
+                                    ),
+                                    array('escape' => false));
                             }
                             ?>
                         </td>
