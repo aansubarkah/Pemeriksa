@@ -1,23 +1,14 @@
-<?php
-/**
- * @var View $this
- */
-?>
 <style>
-    .bootstrap-tagsinput {
-        width: 100%;
-    }
-
-    .twitter-typeahead {
-        width: 100%; /*add this for bootstrap 3 so text input will have full width*/
-    }
-
     .accordion {
         margin-bottom: -3px;
     }
 
     .accordion-group {
         border: none;
+    }
+
+    .twitter-typeahead {
+        width: 100%; /*add this for bootstrap 3 so text input will have full width*/
     }
 
     .twitter-typeahead .tt-query,
@@ -30,6 +21,7 @@
     }
 
     .tt-dropdown-menu {
+        width: 100%; /*add this for bootstrap 3 so text input will have full width*/
         position: absolute;
         top: 100%;
         left: 0;

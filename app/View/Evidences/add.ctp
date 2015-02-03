@@ -3,27 +3,10 @@
  * @var View $this
  */
 echo $this->element('typeahead_style');
-?>
-    <div class="page-header">
-        <h1>Tambahkan Dokumen
-            <small><?php echo $activity['Activity']['name']; ?></small>
-        </h1>
-    </div>
-    <div>
-        <p><?php echo $activity['Activity']['description']; ?></p>
-    </div>
-<?php
 echo $this->Form->create('Evidence', array(
     "role" => "form"
 ));
-?>
-    <div class="form-group col-md-9">
-        <div id="prefetch">
-            <input id="addTypes" type="text" placeholder="Jenis Dokumen (mis. Surat Tugas, SP2P)"
-                   autocomplete="off">
-        </div>
-    </div>
-<?php
+
 echo $this->Form->input('file', array(
     'type' => 'file',
     'label' => false,
@@ -42,7 +25,6 @@ echo $this->Form->input('file', array(
         <!-- The container for the uploaded files -->
         <div id="files" class="files"></div>
     </div>
-
 <?php
 echo $this->Form->input('filename', array(
     'type' => 'hidden',
@@ -53,6 +35,14 @@ echo $this->Form->input('filename', array(
     'value' => ''
 ));
 
+echo $this->Form->input('type', array(
+    'type' => 'text',
+    'label' => false,
+    'div' => 'form-group col-sm-9',
+    'class' => 'form-control',
+    'id' => 'type',
+    'placeholder' => 'Jenis Dokumen (mis. Surat Tugas, SP2P)'
+));
 echo $this->Form->input('name', array(
     'type' => 'text',
     'label' => false,
@@ -71,13 +61,12 @@ $options = array(
 
 echo $this->Form->end($options);
 
-echo $this->Html->css(array('bootstrap-tagsinput', 'jquery-file-upload/jquery.fileupload'));
+echo $this->Html->css(array('jquery-file-upload/jquery.fileupload'));
 echo $this->Html->script(array('typeahead.bundle.min', 'bootstrap-tagsinput.min', 'fileupload/vendor/jquery.ui.widget', 'fileupload/jquery.iframe-transport', 'fileupload/jquery.fileupload'));
 
 echo $this->fetch('script');
 echo $this->fetch('css');
 ?>
-
     <script type="text/javascript">
         $(function () {
             var tags = new Bloodhound({
@@ -99,17 +88,10 @@ echo $this->fetch('css');
 
             tags.initialize();
 
-            $('#addTypes').tagsinput({
-                itemValue: 'value',
-                itemText: 'text',
-                typeaheadjs: {
-                    name: 'tags',
-                    displayKey: 'text',
-                    minLength: 2,
-                    source: tags.ttAdapter()
-                },
-                tagClass: 'label label-default',
-                freeInput: false
+            $('#type').typeahead(null, {
+                name: 'tags',
+                displayKey: 'text',
+                source: tags.ttAdapter()
             });
 
             $('#progress').hide();
@@ -201,6 +183,6 @@ echo $this->fetch('css');
 <?php
 /**
  * @todo
- * change tag input to typeahead suggest
- * add component to create a lists.json
+ * add an input check on type model if it does exists, if not add to tables, return type_id
+ * add component to create a lists.json so each controller doesn't have to have it own
  */
