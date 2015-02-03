@@ -17,6 +17,19 @@ class EvidencesController extends AppController
      */
     public $components = array('Paginator');
 
+    /**
+     * Breadcrumb for all
+     *
+     * @var array
+     */
+    private $breadCrumb = array(
+        0 => array(
+            'title' => 'Dokumen',
+            'controller' => 'evidences',
+            'action' => '/'
+        )
+    );
+
     public function beforeFilter()
     {
         parent::beforeFilter();
@@ -69,7 +82,6 @@ class EvidencesController extends AppController
 
         if ($activityUser == 0) return $this->redirect('/');
 
-
         if ($this->request->is('post')) {
             $this->Evidence->create();
             if ($this->Evidence->save($this->request->data)) {
@@ -79,6 +91,7 @@ class EvidencesController extends AppController
                 $this->Session->setFlash(__('The evidence could not be saved. Please, try again.'));
             }
         }
+
         $activity = $this->Evidence->Activity->find('first', array(
             'recursive' => -1,
             'conditions' => array(
@@ -92,10 +105,22 @@ class EvidencesController extends AppController
             )
         ));
 
+        $breadCrumb = $this->breadCrumb;
+        $breadCrumb[1] = array(
+            'title' => 'Tambah',
+            'controller' => 'evidences',
+            'action' => 'add'
+        );
+        $breadCrumb[2] = array(
+            'title' => $activity['Activity']['name'],
+            'controller' => 'activities',
+            'action' => 'view'
+        );
+
         $title_for_layout = 'Tambah Dokumen';
         //$types = $this->Evidence->Type->find('list');
         //$uploaders = $this->Evidence->Uploader->find('list');
-        $this->set(compact('activity', 'title_for_layout'));
+        $this->set(compact('activity', 'title_for_layout', 'breadCrumb'));
 
     }
 
