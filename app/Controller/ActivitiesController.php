@@ -39,22 +39,28 @@ class ActivitiesController extends AppController
     {
         $breadCrumb = $this->breadCrumb;
 
-        $this->uses = array('Letteruserview');
+        $this->uses = array('Activityuserview');
         $title_for_layout = 'Kegiatan';
 
         $this->Paginator->settings = array(
             'recursive' => -1,
             'conditions' => array(
-                'Letteruserview.activityactive' => true,
-                'Letteruserview.user_id' => $this->Auth->user('id'),
-                'Letteruserview.activityusertagged' => true,
-                'Letteruserview.activitydraft' => false
+                'Activityuserview.activityactive' => true,
+                'Activityuserview.user_id' => $this->Auth->user('id'),
+                'Activityuserview.tagged' => true,
+                'Activityuserview.activitydraft' => false
             ),
             'limit' => 10,
-            'order' => array('Letteruserview.date' => 'DESC')
+            'order' => array('Activityuserview.activitystart' => 'DESC')
         );
 
-        $letters = $this->Paginator->paginate('Letteruserview');
+        $letters = $this->Paginator->paginate('Activityuserview');
+        /*$this->Paginator->settings = array(
+            'recursive' => 0,
+            'conditions' => array(
+                'ActivitiesUser.active' => true
+            )
+        );*/
         $this->set(compact('title_for_layout', 'breadCrumb', 'letters'));
     }
 
@@ -126,7 +132,14 @@ class ActivitiesController extends AppController
      */
     public function add()
     {
-        $this->layout = 'with-menu';
+        $breadCrumb = $this->breadCrumb;
+        $breadCrumb[1] = array(
+            'title' => 'Tambah',
+            'controller' => 'activities',
+            'action' => 'add'
+        );
+
+        //$this->layout = 'with-menu';
         $title_for_layout = 'Tambah Penugasan';
 
         $departements = $this->Activity->User->Departement->find('all', array(
@@ -141,7 +154,7 @@ class ActivitiesController extends AppController
             'fields' => array('Departement.id', 'Departement.name')
         ));
 
-        $this->set(compact('title_for_layout', 'departements'));
+        $this->set(compact('title_for_layout', 'departements', 'breadCrumb'));
     }
 
     public function added()
@@ -245,7 +258,7 @@ class ActivitiesController extends AppController
     {
         App::uses('File', 'Utility');
         $ret = false;
-        $filePath = 'files/' . $filename;
+        $filePath = WWW_ROOT . 'files' . DS . $filename;
         $file = new File($filePath, false, 777);
 
         if ($file->exists()) {
@@ -257,6 +270,7 @@ class ActivitiesController extends AppController
 
             //save to db
             $dataToSave = array();
+            $dataToSave['Evidence']['name'] = 'Berkas';
             $dataToSave['Evidence']['uploader_id'] = $this->Auth->user('id');
             $dataToSave['Evidence']['activity_id'] = $activityId;
             $dataToSave['Evidence']['extension'] = $ext;

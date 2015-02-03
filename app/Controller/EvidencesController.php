@@ -164,7 +164,7 @@ class EvidencesController extends AppController
 
     public function download($type = null, $id = null)
     {
-        if($type == 'file') {
+        if ($type == 'file') {
             $file = $this->Evidence->find('first', array(
                 'recursive' => 0,
                 'conditions' => array(
@@ -172,7 +172,7 @@ class EvidencesController extends AppController
                     'Evidence.active' => 1
                 )
             ));
-        }elseif($type == 'zip') {
+        } elseif ($type == 'zip') {
             $file = $this->Evidence->Activity->find('first', array(
                 'recursive' => -1,
                 'conditions' => array(
@@ -183,29 +183,24 @@ class EvidencesController extends AppController
         }
 
         if (!empty($file)) {
-            if($type == 'file') $filePath = WWW_ROOT . 'files' . DS . $id . '.' . $file['Evidence']['extension'];
-            if($type == 'zip') $filePath = WWW_ROOT . 'files' . DS . 'activity' . DS . $id . '.zip';
-
-            $this->response->file($filePath);
-            return $this->response;
-
-            /*$this->viewClass = 'Media';
-            $docNameOnServer = $file['Evidence']['id'] . '.' . $file['Evidence']['extension'];
-            if (!empty($file['Evidence']['name'])) {
-                $docNameForUser = $file['Evidence']['name'];
-            } else {
-                $docNameForUser = $file['Type']['name'];
+            if ($type == 'file') {
+                $filePath = WWW_ROOT . 'files' . DS . $id . '.' . $file['Evidence']['extension'];
+                if (!empty($file['Evidence']['name'])) {
+                    $nameToUser = str_replace('/', '-', $file['Evidence']['name']);
+                } else {
+                    $nameToUser = $file['Type']['name'];
+                }
+                $nameToUser = $nameToUser . '.' . $file['Evidence']['extension'];
+            } elseif ($type == 'zip') {
+                $filePath = WWW_ROOT . 'files' . DS . 'activity' . DS . $id . '.zip';
+                $nameToUser = str_replace('/', '-', $file['Activity']['name'] . '.zip');
             }
 
-            $params = array(
-                'id' => $docNameOnServer,
-                'name' => $docNameForUser,
-                'extension' => $file['Evidence']['extension'],
+            $this->response->file($filePath, array(
                 'download' => true,
-                'path' => 'files' . DS
-            );
-
-            $this->set($params);*/
+                'name' => $nameToUser
+            ));
+            return $this->response;
         } else {
             return $this->flash(
                 'Berkas tidak tersedia.',
@@ -256,7 +251,7 @@ class EvidencesController extends AppController
     public function downloadAll($activityId = null)
     {
         //if ($this->createZip($activityId)) {
-        if($this->Evidence->createZip($activityId)){
+        if ($this->Evidence->createZip($activityId)) {
             //$zipPath = $this->filePath . DS . $this->fileActivityPath . DS . $activityId . '.zip';
             $zipPath = WWW_ROOT . 'files' . DS . 'activity' . DS . $activityId . '.zip';
             $this->response->file($zipPath);
