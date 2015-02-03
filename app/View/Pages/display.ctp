@@ -46,7 +46,9 @@ echo $this->element('date_conversion');
                                     array(
                                         'controller' => 'evidences',
                                         'action' => 'download',
-                                        $activity['Activity']['Evidence'][0]['id']
+                                        'zip',
+                                        //$activity['Activity']['Evidence'][0]['id']
+                                        $activity['Activity']['id']
                                     ),
                                     array('escape' => false));
                             }

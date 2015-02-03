@@ -32,7 +32,7 @@
                 if (count($files) > 0) {
                     foreach ($files as $file) {
                         empty($file['Evidence']['name']) ? $fileName = $file['Type']['name'] : $fileName = $file['Evidence']['name'];
-                        $fileLink = '/evidences/download/' . $file['Evidence']['id'] . '/' . $activity['Activity']['name'];
+                        $fileLink = '/evidences/download/file/' . $file['Evidence']['id'] . '/' . $activity['Activity']['name'];
                         echo $this->Html->link($fileName, $fileLink);
                         echo '<br>';
                     }

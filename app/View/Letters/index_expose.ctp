@@ -60,6 +60,18 @@
                                     $letter['Letteruserview']['id']
                                 ));
                             }
+
+                            if ($letter['Letteruserview']['evidenceid'] != null) {
+                                $spanDownload = ' <span class="glyphicon glyphicon-download-alt"></span>';
+                                echo $this->Html->link($spanDownload,
+                                    array(
+                                        'controller' => 'evidences',
+                                        'action' => 'download',
+                                        'zip',
+                                        $letter['Letteruserview']['activity_id']
+                                    ),
+                                    array('escape' => false));
+                            }
                             ?>
                         </td>
                     </tr>
