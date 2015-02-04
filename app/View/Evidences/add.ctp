@@ -2,7 +2,6 @@
 /**
  * @var View $this
  */
-echo $this->element('typeahead_style');
 echo $this->Form->create('Evidence', array(
     "role" => "form"
 ));
@@ -61,8 +60,8 @@ $options = array(
 
 echo $this->Form->end($options);
 
-echo $this->Html->css(array('jquery-file-upload/jquery.fileupload'));
-echo $this->Html->script(array('typeahead.bundle.min', 'bootstrap-tagsinput.min', 'fileupload/vendor/jquery.ui.widget', 'fileupload/jquery.iframe-transport', 'fileupload/jquery.fileupload'));
+echo $this->Html->css(array('typeahead-style', 'jquery-file-upload/jquery.fileupload'));
+echo $this->Html->script(array('typeahead.bundle.min', 'fileupload/vendor/jquery.ui.widget', 'fileupload/jquery.iframe-transport', 'fileupload/jquery.fileupload'));
 
 echo $this->fetch('script');
 echo $this->fetch('css');
@@ -142,7 +141,6 @@ echo $this->fetch('css');
                 formData.name.length < 1 ? isNoEmpty.push(' Nomor kosong!') : true;
                 formData.description.length < 1 ? isNoEmpty.push(' Perihal kosong!') : true;
                 formData.employees.length < 1 ? isNoEmpty.push(' Pegawai kosong!') : true;
-
 
                 if (isNoEmpty.length < 1) {
                     $.ajax({
