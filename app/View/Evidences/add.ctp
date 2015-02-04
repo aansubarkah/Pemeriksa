@@ -59,7 +59,6 @@ $options = array(
 );
 
 echo $this->Form->end($options);
-
 echo $this->Html->css(array('typeahead-style', 'jquery-file-upload/jquery.fileupload'));
 echo $this->Html->script(array('typeahead.bundle.min', 'fileupload/vendor/jquery.ui.widget', 'fileupload/jquery.iframe-transport', 'fileupload/jquery.fileupload'));
 
@@ -125,27 +124,21 @@ echo $this->fetch('css');
             }).prop('disable', !$.support.fileInput)
                 .parent().addClass($.support.fileInput ? undefined : 'disabled');
 
-            $('#btnSave').on('click', function (event) {
+            /*$('#btnSave').on('click', function (event) {
                 var isNoEmpty = [];
 
                 var formData = {};
                 formData.file = $('#filename').val();
                 formData.name = $('#name').val();
-                formData.description = $('#description').val();
-                formData.start = $('#start').val();
-                formData.end = $('#end').val();
-                formData.employees = $('#addEmployees').val();
-                //var data = $('#addEmployees').tagsinput('items');
+                formData.type = $('#type').val();
 
                 formData.file.length < 1 ? isNoEmpty.push(' Berkas belum diunggah!') : true;
-                formData.name.length < 1 ? isNoEmpty.push(' Nomor kosong!') : true;
-                formData.description.length < 1 ? isNoEmpty.push(' Perihal kosong!') : true;
-                formData.employees.length < 1 ? isNoEmpty.push(' Pegawai kosong!') : true;
+                formData.file.type < 1 ? isNoEmpty.push(' Jenis dokumen kosong!') : true;
 
                 if (isNoEmpty.length < 1) {
                     $.ajax({
                         type: 'POST',
-                        url: '<?php echo Router::url('/activities/added.json', true); ?>',
+                        url: '<?php echo Router::url('/activit/added.json', true); ?>',
                         data: formData,
                         dataType: 'json',
                         encode: true
@@ -175,7 +168,7 @@ echo $this->fetch('css');
                 }
 
                 event.preventDefault();
-            });
+            });*/
         });
     </script>
 <?php
