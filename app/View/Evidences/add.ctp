@@ -3,7 +3,8 @@
  * @var View $this
  */
 echo $this->Form->create('Evidence', array(
-    "role" => "form"
+    "role" => "form",
+    'id' => 'addEvidence'
 ));
 
 echo $this->Form->input('file', array(
@@ -29,8 +30,10 @@ echo $this->Form->input('filename', array(
     'type' => 'hidden',
     'label' => false,
     'div' => 'form-group',
-    'class' => 'form-control',
+    'class' => 'form-control required',
+    'data-msg-required' => 'Silahkan unggah dokumen',
     'id' => 'filename',
+    'name' => 'filename',
     'value' => ''
 ));
 
@@ -60,7 +63,7 @@ $options = array(
 
 echo $this->Form->end($options);
 echo $this->Html->css(array('typeahead-style', 'jquery-file-upload/jquery.fileupload'));
-echo $this->Html->script(array('typeahead.bundle.min', 'fileupload/vendor/jquery.ui.widget', 'fileupload/jquery.iframe-transport', 'fileupload/jquery.fileupload'));
+echo $this->Html->script(array('typeahead.bundle.min', 'fileupload/vendor/jquery.ui.widget', 'fileupload/jquery.iframe-transport', 'fileupload/jquery.fileupload', 'jquery.validate.min', 'jquery.validate.custom.messages'));
 
 echo $this->fetch('script');
 echo $this->fetch('css');
@@ -124,51 +127,65 @@ echo $this->fetch('css');
             }).prop('disable', !$.support.fileInput)
                 .parent().addClass($.support.fileInput ? undefined : 'disabled');
 
-            /*$('#btnSave').on('click', function (event) {
-                var isNoEmpty = [];
-
-                var formData = {};
-                formData.file = $('#filename').val();
-                formData.name = $('#name').val();
-                formData.type = $('#type').val();
-
-                formData.file.length < 1 ? isNoEmpty.push(' Berkas belum diunggah!') : true;
-                formData.file.type < 1 ? isNoEmpty.push(' Jenis dokumen kosong!') : true;
-
-                if (isNoEmpty.length < 1) {
-                    $.ajax({
-                        type: 'POST',
-                        url: '<?php echo Router::url('/activit/added.json', true); ?>',
-                        data: formData,
-                        dataType: 'json',
-                        encode: true
-                    })
-                        .done(function (data) {
-                            $('.modal-body').empty();
-                            if (!data.success) {
-                                if (data.errors) {
-                                    $('.modal-body').append(data.errors);
-                                }
-                            } else {
-                                $('.modal-title').empty();
-                                $('.modal-title').append('Berhasil');
-                                $('.modal-body').append('Berhasil Menyimpan');
-                                $('.modal-footer').empty();
-                                $('.modal-footer').append(
-                                    '<a class="btn btn-default" href="<?php echo Router::url('/', true); ?>" role="button">Tutup</a>'
-                                );
-
-                            }
-                            $('#myModal').modal();
-                        });
-                } else {
-                    $('.modal-body').empty();
-                    $('.modal-body').append(isNoEmpty);
-                    $('#myModal').modal();
+            $('#addEvidence').validate({
+                ignore: [],
+                rules: {
+                    'data[Evidence][filename]': {
+                        required: true
+                    },
+                    'data[Evidence][type]': {
+                        required: true
+                    }
                 }
+            });
 
-                event.preventDefault();
-            });*/
+            /*$('#btnSave').on('click', function (event) {
+             var isNoEmpty = [];
+
+             var formData = {};
+             formData.file = $('#filename').val();
+             formData.name = $('#name').val();
+             formData.type = $('#type').val();
+
+             formData.file.length < 1 ? isNoEmpty.push(' Berkas belum diunggah!') : true;
+             formData.file.type < 1 ? isNoEmpty.push(' Jenis dokumen kosong!') : true;
+
+             if (isNoEmpty.length < 1) {
+             $.ajax({
+             type: 'POST',
+             url: '
+            <?php echo Router::url('/activit/added.json', true); ?>',
+             data: formData,
+             dataType: 'json',
+             encode: true
+             })
+             .done(function (data) {
+             $('.modal-body').empty();
+             if (!data.success) {
+             if (data.errors) {
+             $('.modal-body').append(data.errors);
+             }
+             } else {
+             $('.modal-title').empty();
+             $('.modal-title').append('Berhasil');
+             $('.modal-body').append('Berhasil Menyimpan');
+             $('.modal-footer').empty();
+             $('.modal-footer').append(
+             '<a class="btn btn-default" href="
+            <?php echo Router::url('/', true); ?>" role="button">Tutup</a>'
+             );
+
+             }
+             $('#myModal').modal();
+             });
+             } else {
+             $('.modal-body').empty();
+             $('.modal-body').append(isNoEmpty);
+             $('#myModal').modal();
+             }
+
+             event.preventDefault();
+             });*/
         });
     </script>
 <?php

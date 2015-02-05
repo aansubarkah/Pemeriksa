@@ -2,7 +2,7 @@
 /**
  * @var View $this
  */
-echo $this->element('typeahead_style');
+//echo $this->element('typeahead_style');
 ?>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -101,7 +101,7 @@ $options = array(
 
 echo $this->Form->end($options);
 
-echo $this->Html->css(array('datepicker', 'bootstrap-tagsinput'));
+echo $this->Html->css(array('datepicker', 'bootstrap-tagsinput', 'typeadhead-style'));
 echo $this->Html->script(array('bootstrap-datepicker', 'typeahead.bundle.min', 'bootstrap-tagsinput.min', 'jquery.validate.min', 'jquery.validate.custom.messages'));
 
 echo $this->fetch('script');
