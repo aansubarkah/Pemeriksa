@@ -83,13 +83,13 @@ class EvidencesController extends AppController
         if ($activityUser == 0) return $this->redirect('/');
 
         if ($this->request->is('post')) {
-            $this->Evidence->create();
-            if ($this->Evidence->save($this->request->data)) {
+            //$this->Evidence->create();
+            /*if ($this->Evidence->save($this->request->data)) {
                 $this->Session->setFlash(__('The evidence has been saved.'));
                 return $this->redirect(array('action' => 'index'));
             } else {
                 $this->Session->setFlash(__('The evidence could not be saved. Please, try again.'));
-            }
+            }*/
         }
 
         $activity = $this->Evidence->Activity->find('first', array(
