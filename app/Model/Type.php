@@ -116,4 +116,42 @@ class Type extends AppModel
         )
     );
 
+    public function add($text = null)
+    {
+        $ret = 0;
+        $originalText = $text;
+        $text = trim(strtolower($text));
+        if (empty($text)) return $ret;
+
+        $type = $this->find('first', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'Type.active' => 1,
+                'LOWER(Type.description) LIKE' => $text
+            ),
+            'fields' => array('Type.id'),
+        ));
+        $ret = $text['Type']['id'];
+
+        if (empty($type)) {
+            $words = preg_split("/\s+/", $text);
+            $name = '';
+            foreach ($words as $word) {
+                $name .= strtoupper($word[0]);
+            }
+
+            $dataToSave = array(
+                'name' => $name,
+                'description' => $originalText
+            );
+
+            $this->create();
+
+            if ($this->save($dataToSave)) {
+                $ret = $this->getInsertID();
+            }
+        }
+
+        return $ret;
+    }
 }
