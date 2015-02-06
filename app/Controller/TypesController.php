@@ -118,18 +118,22 @@ class TypesController extends AppController
                 'recursive' => -1,
                 'conditions' => array(
                     'Type.active' => 1,
-                    'LOWER(Type.name) LIKE' => $q
+                    //'LOWER(Type.name) LIKE' => $q
+                    'LOWER(Type.description) LIKE' => $q
                 ),
-                'fields' => array('Type.id', 'Type.name'),
+                //'fields' => array('Type.id', 'Type.name', 'Type.description'),
+                'fields' => array('Type.id', 'Type.description'),
                 'limit' => 3,
-                'order' => array('Type.name' => 'ASC')
+                //'order' => array('Type.name' => 'ASC')
+                'order' => array('Type.description' => 'ASC')
             ));
 
             $data = array();
             $i = 0;
             foreach ($tags as $tag) {
                 $data[$i]['value'] = $tag['Type']['id'];
-                $data[$i]['text'] = $tag['Type']['name'];
+                $data[$i]['text'] = $tag['Type']['description'];
+                //$data[$i]['text'] = $tag['Type']['name'];
                 $i++;
             }
         }
@@ -137,5 +141,15 @@ class TypesController extends AppController
 
         $this->set(compact('data'));
         $this->set('_serialize', 'data');
+    }
+
+    public function jajal($text = null) {
+        $this->autoRender = false;
+        $acronym = '';
+        $words = preg_split("/\s+/", $text);
+        foreach($words as $word) {
+            $acronym .= strtoupper($word[0]);
+        }
+        print_r($acronym);
     }
 }

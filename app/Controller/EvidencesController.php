@@ -83,6 +83,8 @@ class EvidencesController extends AppController
         if ($activityUser == 0) return $this->redirect('/');
 
         if ($this->request->is('post')) {
+            $type_id = $this->Evidence->Type->add($this->request->data['Evidence']['type']);
+            //@todo add to table and rename file to evidence id
             //$this->Evidence->create();
             /*if ($this->Evidence->save($this->request->data)) {
                 $this->Session->setFlash(__('The evidence has been saved.'));
