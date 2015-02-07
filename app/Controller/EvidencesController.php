@@ -90,7 +90,7 @@ class EvidencesController extends AppController
                 'type_id' => $type_id,
                 'uploader_id' => $this->Auth->user('id'),
                 'activity_id' => $activityId,
-                'filename' => $this->request->data['Evidence']['filename']
+                'filename' => $this->request->data['filename']
             );
 
             if(!$this->Evidence->saveAndRename($dataToSave)) {
