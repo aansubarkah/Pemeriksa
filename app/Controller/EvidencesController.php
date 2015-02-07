@@ -84,14 +84,21 @@ class EvidencesController extends AppController
 
         if ($this->request->is('post')) {
             $type_id = $this->Evidence->Type->add($this->request->data['Evidence']['type']);
-            //@todo add to table and rename file to evidence id
-            //$this->Evidence->create();
-            /*if ($this->Evidence->save($this->request->data)) {
-                $this->Session->setFlash(__('The evidence has been saved.'));
-                return $this->redirect(array('action' => 'index'));
-            } else {
-                $this->Session->setFlash(__('The evidence could not be saved. Please, try again.'));
-            }*/
+
+            $dataToSave = array(
+                'name' => $this->request->data['Evidence']['name'],
+                'type_id' => $type_id,
+                'uploader_id' => $this->Auth->user('id'),
+                'activity_id' => $activityId,
+                'filename' => $this->request->data['Evidence']['filename']
+            );
+
+            if(!$this->Evidence->saveAndRename($dataToSave)) {
+                $this->Session->setFlash(__('Dokumen tidak dapat disimpan, silahkan ulangi.'));
+                return $this->redirect(array('action' => 'add', $activityId));
+            }
+
+            return $this->redirect(array('action' => 'addSuccess', $activityId));
         }
 
         $activity = $this->Evidence->Activity->find('first', array(
@@ -120,10 +127,37 @@ class EvidencesController extends AppController
         );
 
         $title_for_layout = 'Tambah Dokumen';
-        //$types = $this->Evidence->Type->find('list');
-        //$uploaders = $this->Evidence->Uploader->find('list');
         $this->set(compact('activity', 'title_for_layout', 'breadCrumb'));
 
+    }
+
+    public function addSuccess($activityId) {
+        $activity = $this->Evidence->Activity->find('first', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'Activity.id' => $activityId
+            )
+        ));
+
+        $title_for_layout = 'Tambah Dokumen';
+        $breadCrumb = $this->breadCrumb;
+        $breadCrumb[1] = array(
+            'title' => 'Tambah',
+            'controller' => 'evidences',
+            'action' => 'add'
+        );
+        $breadCrumb[2] = array(
+            'title' => $activity['Activity']['name'],
+            'controller' => 'activities',
+            'action' => 'view'
+        );
+        $breadCrumb[3] = array(
+            'title' => 'Berhasil',
+            'controller' => 'letters',
+            'action' => 'indexExpose'
+        );
+
+        $this->set(compact('title_for_layout', 'breadCrumb', 'activity'));
     }
 
     /**
