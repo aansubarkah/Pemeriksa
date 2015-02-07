@@ -10,7 +10,7 @@ $arrMenu[0]['controller'] = 'letters';
 $arrMenu[0]['action'] = 'indexExpose';
 $arrMenu[1]['title'] = 'Pemeriksaan';
 $arrMenu[1]['controller'] = 'letters';
-$arrMenu[1]['action'] = 'indexAudit';
+$arrMenu[1]['action'] = 'addAudit';
 $arrMenu[2]['title'] = 'Kegiatan';
 $arrMenu[2]['controller'] = 'activities';
 $arrMenu[2]['action'] = 'index';
@@ -114,7 +114,9 @@ $arrMenu[6]['action'] = 'password';*/
                                 $menuClass = 'list-group-item';
 
                                 if ($currentController == 'letters' && $i == 0 && $currentAction == 'indexExpose') $menuClass .= ' disabled';
+                                if ($currentController == 'letters' && $i == 0 && $currentAction == 'addExpose') $menuClass .= ' disabled';
                                 if ($currentController == 'letters' && $i == 1 && $currentAction == 'indexAudit') $menuClass .= ' disabled';
+                                if ($currentController == 'letters' && $i == 1 && $currentAction == 'addAudit') $menuClass .= ' disabled';
                                 echo $this->Html->link($arrMenu[$i]['title'],
                                     array(
                                         'controller' => $arrMenu[$i]['controller'],
