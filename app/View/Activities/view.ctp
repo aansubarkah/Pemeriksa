@@ -30,12 +30,27 @@
                 </p>
                 <?php
                 if (count($files) > 0) {
+                    $spanDownloadFileBefore = '<span class="glyphicon glyphicon-file">&nbsp;';
+                    $spanDownloadFileAfter = '</span>';
+
                     foreach ($files as $file) {
-                        empty($file['Evidence']['name']) ? $fileName = $file['Type']['name'] : $fileName = $file['Evidence']['name'];
+                        $fileName = $spanDownloadFileBefore;
+                        empty($file['Evidence']['name']) ? $fileName .= $file['Type']['name'] : $fileName .= $file['Evidence']['name'];
+                        $fileName .= $spanDownloadFileAfter;
+
                         $fileLink = '/evidences/download/file/' . $file['Evidence']['id'] . '/' . $activity['Activity']['name'];
-                        echo $this->Html->link($fileName, $fileLink);
+                        echo $this->Html->link($fileName, $fileLink, array('escape' => false));
                         echo '<br>';
                     }
+                    $spanDownload = '<span class="glyphicon glyphicon-floppy-save">&nbsp;semua</span>';
+                    echo $this->Html->link($spanDownload,
+                        array(
+                            'controller' => 'evidences',
+                            'action' => 'download',
+                            'zip',
+                            $activity['Activity']['id']
+                        ),
+                        array('escape' => false));
                 }
                 ?>
             </td>
@@ -44,13 +59,48 @@
             <td>
                 <?php
                 if (count($users) > 0) {
-                    foreach ($users as $user) {
-                        echo $user;
-                        echo '<br>';
-                    }
+                    ?>
+                    <table id="employees" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th class="text-center">No</th>
+                            <th class="text-center">Nama</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        $no = 1;
+                        foreach ($users as $user) {
+                            echo '<tr>';
+                            echo '<td class="text-center">' . $no . '</td>';
+                            echo '<td>' . $user . '</td>';
+                            echo '</tr>';
+                            $no++;
+                        }
+                        ?>
+                        </tbody>
+                    </table>
+                <?php
                 }
                 ?>
+
             </td>
         </tr>
     </table>
 </div>
+<?php
+echo $this->Html->css(array('dataTables.bootstrap', 'tableCustom'));
+echo $this->Html->script(array('jquery.dataTables.min', 'dataTables.bootstrap'));
+echo $this->fetch('script');
+echo $this->fetch('css');
+?>
+<script type="text/javascript">
+    $(function () {
+        $('#employees').dataTable({
+            'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, "Semua"]],
+            'language': {
+                'url': '<?php echo Router::url('/files/dataTablesIndonesian.json', true); ?>'
+            }
+        });
+    });
+</script>
