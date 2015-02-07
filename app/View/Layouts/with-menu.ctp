@@ -133,7 +133,8 @@ $arrMenu[6]['action'] = 'password';*/
                             for ($i = 2; $i < 4; $i++) {
                                 $menuClass = 'list-group-item';
 
-                                if ($currentController == 'activities' && $i == 2 && $currentAction == 'index') $menuClass .= ' disabled';
+                                //if ($currentController == 'activities' && $i == 2 && $currentAction == 'index') $menuClass .= ' disabled';
+                                if ($currentController == 'activities' && $i == 2) $menuClass .= ' disabled';
                                 if ($currentController == 'users' && $i == 3 && $currentAction == 'calendar') $menuClass .= ' disabled';
                                 echo $this->Html->link($arrMenu[$i]['title'],
                                     array(

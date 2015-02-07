@@ -7,25 +7,27 @@
     <table class="table table-striped">
         <tr>
             <thead>
-            <h3><?php echo $activity['Activity']['name']; ?></h3>
+            <h3><?php echo $activity[0]['Activityuserview']['activityname']; ?></h3>
             </thead>
         </tr>
         <tr>
             <td>
-                <?php echo $activity['Activity']['description']; ?>
+                <?php echo $activity[0]['Activityuserview']['activitydescription']; ?>
 
             </td>
         </tr>
         <tr>
             <td>
-                <strong><?php echo $this->Time->format($activity['Activity']['start'], '%e %B %Y'); ?></strong> sampai
-                <strong><?php echo $this->Time->format($activity['Activity']['end'], '%e %B %Y'); ?></strong>
+                <strong><?php echo $this->Time->format($activity[0]['Activityuserview']['activitystart'], '%e %B %Y'); ?></strong>
+                sampai
+                <strong><?php echo $this->Time->format($activity[0]['Activityuserview']['activityend'], '%e %B %Y'); ?></strong>
             </td>
         </tr>
         <tr>
             <td>
                 <p>Dokumen:
-                    <small><a href="<?php echo Router::url('/evidences/add/') . $activity['Activity']['id']; ?>"><span
+                    <small><a
+                            href="<?php echo Router::url('/evidences/add/') . $activity[0]['Activityuserview']['activity_id']; ?>"><span
                                 class="glyphicon glyphicon-plus-sign"></span></a></small>
                 </p>
                 <?php
@@ -38,7 +40,7 @@
                         empty($file['Evidence']['name']) ? $fileName .= $file['Type']['name'] : $fileName .= $file['Evidence']['name'];
                         $fileName .= $spanDownloadFileAfter;
 
-                        $fileLink = '/evidences/download/file/' . $file['Evidence']['id'] . '/' . $activity['Activity']['name'];
+                        $fileLink = '/evidences/download/file/' . $file['Evidence']['id'] . '/' . $activity[0]['Activityuserview']['activityname'];
                         echo $this->Html->link($fileName, $fileLink, array('escape' => false));
                         echo '<br>';
                     }
@@ -48,7 +50,7 @@
                             'controller' => 'evidences',
                             'action' => 'download',
                             'zip',
-                            $activity['Activity']['id']
+                            $activity[0]['Activityuserview']['activity_id']
                         ),
                         array('escape' => false));
                 }
@@ -58,30 +60,31 @@
         <tr>
             <td>
                 <?php
-                if (count($users) > 0) {
+                ?>
+                <table id="employees" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th class="text-center">No</th>
+                        <th class="text-center">Nama</th>
+                        <th class="text-center">Peran</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    $no = 1;
+                    foreach ($activity as $user) {
+                        echo '<tr>';
+                        echo '<td class="text-center">' . $no . '</td>';
+                        echo '<td>' . $user['Activityuserview']['username'] . '</td>';
+                        echo '<td>' . $user['Activityuserview']['dutyname'] . '</td>';
+                        echo '</tr>';
+                        $no++;
+                    }
                     ?>
-                    <table id="employees" class="table table-striped table-bordered" width="100%" cellspacing="0">
-                        <thead>
-                        <tr>
-                            <th class="text-center">No</th>
-                            <th class="text-center">Nama</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php
-                        $no = 1;
-                        foreach ($users as $user) {
-                            echo '<tr>';
-                            echo '<td class="text-center">' . $no . '</td>';
-                            echo '<td>' . $user . '</td>';
-                            echo '</tr>';
-                            $no++;
-                        }
-                        ?>
-                        </tbody>
-                    </table>
+                    </tbody>
+                </table>
                 <?php
-                }
+                //}
                 ?>
 
             </td>
