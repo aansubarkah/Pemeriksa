@@ -131,7 +131,6 @@ class Type extends AppModel
             ),
             'fields' => array('Type.id'),
         ));
-        $ret = $text['Type']['id'];
 
         if (empty($type)) {
             $words = preg_split("/\s+/", $text);
@@ -150,6 +149,8 @@ class Type extends AppModel
             if ($this->save($dataToSave)) {
                 $ret = $this->getInsertID();
             }
+        } else {
+            $ret = $type['Type']['id'];
         }
 
         return $ret;
