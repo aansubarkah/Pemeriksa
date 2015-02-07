@@ -93,17 +93,6 @@ class ActivitiesController extends AppController
             )
         ));
 
-        /*$this->Activity->unbindModel(array(
-            'hasMany' => array('ActivitiesUser', 'Transaction'),
-            'belongsTo' => array('Categorytree')
-        ));
-
-        $activity = $this->Activity->find('first', array(
-            'recursive' => 1,
-            'conditions' => array(
-                'Activity.id' => $id
-            )
-        ));*/
         $activity = $this->Activity->Activityuserview->find('all', array(
             'recursive' => -1,
             'conditions' => array(
@@ -118,10 +107,6 @@ class ActivitiesController extends AppController
 
         $title_for_layout = $activity[0]['Activityuserview']['activityname'];
         $this->set(compact('title_for_layout', 'files', 'activity', 'breadCrumb'));
-        //$users = array();
-        //if (count($activity['User']) > 0) $users = $this->sortName($activity['User']);
-
-        //$this->set(compact('title_for_layout', 'files', 'activity', 'users', 'breadCrumb'));
     }
 
     private function sortName($source)

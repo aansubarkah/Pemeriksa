@@ -124,6 +124,8 @@ $this->redirect('indexExpose');
             //2nd save to activities_users table
             $dataToActivitiesUsers = array(
                 'activity_id' => $this->Letter->Activity->getInsertID(),
+                'start' => $start,
+                'end' => $end,
                 'personInCharge' => $personInCharge,
                 'employees' => $employees
             );
@@ -206,12 +208,16 @@ $this->redirect('indexExpose');
 
             for ($j = 0; $j < $countPersonInCharge; $j++) {
                 $persons[$i]['activity_id'] = $data['activity_id'];
+                $persons[$i]['start'] = $data['start'];
+                $persons[$i]['end'] = $data['end'];
                 $persons[$i]['duty_id'] = $this->dutyPemapar;
                 $persons[$i]['user_id'] = $data['personInCharge'][$j];
                 $i++;
             }
             for ($j = 0; $j < $countEmployees; $j++) {
                 $persons[$i]['activity_id'] = $data['activity_id'];
+                $persons[$i]['start'] = $data['start'];
+                $persons[$i]['end'] = $data['end'];
                 $persons[$i]['duty_id'] = $this->dutyPeserta;
                 $persons[$i]['user_id'] = $data['employees'][$j];
                 $i++;
@@ -412,6 +418,57 @@ $this->redirect('indexExpose');
 
         $this->set(compact('data'));
         $this->set('_serialize', 'data');
+    }
+
+    public function indexAudit() {
+
+    }
+
+    public function addAudit() {
+        $title_for_layout = 'Tambah Surat Tugas Pemeriksaan';
+        $breadCrumb = $this->breadCrumb;
+        $breadCrumb[1] = array(
+            'title' => 'ST Pemeriksaan',
+            'controller' => 'letters',
+            'action' => 'indexAudit'
+        );
+        $breadCrumb[2] = array(
+            'title' => 'Tambah',
+            'controller' => 'letters',
+            'action' => 'addAudit'
+        );
+
+        $data = array();
+        if ($this->request->is(array('post', 'put'))) {
+        }
+        $duties = $this->Letter->Activity->ActivitiesUser->Duty->find('list', array(
+            'conditions' => array(
+                'NOT' => array(
+                    'Duty.id' => array($this->dutyPeserta, $this->dutyPemapar)
+                )
+            )
+        ));
+        $entities = $this->Letter->Entity->Entitycategory->Entityview->find('list', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'Entityview.active' => true
+            ),
+            'order' => array(
+                'Entityview.entitycategoryname' => 'ASC',
+                'Entityview.name' => 'ASC'
+            ),
+            'fields' => array('Entityview.id', 'Entityview.fullname')
+        ));
+        /*$capitals = $this->Letter->Entity->find('all', array(
+            'recursive' => -1,
+            'conditions' => array('Entity.active' => true),
+            'fields' => array('Entity.id', 'Entity.capital')
+        ));*/
+        $city = $this->city;
+        //for master of the office
+        $master = $this->Letter->Departement->ChiefsDepartement->asDate($this->departementPerwakilan, date('Y-m-d'));
+
+        $this->set(compact('title_for_layout', 'breadCrumb', 'data', 'duties', 'entities', 'city', 'master'));
     }
 
     public function jajal($date)
