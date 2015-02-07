@@ -93,7 +93,7 @@ class ActivitiesController extends AppController
             )
         ));
 
-        $this->Activity->unbindModel(array(
+        /*$this->Activity->unbindModel(array(
             'hasMany' => array('ActivitiesUser', 'Transaction'),
             'belongsTo' => array('Categorytree')
         ));
@@ -103,14 +103,25 @@ class ActivitiesController extends AppController
             'conditions' => array(
                 'Activity.id' => $id
             )
+        ));*/
+        $activity = $this->Activity->Activityuserview->find('all', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'Activityuserview.activity_id' => $id,
+                'Activityuserview.active' => true,
+                'Activityuserview.tagged' => true,
+                'Activityuserview.active' => true,
+                'Activityuserview.useractive' => true
+            ),
+            'order' => array('Activityuserview.username' => 'ASC')
         ));
 
-        $title_for_layout = $activity['Activity']['name'];
+        $title_for_layout = $activity[0]['Activityuserview']['activityname'];
+        $this->set(compact('title_for_layout', 'files', 'activity', 'breadCrumb'));
+        //$users = array();
+        //if (count($activity['User']) > 0) $users = $this->sortName($activity['User']);
 
-        $users = array();
-        if (count($activity['User']) > 0) $users = $this->sortName($activity['User']);
-
-        $this->set(compact('title_for_layout', 'files', 'activity', 'users', 'breadCrumb'));
+        //$this->set(compact('title_for_layout', 'files', 'activity', 'users', 'breadCrumb'));
     }
 
     private function sortName($source)
