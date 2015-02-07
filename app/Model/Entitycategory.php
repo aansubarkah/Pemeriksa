@@ -4,6 +4,7 @@ App::uses('AppModel', 'Model');
  * Entitycategory Model
  *
  * @property Entity $Entity
+ * @property Entityview $Entityview
  */
 class Entitycategory extends AppModel {
 
@@ -25,6 +26,19 @@ class Entitycategory extends AppModel {
 	public $hasMany = array(
 		'Entity' => array(
 			'className' => 'Entity',
+			'foreignKey' => 'entitycategory_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'Entityview' => array(
+			'className' => 'Entityview',
 			'foreignKey' => 'entitycategory_id',
 			'dependent' => false,
 			'conditions' => '',
