@@ -22,7 +22,16 @@
 <?php
 echo $this->Form->create('Letter', array(
     "role" => "form",
-    'id' => 'addExpose'
+    'id' => 'addAudit'
+));
+
+echo $this->Form->input('name', array(
+    'type' => 'hidden',
+    'label' => false,
+    'div' => 'form-group',
+    'class' => 'form-control',
+    'id' => 'name',
+    'value' => $letterNumberFormat . date('m') . '/' . date('Y')
 ));
 ?>
 <div class="row">
@@ -43,7 +52,8 @@ echo $this->Form->create('Letter', array(
         <strong><u>SURAT TUGAS</u></strong><br>
 
         <p>
-            No:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/ST/XVIII.SBY/<?php echo date('m') . '/' . date('Y'); ?></p>
+            No:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $letterNumberFormat; ?><span
+                id="letterDate"><?php echo date('m') . '/' . date('Y'); ?></span></p>
     </div>
 </div>
 <div class="row">
@@ -66,7 +76,7 @@ echo $this->Form->create('Letter', array(
                     <div class="col-xs-10">
                         <div id="prefetch">
                             <input id="employeesPJ" type="text" placeholder=""
-                                   autocomplete="off" name="data[Letter][employeesPJ]" class="employee">
+                                   autocomplete="off" name="data[Letter][employeesPJ]" class="employee required">
                         </div>
                     </div>
                 </td>
@@ -80,7 +90,8 @@ echo $this->Form->create('Letter', array(
                         'id' => 'daysPJ',
                         'style' => 'text-align: center;',
                         'maxlength' => 2,
-                        'size' => 2
+                        'size' => 2,
+                        'class' => 'required'
                     ));
                     ?>
                 </td>
@@ -114,7 +125,7 @@ echo $this->Form->create('Letter', array(
                     <div class="col-xs-10">
                         <div id="prefetch">
                             <input id="employeesPT" type="text" placeholder=""
-                                   autocomplete="off" name="data[Letter][employeesPT]" class="employee">
+                                   autocomplete="off" name="data[Letter][employeesPT]" class="employee required">
                         </div>
                     </div>
                 </td>
@@ -128,7 +139,8 @@ echo $this->Form->create('Letter', array(
                         'id' => 'daysPT',
                         'style' => 'text-align: center;',
                         'maxlength' => 2,
-                        'size' => 2
+                        'size' => 2,
+                        'class' => 'required'
                     ));
                     ?>
                 </td>
@@ -138,7 +150,7 @@ echo $this->Form->create('Letter', array(
                     <div class="col-xs-10">
                         <div id="prefetch">
                             <input id="employeesKT" type="text" placeholder=""
-                                   autocomplete="off" name="data[Letter][employeesKT]" class="employee">
+                                   autocomplete="off" name="data[Letter][employeesKT]" class="employee required">
                         </div>
                     </div>
                 </td>
@@ -152,7 +164,8 @@ echo $this->Form->create('Letter', array(
                         'id' => 'daysKT',
                         'style' => 'text-align: center;',
                         'maxlength' => 2,
-                        'size' => 2
+                        'size' => 2,
+                        'class' => 'required'
                     ));
                     ?>
                 </td>
@@ -169,11 +182,11 @@ echo $this->Form->create('Letter', array(
                 <td>Ketua Sub Tim</td>
                 <td>
                     <?php
-                    echo $this->Form->input('daysKST', array(
+                    echo $this->Form->input('daysKSB', array(
                         'type' => 'text',
                         'label' => false,
                         'div' => 'col-xs-1',
-                        'id' => 'daysKST',
+                        'id' => 'daysKSB',
                         'style' => 'text-align: center;',
                         'maxlength' => 2,
                         'size' => 2
@@ -186,7 +199,7 @@ echo $this->Form->create('Letter', array(
                     <div class="col-xs-10">
                         <div id="prefetch">
                             <input id="employeesAT" type="text" placeholder=""
-                                   autocomplete="off" name="data[Letter][employeesAT]" class="employee">
+                                   autocomplete="off" name="data[Letter][employeesAT]" class="employee required">
                         </div>
                     </div>
                 </td>
@@ -200,7 +213,8 @@ echo $this->Form->create('Letter', array(
                         'id' => 'daysAT',
                         'style' => 'text-align: center;',
                         'maxlength' => 2,
-                        'size' => 2
+                        'size' => 2,
+                        'class' => 'required'
                     ));
                     ?>
                 </td>
@@ -224,7 +238,7 @@ echo $this->Form->create('Letter', array(
             <?php
             echo $this->Form->textarea('description', array(
                 'label' => false,
-                'class' => 'form-control',
+                'class' => 'form-control required',
                 'rows' => 4,
                 'id' => 'description',
                 'placeholder' => 'mis. Pemeriksaan Pendahuluan atas Laporan Keuangan Pemerintah Daerah (LKPD) Tahun Anggaran 2014 pada Pemerintah Kabupaten xyz di xyz'
@@ -241,7 +255,8 @@ echo $this->Form->create('Letter', array(
         <div class="col-sm-7">
             <?php
             echo $this->Form->select('entity_id', $entities, array(
-                'id' => 'entity'
+                'id' => 'entity',
+                'class' => 'required'
             ));
             ?>
         </div>
@@ -258,7 +273,8 @@ echo $this->Form->create('Letter', array(
                 'type' => 'text',
                 'label' => false,
                 'id' => 'date',
-                'placeholder' => 'Tanggal'
+                'placeholder' => 'Tanggal',
+                'class' => 'required'
             ));
             ?>
         </div>
@@ -295,13 +311,13 @@ $options = array(
     'div' => 'form-group col-md-9',
     'class' => 'form-control',
     'id' => 'btnSave',
-    'type' => 'button'
+    'type' => 'submit'
 );
 
 echo $this->Form->end($options);
 
 echo $this->Html->css(array('datepicker', 'bootstrap-tagsinput', 'typeahead-style'));
-echo $this->Html->script(array('bootstrap-datepicker', 'typeahead.bundle.min','bootstrap-tagsinput.min', 'jquery.validate.min', 'jquery.validate.custom.messages'));
+echo $this->Html->script(array('bootstrap-datepicker', 'typeahead.bundle.min', 'bootstrap-tagsinput.min', 'jquery.validate.min', 'jquery.validate.custom.messages'));
 
 echo $this->fetch('script');
 echo $this->fetch('css');
@@ -311,26 +327,38 @@ echo $this->fetch('css');
         $('#WPJ').hide();
         $('#KSB').hide();
 
-        $('#addWPJ').on('click', function(event){
+        $('#addWPJ').on('click', function (event) {
             $('#employeesWPJ').tagsinput('removeAll');
-            if($('#WPJ').is(':visible')) {
+            if ($('#WPJ').is(':visible')) {
                 $('#WPJ').hide();
                 $(this).html('+Wakil PJ');
+                //remove validate class
+                $('#employeesWPJ').removeClass('required');
+                $('#daysWPJ').removeClass('required');
             } else {
                 $('#WPJ').show();
                 $(this).html('-Wakil PJ');
+                //add validate class
+                $('#employeesWPJ').addClass('required');
+                $('#daysWPJ').addClass('required');
             }
             event.preventDefault();
         });
 
-        $('#addKSB').on('click', function(event){
+        $('#addKSB').on('click', function (event) {
             $('#employeesKSB').tagsinput('removeAll');
-            if($('#KSB').is(':visible')) {
+            if ($('#KSB').is(':visible')) {
                 $('#KSB').hide();
                 $(this).html('+Kasub Tim');
+                //remove validate class
+                $('#employeesKSB').removeClass('required');
+                $('#daysKSB').removeClass('required');
             } else {
                 $('#KSB').show();
                 $(this).html('-Kasub Tim');
+                //add validate class
+                $('#employeesKSB').addClass('required');
+                $('#daysKSB').addClass('required');
             }
             event.preventDefault();
         });
@@ -338,6 +366,15 @@ echo $this->fetch('css');
         $('#date').datepicker({
             autoclose: true,
             format: 'yyyy-mm-dd'
+        });
+
+        $('#date').on('change', function () {
+            var date = $(this).val();
+            var dateArr = date.split('-');
+            var dateLetter = dateArr[1] + '/' + dateArr[0];
+            $('#letterDate').html();
+            $('#letterDate').html(dateLetter);
+            $('#name').val('<?php echo $letterNumberFormat; ?>' + dateLetter);
         });
 
         var tags = new Bloodhound({
@@ -370,6 +407,11 @@ echo $this->fetch('css');
             },
             tagClass: 'label label-default',
             freeInput: false
+        });
+
+        $('#addAudit').validate({
+            ignore: [],
+            rules: {}
         });
     });
 </script>
