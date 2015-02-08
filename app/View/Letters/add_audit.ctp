@@ -40,7 +40,7 @@ echo $this->Form->input('name', array(
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-9" align="center" style="border-bottom: 1px solid;">
+    <div class="col-sm-9" align="center" style="border-bottom: 1px solid #000000; margin-left: 15px;">
         <strong>BADAN PEMERIKSA KEUANGAN REPUBLIK INDONESIA</strong><br>
         <strong>PERWAKILAN PROVINSI JAWA TIMUR</strong><br>
 
