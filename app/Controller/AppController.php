@@ -43,14 +43,24 @@ class AppController extends Controller
     protected $departementSap3 = 5;
     protected $departementSap4 = 6;
 
+    protected $dutyPJ = 1;
+    protected $dutyWPJ = 2;
+    protected $dutyPT = 3;
+    protected $dutyWPT = 4;
+    protected $dutyKT = 5;
+    protected $dutyKSB = 6;
+    protected $dutyAT = 7;
     protected $dutyPemapar = 8;
     protected $dutyPeserta = 9;
 
     protected $letterSP2FormatNo = '/SP2/XVIII.SBY/';
+    protected $letterSTFormatNo = '/ST/XVIII.SBY/';
 
     protected $letterCategorySP2Expose = 1;
+    protected $letterCategorySTPS = 2;
 
     protected $typeSP2 = 6;
+    protected $typeST = 1;
 
     protected $filePath = 'files';
     protected $fileActivityPath = 'activity';

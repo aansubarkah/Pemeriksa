@@ -440,7 +440,147 @@ $this->redirect('indexExpose');
 
         $data = array();
         if ($this->request->is(array('post', 'put'))) {
+            $this->autoRender = false;
+            empty($this->request->data['Letter']['date']) ? $date = date('Y-m-d') : $date = $this->request->data['Letter']['date'];
+            $daysPJ = 'P' . $this->request->data['Letter']['daysPJ'] . 'D';
+            $daysPT = 'P' . $this->request->data['Letter']['daysPT'] . 'D';
+            $daysAT = 'P' . $this->request->data['Letter']['daysKT'] . 'D';
+
+            $start = new DateTime($date);
+            $endPJ = $start->add(new DateInterval($daysPJ));
+            $endPJ = $endPJ->format('Y-m-d');
+            $endWPJ = $endPJ;
+            $endPT = $start->add(new DateInterval($daysPT));
+            $endPT = $endPT->format('Y-m-d');
+            $endAT = $start->add(new DateInterval($daysAT));
+            $endAT = $endAT->format('Y-m-d');
+            $endKSB = $endAT;
+
+            $daysNoPJ = $this->request->data['Letter']['daysPJ'];
+            $daysNoWPJ = $daysNoPJ;
+            $daysNoPT = $this->request->data['Letter']['daysPT'];
+            $daysNoKT = $this->request->data['Letter']['daysKT'];
+            $daysNoKSB = $daysNoKT;
+            $daysNoAT = $this->request->data['Letter']['daysAT'];
+
+            if(!empty($this->request->data['Letter']['employeesWPJ'])) {
+                $daysWPJ = 'P' . $this->request->data['Letter']['daysWPJ'] . 'D';
+                $endWPJ = $start->add(new DateInterval($daysWPJ));
+                $endWPJ = $endWPJ->format('Y-m-d');
+                $daysNoWPJ = $this->request->data['Letter']['daysWPJ'];
+            }
+            if(!empty($this->request->data['Letter']['employeesKSB'])) {
+                $daysKSB = 'P' . $this->request->data['Letter']['daysKSB'] . 'D';
+                $endKSB = $start->add(new DateInterval($daysKSB));
+                $endKSB = $endKSB->format('Y-m-d');
+                $daysNoKSB = $this->request->data['Letter']['daysKSB'];
+            }
+
+            //first add to activities table
+            $dataToActivities = array(
+                'name' => $this->request->data['Letter']['name'],
+                'description' => $this->request->data['Letter']['description'],
+                'start' => $this->request->data['Letter']['date'],
+                'end' => $endAT,
+                'uploader_id' => $this->Auth->user('id')
+            );
+            if (!$this->addAuditAddToActivities($dataToActivities)) {
+                $this->Session->setFlash(__('Kegiatan tidak dapat disimpan, silahkan ulangi.'));
+                return $this->redirect(array('action' => 'addAudit'));
+            }
+
+            //second add to activities_users table
+            $employeesWPJ = array();
+            if(isset($daysWPJ)) {
+                $employeesWPJ = explode(',', $this->request->data['Letter']['employeesWPJ']);
+                //$dataToActivitiesUsers['employeesWPJ'] = $employeesWPJ;
+            }
+            $employeesKSB = array();
+            if(isset($daysKSB)) {
+                $employeesKSB = explode(',', $this->request->data['Letter']['employeesKSB']);
+                //$dataToActivitiesUsers['employeesKSB'] = $employeesKSB;
+            }
+
+            $employeesPJ = explode(',', $this->request->data['Letter']['employeesPJ']);
+            $employeesPT = explode(',', $this->request->data['Letter']['employeesPT']);
+            $employeesKT = explode(',', $this->request->data['Letter']['employeesKT']);
+            $employeesAT = explode(',', $this->request->data['Letter']['employeesAT']);
+            $dataToActivitiesUsers = array(
+                'activity_id' => $this->Letter->Activity->getInsertID(),
+                'start' => $this->request->data['Letter']['date'],
+                'endPJ' => $endPJ,
+                'endWPJ' => $endWPJ,
+                'endPT' => $endPT,
+                'endKT' => $endAT,
+                'endKSB' => $endKSB,
+                'endAT' => $endAT,
+                'employeesPJ' => $employeesPJ,
+                'employeesWPJ' => $employeesWPJ,
+                'employeesPT' => $employeesPT,
+                'employeesKT' => $employeesKT,
+                'employeesKSB' => $employeesKSB,
+                'employeesAT' => $employeesAT,
+            );
+
+            if (!$this->addAuditAddToActivitiesUsers($dataToActivitiesUsers)) {
+                $this->Session->setFlash(__('Peserta tidak dapat disimpan, silahkan ulangi.'));
+                return $this->redirect(array('action' => 'addExpose'));
+            }
+
+            //third add to letters table
+            $dataToLetters = array(
+                'activity_id' => $this->Letter->Activity->getInsertID(),
+                'type_id' => $this->typeST,
+                'lettercategory_id' => $this->letterCategorySTPS,
+                'entity_id' => $this->request->data['Letter']['entity_id'],
+                'name' => $this->request->data['Letter']['name'],
+                'date' => $date,
+                'uploader_id' => $this->Auth->user('id')
+            );
+            if (!$this->addAuditAddToLetters($dataToLetters)) {
+                $this->Session->setFlash(__('Draft tidak dapat disimpan, silahkan ulangi.'));
+                return $this->redirect(array('action' => 'addExpose'));
+            }
+
+            //fourth add to evidences table
+            $dataToEvidences = array(
+                'activity_id' => $this->Letter->Activity->getInsertID(),
+                'name' => 'Draft ST',
+                'extension' => 'pdf',
+                'type_id' => $this->typeST,
+                'uploader_id' => $this->Auth->user('id')
+            );
+            if (!$this->addAuditAddToEvidences($dataToEvidences)) {
+                $this->Session->setFlash(__('Berkas Draft tidak dapat disimpan, silahkan ulangi.'));
+                return $this->redirect(array('action' => 'addExpose'));
+            }
+
+            //fifth create file
+            $dataToFile = array(
+                'filename' => $this->Letter->Activity->Evidence->getInsertID(),
+                'letterNumber' => $this->request->data['Letter']['name'],
+                'employeesPJ' => $employeesPJ,
+                'employeesWPJ' => $employeesWPJ,
+                'employeesPT' => $employeesPT,
+                'employeesKT' => $employeesKT,
+                'employeesKSB' => $employeesKSB,
+                'employeesAT' => $employeesAT,
+                'daysNoPJ' => $daysNoPJ,
+                'daysNoWPJ' => $daysNoWPJ,
+                'daysNoPT' => $daysNoPT,
+                'daysNoKT' => $daysNoKT,
+                'daysNoKSB' => $daysNoKSB,
+                'daysNoAT' => $daysNoAT,
+                'decription' => $this->request->data['Letter']['description'],
+                'entity_id' => $this->request->data['Letter']['entity_id'],
+                'date' => $this->request->data['Letter']['date']
+            );
+            $this->addAuditCreatePdf($dataToFile);
+
+            //sixth give a download link for pdf file generated by no 4
+            return $this->redirect(array('action' => 'addExposeSuccess', $this->Letter->Activity->Evidence->getInsertID()));
         }
+
         $duties = $this->Letter->Activity->ActivitiesUser->Duty->find('list', array(
             'conditions' => array(
                 'NOT' => array(
@@ -459,16 +599,253 @@ $this->redirect('indexExpose');
             ),
             'fields' => array('Entityview.id', 'Entityview.fullname')
         ));
-        /*$capitals = $this->Letter->Entity->find('all', array(
-            'recursive' => -1,
-            'conditions' => array('Entity.active' => true),
-            'fields' => array('Entity.id', 'Entity.capital')
-        ));*/
+
+        $letterNumberFormat = $this->letterSTFormatNo;
         $city = $this->city;
         //for master of the office
         $master = $this->Letter->Departement->ChiefsDepartement->asDate($this->departementPerwakilan, date('Y-m-d'));
 
-        $this->set(compact('title_for_layout', 'breadCrumb', 'data', 'duties', 'entities', 'city', 'master'));
+        $this->set(compact('title_for_layout', 'breadCrumb', 'data', 'duties', 'entities','letterNumberFormat', 'city', 'master'));
+    }
+
+    private function addAuditAddToActivities($data)
+    {
+        if (!empty($data)) {
+            $this->Letter->Activity->create();
+
+            if ($this->Letter->Activity->save($data)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function addAuditAddToActivitiesUsers($data)
+    {
+        if (!empty($data)) {
+            $countEmployeesPJ = count($data['employeesPJ']);
+            $countEmployeesWPJ = count($data['employeesWPJ']);
+            $countEmployeesPT = count($data['employeesPT']);
+            $countEmployeesKT = count($data['employeesKT']);
+            $countEmployeesKSB = count($data['employeesKSB']);
+            $countEmployeesAT = count($data['employeesAT']);
+
+            $persons = array();
+            $i = 0;
+
+            for ($j = 0; $j < $countEmployeesPJ; $j++) {
+                $persons[$i]['activity_id'] = $data['activity_id'];
+                $persons[$i]['start'] = $data['start'];
+                $persons[$i]['end'] = $data['endPJ'];
+                $persons[$i]['duty_id'] = $this->dutyPJ;
+                $persons[$i]['user_id'] = $data['employeesPJ'][$j];
+                $i++;
+            }
+            for ($j = 0; $j < $countEmployeesWPJ; $j++) {
+                $persons[$i]['activity_id'] = $data['activity_id'];
+                $persons[$i]['start'] = $data['start'];
+                $persons[$i]['end'] = $data['endWPJ'];
+                $persons[$i]['duty_id'] = $this->dutyWPJ;
+                $persons[$i]['user_id'] = $data['employeesWPJ'][$j];
+                $i++;
+            }
+            for ($j = 0; $j < $countEmployeesPT; $j++) {
+                $persons[$i]['activity_id'] = $data['activity_id'];
+                $persons[$i]['start'] = $data['start'];
+                $persons[$i]['end'] = $data['endPT'];
+                $persons[$i]['duty_id'] = $this->dutyPT;
+                $persons[$i]['user_id'] = $data['employeesPT'][$j];
+                $i++;
+            }
+            for ($j = 0; $j < $countEmployeesKT; $j++) {
+                $persons[$i]['activity_id'] = $data['activity_id'];
+                $persons[$i]['start'] = $data['start'];
+                $persons[$i]['end'] = $data['endKT'];
+                $persons[$i]['duty_id'] = $this->dutyKT;
+                $persons[$i]['user_id'] = $data['employeesKT'][$j];
+                $i++;
+            }
+            for ($j = 0; $j < $countEmployeesKSB; $j++) {
+                $persons[$i]['activity_id'] = $data['activity_id'];
+                $persons[$i]['start'] = $data['start'];
+                $persons[$i]['end'] = $data['endKSB'];
+                $persons[$i]['duty_id'] = $this->dutyKSB;
+                $persons[$i]['user_id'] = $data['employeesKSB'][$j];
+                $i++;
+            }
+            for ($j = 0; $j < $countEmployeesAT; $j++) {
+                $persons[$i]['activity_id'] = $data['activity_id'];
+                $persons[$i]['start'] = $data['start'];
+                $persons[$i]['end'] = $data['endAT'];
+                $persons[$i]['duty_id'] = $this->dutyAT;
+                $persons[$i]['user_id'] = $data['employeesAT'][$j];
+                $i++;
+            }
+
+            $this->Letter->Activity->ActivitiesUser->create();
+
+            if ($this->Letter->Activity->ActivitiesUser->saveMany($persons)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function addAuditAddToLetters($data)
+    {
+        if (!empty($data)) {
+            $this->Letter->create();
+
+            if ($this->Letter->save($data)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function addAuditAddToEvidences($data)
+    {
+        if (!empty($data)) {
+            $this->Letter->Activity->Evidence->create();
+
+            if ($this->Letter->Activity->Evidence->save($data)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function addAuditCreatePdf($date = null, $description = null, $officerIds = null, $userIds = null, $fileName = null)
+    {
+        //variable to changed
+        $arrDate = explode('-', $date);
+        $month = $this->monthTranslation[(int)$arrDate[1]]['indonesianLong'];
+        $city = $this->city;
+
+        $officers = $this->Letter->Uploader->User->Usercareerview->asLetterDate($officerIds, $date);
+        $users = $this->Letter->Uploader->User->Usercareerview->asLetterDate($userIds, $date);
+
+        //for master of the office
+        $master = $this->Letter->Departement->ChiefsDepartement->asDate($this->departementPerwakilan, $date);
+
+        $numberFormat = $this->letterSP2FormatNo;
+        $this->set(compact('date', 'arrDate', 'month', 'description', 'officers', 'users', 'city', 'master', 'fileName', 'numberFormat'));
+
+        $this->layout = '/pdf/default';
+
+        $this->render('/Pdf/add_expose_draft');
+    }
+
+    public function addAuditSuccess($fileId = null)
+    {
+        $title_for_layout = 'Tambah SP2 Ekspose';
+        $breadCrumb = $this->breadCrumb;
+        $breadCrumb[1] = array(
+            'title' => 'SP2 Ekspose',
+            'controller' => 'letters',
+            'action' => 'indexExpose'
+        );
+        $breadCrumb[2] = array(
+            'title' => 'Tambah',
+            'controller' => 'letters',
+            'action' => 'addExpose'
+        );
+        $breadCrumb[2] = array(
+            'title' => 'Berhasil',
+            'controller' => 'letters',
+            'action' => 'indexExpose'
+        );
+
+        $this->set(compact('title_for_layout', 'breadCrumb', 'fileId'));
+    }
+
+    public function addAuditNumber($letterId = null)
+    {
+        if ($this->request->is(array('post', 'put'))) {
+            if (!$this->Letter->exists($this->request->data['Letter']['id'])) {
+                return false;
+            }
+
+            $name = trim($this->request->data['Letter']['name']);
+            //first save to letters table
+            //$this->Letter->read(null, $this->request->data['Letter']['id']);
+            $this->Letter->id = $this->request->data['Letter']['id'];
+            $this->Letter->set('name', $name);
+            if (!empty($this->request->data['Letter']['date'])) {
+                $this->Letter->set('date', $this->request->data['Letter']['date']);
+            }
+
+            if (!$this->Letter->save()) {
+                $this->Session->setFlash(__('Nomor SP2 tidak dapat disimpan, silahkan ulangi.'));
+                return $this->redirect(array('action' => 'indexExpose'));
+            }
+
+            //second save to activity table
+            $activity = $this->Letter->find('first', array(
+                'recursive' => -1,
+                'conditions' => array(
+                    'Letter.id' => $this->request->data['Letter']['id']
+                ),
+                'fields' => array('Letter.activity_id')
+            ));
+            $this->Letter->Activity->id = $activity['Letter']['activity_id'];
+            $this->Letter->Activity->set(array(
+                'name' => $name,
+                'draft' => false
+            ));
+
+            if (!$this->Letter->Activity->save()) {
+                $this->Session->setFlash(__($activity['Letter']['activity_id']));
+                //return $this->redirect(array('action' => 'indexExpose'));
+                //$this->view
+                return $this->redirect(array(
+                    'controller' => 'messages',
+                    'action' => 'savingSuccess'
+                ));
+            }
+
+            return $this->redirect(array('action' => 'indexExpose'));
+        }
+
+        $title_for_layout = 'Nomor SP2 Ekspose';
+        $breadCrumb = $this->breadCrumb;
+        $breadCrumb[1] = array(
+            'title' => 'SP2 Ekspose',
+            'controller' => 'letters',
+            'action' => 'indexExpose'
+        );
+        $breadCrumb[2] = array(
+            'title' => 'Nomor',
+            'controller' => 'letters',
+            'action' => 'addExposeNumber'
+        );
+
+        $letter = $this->Letter->Activity->Letteruserview->find('first', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'Letteruserview.id' => $letterId,
+                'Letteruserview.active' => true,
+                'Letteruserview.activitydraft' => true,
+                'Letteruserview.user_id' => $this->Auth->user('id')
+            )
+        ));
+
+        if ($this->Auth->user('group_id') == $this->groupAdmin) {
+            $letter = $this->Letter->Activity->Letteruserview->find('first', array(
+                'recursive' => -1,
+                'conditions' => array(
+                    'Letteruserview.id' => $letterId,
+                    'Letteruserview.active' => true,
+                    'Letteruserview.activitydraft' => true
+                )
+            ));
+        }
+
+        if (!empty($letter)) {
+            $this->set(compact('title_for_layout', 'breadCrumb', 'letter'));
+        } else {
+            $this->redirect(array('action' => 'indexExpose'));
+        }
     }
 
     public function jajal($date)
