@@ -31,7 +31,7 @@ $pdf->AddPage();
 
 $pdf->setJPEGQuality(75);
 
-$fileName = 'cobaST';
+$fileName = 'cobaST2';
 //++++++++++++++++++++++++++++++++++++++++ HEADER +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Image example with resizing
 //          file path                       horizontal align    y pos   height  width   type
@@ -39,12 +39,22 @@ $pdf->Image(APP . 'webroot/img/garuda.jpg', 'C', 6, 34.5, 34.5, 'JPG', false, 'C
 
 $pdf->SetY($pdf->GetY() + 15);
 
+$pdf->SetFont('times', '', 10);
 $html = '<span style="text-align: center;">';
 $html .= '<strong>BADAN PEMERIKSA KEUANGAN REPUBLIK INDONESIA<br>';
 $html .= 'PERWAKILAN PROVINSI JAWA TIMUR<br></strong>';
 $html .= 'Jalan Raya Juanda Sidoarjo Jawa Timur Telepon (031) 8669244 Faksimil (031) 8669206';
-$html .= '<hr>';
-$html .= '<strong><u>SURAT TUGAS</u></strong><br>';
+$html .= '</span>';
+
+$pdf->writeHTML($html, true, 0, true, true);
+$style = array('width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(0, 0, 0));
+$width = $pdf->getPageWidth() - 10;
+$y = $pdf->GetY() + 1;
+$pdf->Line(10, $y, $width, $y, $style);
+$pdf->SetFont('times', '', 10);
+
+$html = '<span style="text-align: center;">';
+$html .= '<br><strong><u>SURAT TUGAS</u></strong><br>';
 $html .= 'No:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $users[0]['Activityuserview']['activityname'] . '<br><br>';
 $html .= '</span>';
 
@@ -59,6 +69,7 @@ $table = '
 <table nobr="true">
     <thead>
     <tr>
+        <td width="67.5"></td>
         <td align="center" width="30"><strong>No</strong></td>
         <td align="center" width="200"><strong>Nama</strong></td>
         <td align="center" width="160"><strong>Jabatan</strong></td>
@@ -71,7 +82,9 @@ $table = '
 //$departements = array();
 $i = 1;
 foreach ($users as $user) {
-    $table .= '<tr nobr="true"><td nobr="true" width="30" align="center">';
+    $table .= '<tr nobr="true">';
+    $table .= '<td width="66.5"></td>';
+    $table .= '<td nobr="true" width="30" align="center">';
     $table .= $i;
     $table .= '</td>';
     $table .= '<td nobr="true" width="200">';
@@ -80,7 +93,16 @@ foreach ($users as $user) {
     $table .= $user['Activityuserview']['dutyname'];
     $table .= '</td>';
     $table .= '<td nobr="true" width="125" align="center">';
-    $table .= $user['Activityuserview']['userend'] - $user['Activityuserview']['userstart'];
+    //$dateStart = strtotime($user['Activityuserview']['userstart']);
+    //$dateEnd = strtotime($user['Activityuserview']['userend']);
+    //$dateDiff = $dateEnd - $dateStart;
+    //$table .= abs($dateDiff/(60*60*24));
+    //alternative
+    $dateStart = new DateTime($user['Activityuserview']['userstart']);
+    $dateEnd = new DateTime($user['Activityuserview']['userend']);
+    $dateDiff = $dateEnd->diff($dateStart)->format("%a");
+    $table .= $dateDiff;
+
     $table .= '</td>';
     $table .= '</tr>';
     $i++;
@@ -97,9 +119,9 @@ $table = '
 <table nobr="true">
     <tbody>
     <tr>
-        <td width="150">&nbsp;Untuk melaksanakan</td>
+        <td width="120">&nbsp;Untuk melaksanakan</td>
         <td align="center" width="15">:</td>
-        <td width="485" style="text-align: justify;">';
+        <td width="515" style="text-align: justify;">';
 $table .= $users[0]['Activityuserview']['activitydescription'];
 //$table .= '&nbsp;di&nbsp;' . $entity['Entityview']['capital'];
 $table .= '</td></tr></tbody></table>';
@@ -135,7 +157,7 @@ $pdf->writeHTML($table, true, false, false, false, '');
 //++++++++++++++++++++++++++++++++++++++++ DEPARTEMENT TO SEND LETTER ++++++++++++++++++++++++++++++++++++++++++++++++++
 $pdf->SetFont('times', '', 10);
 
-$table = '
+$table = '<br>
 <table nobr="true">
     <tbody>
     <tr>

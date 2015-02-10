@@ -206,7 +206,7 @@ echo $this->Form->input('name', array(
                 <td>Anggota Tim</td>
                 <td>
                     <?php
-                    echo $this->Form->input('daysAT', array(
+                    /*echo $this->Form->input('daysAT', array(
                         'type' => 'text',
                         'div' => 'col-xs-1',
                         'label' => false,
@@ -215,7 +215,7 @@ echo $this->Form->input('name', array(
                         'maxlength' => 2,
                         'size' => 2,
                         'class' => 'required'
-                    ));
+                    ));*/
                     ?>
                 </td>
             </tr>
