@@ -494,24 +494,24 @@ $this->redirect('indexExpose');
             $endAT = $endAT->format('Y-m-d');
             $endKSB = $endAT;
 
-            $daysNoPJ = $this->request->data['Letter']['daysPJ'];
-            $daysNoWPJ = $daysNoPJ;
-            $daysNoPT = $this->request->data['Letter']['daysPT'];
-            $daysNoKT = $this->request->data['Letter']['daysKT'];
-            $daysNoKSB = $daysNoKT;
-            $daysNoAT = $this->request->data['Letter']['daysAT'];
+            //$daysNoPJ = $this->request->data['Letter']['daysPJ'];
+            //$daysNoWPJ = $daysNoPJ;
+            //$daysNoPT = $this->request->data['Letter']['daysPT'];
+            //$daysNoKT = $this->request->data['Letter']['daysKT'];
+            //$daysNoKSB = $daysNoKT;
+            //$daysNoAT = $this->request->data['Letter']['daysAT'];
 
             if(!empty($this->request->data['Letter']['employeesWPJ'])) {
                 $daysWPJ = 'P' . $this->request->data['Letter']['daysWPJ'] . 'D';
                 $endWPJ = $start->add(new DateInterval($daysWPJ));
                 $endWPJ = $endWPJ->format('Y-m-d');
-                $daysNoWPJ = $this->request->data['Letter']['daysWPJ'];
+                //$daysNoWPJ = $this->request->data['Letter']['daysWPJ'];
             }
             if(!empty($this->request->data['Letter']['employeesKSB'])) {
                 $daysKSB = 'P' . $this->request->data['Letter']['daysKSB'] . 'D';
                 $endKSB = $start->add(new DateInterval($daysKSB));
                 $endKSB = $endKSB->format('Y-m-d');
-                $daysNoKSB = $this->request->data['Letter']['daysKSB'];
+                //$daysNoKSB = $this->request->data['Letter']['daysKSB'];
             }
 
             //first add to activities table
@@ -769,11 +769,6 @@ $this->redirect('indexExpose');
                 'Entityview.id' => $letter['Letter']['entity_id']
             )
         ));
-        print_r($entity);
-    }
-    public function addAuditCreatePdf($activityId)
-    {
-        //first get activity data from activities table and it related such as activities_users, letters, evidences
         $users = $this->Letter->Activity->Activityuserview->find('all', array(
             'recursive' => -1,
             'conditions' => array(
@@ -784,6 +779,37 @@ $this->redirect('indexExpose');
                 'Activityuserview.duty_id' => 'ASC'
             )
         ));
+        $userIds = array();
+        foreach($users as $user){
+            $userIds[] = $user['Activityuserview']['user_id'];
+        }
+        $users = $this->Letter->Uploader->User->Usercareerview->asLetterDate($userIds, $letter['Letter']['date']);
+        print_r($users);
+    }
+    public function addAuditCreatePdf($activityId)
+    {
+        //first get activity data from activities table and it related such as activities_users, letters, evidences
+        $userIds = $this->Letter->Activity->Activityuserview->find('all', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'Activityuserview.activity_id' => $activityId,
+                'Activityuserview.useractive' => true
+            ),
+            'order' => array(
+                'Activityuserview.duty_id' => 'ASC'
+            )
+        ));
+        $users = $this->Letter->Activity->Activityuserview->find('all', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'Activityuserview.activity_id' => $activityId,
+                'Activityuserview.useractive' => true
+            ),
+            'order' => array(
+                'Activityuserview.duty_id' => 'ASC'
+            )
+        ));
+        //$users = $this->Letter->Uploader->User->Usercareerview->asLetterDate($userIds, $date);
         $letter = $this->Letter->find('first', array(
             'recursive' => -1,
             'conditions' => array(
