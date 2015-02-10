@@ -754,29 +754,69 @@ $this->redirect('indexExpose');
     }
 
     //private function addAuditCreatePdf($date = null, $description = null, $officerIds = null, $userIds = null, $fileName = null)
-    private function addAuditCreatePdf($activityId)
+    //private function addAuditCreatePdf($activityId)
+    public function surat($activityId) {
+        $this->autoRender = false;
+        $letter = $this->Letter->find('first', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'Letter.activity_id' => $activityId
+            )
+        ));
+        $entity = $this->Letter->Entity->Entitycategory->Entityview->find('first', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'Entityview.id' => $letter['Letter']['entity_id']
+            )
+        ));
+        print_r($entity);
+    }
+    public function addAuditCreatePdf($activityId)
     {
         //first get activity data from activities table and it related such as activities_users, letters, evidences
-        $activity = $this->Letter->Activity->find('first', array(
+        $users = $this->Letter->Activity->Activityuserview->find('all', array(
             'recursive' => -1,
+            'conditions' => array(
+                'Activityuserview.activity_id' => $activityId,
+                'Activityuserview.useractive' => true
+            ),
+            'order' => array(
+                'Activityuserview.duty_id' => 'ASC'
+            )
         ));
+        $letter = $this->Letter->find('first', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'Letter.activity_id' => $activityId
+            )
+        ));
+        $entity = $this->Letter->Entity->Entitycategory->Entityview->find('first', array(
+           'recursive' => -1,
+            'conditions' => array(
+                'Entityview.id' => $letter['Letter']['entity_id']
+            )
+        ));
+        $date = $letter['Letter']['date'];
+        /*$activity = $this->Letter->Activity->find('first', array(
+            'recursive' => -1,
+        ));*/
         //variable to changed
         $arrDate = explode('-', $date);
         $month = $this->monthTranslation[(int)$arrDate[1]]['indonesianLong'];
         $city = $this->city;
 
-        $officers = $this->Letter->Uploader->User->Usercareerview->asLetterDate($officerIds, $date);
-        $users = $this->Letter->Uploader->User->Usercareerview->asLetterDate($userIds, $date);
+        //$officers = $this->Letter->Uploader->User->Usercareerview->asLetterDate($officerIds, $date);
+        //$users = $this->Letter->Uploader->User->Usercareerview->asLetterDate($userIds, $date);
 
         //for master of the office
         $master = $this->Letter->Departement->ChiefsDepartement->asDate($this->departementPerwakilan, $date);
 
-        $numberFormat = $this->letterSP2FormatNo;
-        $this->set(compact('date', 'arrDate', 'month', 'description', 'officers', 'users', 'city', 'master', 'fileName', 'numberFormat'));
+        //$numberFormat = $this->letterSTFormatNo;
+        $this->set(compact('users', 'letter', 'entity', 'date', 'arrDate', 'month', 'city', 'master'));
 
         $this->layout = '/pdf/default';
 
-        $this->render('/Pdf/add_expose_draft');
+        $this->render('/Pdf/add_audit_draft');
     }
 
     public function addAuditSuccess($fileId = null)
