@@ -28,6 +28,8 @@ App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
  * @property Userroleview $Userroleview
  * @property Letteruserview $Letteruserview
  * @property Activityuserview $Activityuserview
+ * @property Job $Job
+ * @property JobsUser $JobsUser
  */
 class User extends AppModel
 {
@@ -294,6 +296,19 @@ class User extends AppModel
             'exclusive' => '',
             'finderQuery' => '',
             'counterQuery' => ''
+        ),
+        'JobsUser' => array(
+            'className' => 'JobsUser',
+            'foreignKey' => 'user_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
         )
     );
 
@@ -400,6 +415,19 @@ class User extends AppModel
             'joinTable' => 'users_positions',
             'foreignKey' => 'user_id',
             'associationForeignKey' => 'position_id',
+            'unique' => 'keepExisting',
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'finderQuery' => '',
+        ),
+        'Job' => array(
+            'className' => 'Job',
+            'joinTable' => 'jobs_users',
+            'foreignKey' => 'user_id',
+            'associationForeignKey' => 'job_id',
             'unique' => 'keepExisting',
             'conditions' => '',
             'fields' => '',

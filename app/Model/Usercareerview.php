@@ -112,6 +112,7 @@ class Usercareerview extends AppModel
 
             if (!empty($userLevel) && !empty($userRole)) {
                 $data[$i]['name'] = $userLevel['Usercareerview']['name'];
+                $data[$i]['number'] = $userLevel['Usercareerview']['number'];
                 $data[$i]['level_id'] = $userLevel['Usercareerview']['level_id'];
                 $data[$i]['levelname'] = $userLevel['Usercareerview']['levelname'];
                 $data[$i]['departementdescription'] = $userLevel['Usercareerview']['departementdescription'];
