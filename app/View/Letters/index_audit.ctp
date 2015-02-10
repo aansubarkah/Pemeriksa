@@ -6,7 +6,7 @@
 <div class="row" style="padding-bottom: 20px;">
     <div class="container-fluid">
         <div class="col-md-5">
-            <a href="<?php echo Router::url('/letters/addExpose'); ?>" class="btn btn-default" role="button">Buat
+            <a href="<?php echo Router::url('/letters/addAudit'); ?>" class="btn btn-default" role="button">Buat
                 Draft</a>
         </div>
         <div class="col-md-7">
