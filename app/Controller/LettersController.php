@@ -484,13 +484,18 @@ $this->redirect('indexExpose');
             $daysPT = 'P' . $this->request->data['Letter']['daysPT'] . 'D';
             $daysAT = 'P' . $this->request->data['Letter']['daysKT'] . 'D';
 
-            $start = new DateTime($date);
-            $endPJ = $start->add(new DateInterval($daysPJ));
+            $startPJ = new DateTime($date);
+            $startWPJ = new DateTime($date);
+            $startPT = new DateTime($date);
+            $startAT = new DateTime($date);
+
+            //$startAT = $startPT = $startWPJ = $startPJ = $start = new DateTime($date);
+            $endPJ = $startPJ->add(new DateInterval($daysPJ));
             $endPJ = $endPJ->format('Y-m-d');
             $endWPJ = $endPJ;
-            $endPT = $start->add(new DateInterval($daysPT));
+            $endPT = $startPT->add(new DateInterval($daysPT));
             $endPT = $endPT->format('Y-m-d');
-            $endAT = $start->add(new DateInterval($daysAT));
+            $endAT = $startAT->add(new DateInterval($daysAT));
             $endAT = $endAT->format('Y-m-d');
             $endKSB = $endAT;
 
@@ -789,16 +794,19 @@ $this->redirect('indexExpose');
     public function addAuditCreatePdf($activityId)
     {
         //first get activity data from activities table and it related such as activities_users, letters, evidences
-        $userIds = $this->Letter->Activity->Activityuserview->find('all', array(
+        $letter = $this->Letter->find('first', array(
             'recursive' => -1,
             'conditions' => array(
-                'Activityuserview.activity_id' => $activityId,
-                'Activityuserview.useractive' => true
-            ),
-            'order' => array(
-                'Activityuserview.duty_id' => 'ASC'
+                'Letter.activity_id' => $activityId
             )
         ));
+        $entity = $this->Letter->Entity->Entitycategory->Entityview->find('first', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'Entityview.id' => $letter['Letter']['entity_id']
+            )
+        ));
+
         $users = $this->Letter->Activity->Activityuserview->find('all', array(
             'recursive' => -1,
             'conditions' => array(
@@ -809,36 +817,24 @@ $this->redirect('indexExpose');
                 'Activityuserview.duty_id' => 'ASC'
             )
         ));
-        //$users = $this->Letter->Uploader->User->Usercareerview->asLetterDate($userIds, $date);
-        $letter = $this->Letter->find('first', array(
-            'recursive' => -1,
-            'conditions' => array(
-                'Letter.activity_id' => $activityId
-            )
-        ));
-        $entity = $this->Letter->Entity->Entitycategory->Entityview->find('first', array(
-           'recursive' => -1,
-            'conditions' => array(
-                'Entityview.id' => $letter['Letter']['entity_id']
-            )
-        ));
+        $userIds = array();
+        foreach($users as $user){
+            $userIds[] = $user['Activityuserview']['user_id'];
+        }
+        $usersForSPD = $this->Letter->Uploader->User->Usercareerview->asLetterDate($userIds, $letter['Letter']['date']);
+
         $date = $letter['Letter']['date'];
-        /*$activity = $this->Letter->Activity->find('first', array(
-            'recursive' => -1,
-        ));*/
+
         //variable to changed
         $arrDate = explode('-', $date);
         $month = $this->monthTranslation[(int)$arrDate[1]]['indonesianLong'];
         $city = $this->city;
 
-        //$officers = $this->Letter->Uploader->User->Usercareerview->asLetterDate($officerIds, $date);
-        //$users = $this->Letter->Uploader->User->Usercareerview->asLetterDate($userIds, $date);
-
         //for master of the office
         $master = $this->Letter->Departement->ChiefsDepartement->asDate($this->departementPerwakilan, $date);
 
         //$numberFormat = $this->letterSTFormatNo;
-        $this->set(compact('users', 'letter', 'entity', 'date', 'arrDate', 'month', 'city', 'master'));
+        $this->set(compact('users','usersForSPD', 'letter', 'entity', 'date', 'arrDate', 'month', 'city', 'master'));
 
         $this->layout = '/pdf/default';
 
