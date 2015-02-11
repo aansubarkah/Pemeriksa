@@ -31,7 +31,7 @@ $pdf->AddPage();
 
 $pdf->setJPEGQuality(75);
 
-$fileName = 'cobaST2';
+$fileName = 'cobaST3';
 //++++++++++++++++++++++++++++++++++++++++ HEADER +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Image example with resizing
 //          file path                       horizontal align    y pos   height  width   type
@@ -55,7 +55,7 @@ $pdf->SetFont('times', '', 10);
 
 $html = '<span style="text-align: center;">';
 $html .= '<br><strong><u>SURAT TUGAS</u></strong><br>';
-$html .= 'No:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $users[0]['Activityuserview']['activityname'] . '<br><br>';
+$html .= 'No:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $letter['Letter']['name'] . '<br><br>';
 $html .= '</span>';
 
 $pdf->SetFont('times', '', 10);
