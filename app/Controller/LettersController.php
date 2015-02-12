@@ -789,7 +789,7 @@ $this->redirect('indexExpose');
             $userIds[] = $user['Activityuserview']['user_id'];
         }
         $users = $this->Letter->Uploader->User->Usercareerview->asLetterDate($userIds, $letter['Letter']['date']);
-        print_r($users);
+        print_r($entity);
     }
     public function addAuditCreatePdf($activityId)
     {
@@ -822,6 +822,10 @@ $this->redirect('indexExpose');
             $userIds[] = $user['Activityuserview']['user_id'];
         }
         $usersForSPD = $this->Letter->Uploader->User->Usercareerview->asLetterDate($userIds, $letter['Letter']['date']);
+
+        //@todo find PPK as date
+        //
+
 
         $date = $letter['Letter']['date'];
 
