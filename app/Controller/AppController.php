@@ -53,6 +53,8 @@ class AppController extends Controller
     protected $dutyPemapar = 8;
     protected $dutyPeserta = 9;
 
+    protected $jobPPK = 1;
+
     protected $letterSP2FormatNo = '/SP2/XVIII.SBY/';
     protected $letterSTFormatNo = '/ST/XVIII.SBY/';
 

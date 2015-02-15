@@ -784,12 +784,29 @@ $this->redirect('indexExpose');
                 'Activityuserview.duty_id' => 'ASC'
             )
         ));
+        $usersLength = count($users);
+        for($i=0; $i<$usersLength; $i++) {
+        //foreach($users as $user) {
+            $userId = array($users[$i]['Activityuserview']['user_id']);
+            //print_r($userId);
+            //echo '<br>';
+
+            $userCareer = $this->Letter->Uploader->User->Usercareerview->asLetterDate($userId, $letter['Letter']['date']);
+            $users[$i]['User'] = $userCareer[0];
+            //print_r($userCareer);
+            //echo '<br>';
+        }
+        foreach($users as $user) {
+            print_r($user);
+            echo '<br>';
+        }
+
         $userIds = array();
-        foreach($users as $user){
+        /*foreach($users as $user){
             $userIds[] = $user['Activityuserview']['user_id'];
         }
-        $users = $this->Letter->Uploader->User->Usercareerview->asLetterDate($userIds, $letter['Letter']['date']);
-        print_r($entity);
+        $users = $this->Letter->Uploader->User->Usercareerview->asLetterDate($userIds, $letter['Letter']['date']);*/
+        //print_r($users);
     }
     public function addAuditCreatePdf($activityId)
     {
@@ -817,14 +834,17 @@ $this->redirect('indexExpose');
                 'Activityuserview.duty_id' => 'ASC'
             )
         ));
-        $userIds = array();
+        /*$userIds = array();
         foreach($users as $user){
             $userIds[] = $user['Activityuserview']['user_id'];
         }
-        $usersForSPD = $this->Letter->Uploader->User->Usercareerview->asLetterDate($userIds, $letter['Letter']['date']);
-
-        //@todo find PPK as date
-        //
+        $usersForSPD = $this->Letter->Uploader->User->Usercareerview->asLetterDate($userIds, $letter['Letter']['date']);*/
+        $usersLength = count($users);
+        for($i=0; $i<$usersLength; $i++) {
+            $userId = array($users[$i]['Activityuserview']['user_id']);
+            $userCareer = $this->Letter->Uploader->User->Usercareerview->asLetterDate($userId, $letter['Letter']['date']);
+            $users[$i]['User'] = $userCareer[0];
+        }
 
 
         $date = $letter['Letter']['date'];
@@ -837,8 +857,11 @@ $this->redirect('indexExpose');
         //for master of the office
         $master = $this->Letter->Departement->ChiefsDepartement->asDate($this->departementPerwakilan, $date);
 
+        //for signer (PPK)
+        $signer = $this->Letter->Activity->User->JobsUser->asLetterDate($this->jobPPK, $date);
+
         //$numberFormat = $this->letterSTFormatNo;
-        $this->set(compact('users','usersForSPD', 'letter', 'entity', 'date', 'arrDate', 'month', 'city', 'master'));
+        $this->set(compact('users', 'letter', 'entity', 'date', 'arrDate', 'month', 'city', 'master', 'signer'));
 
         $this->layout = '/pdf/default';
 
@@ -989,6 +1012,11 @@ $this->redirect('indexExpose');
         echo $elapsed;
     }
 
+    public function lihatjob($jobId = null) {
+        $this->autoRender = false;
+        $data = $this->Letter->Activity->User->JobsUser->asLetterDate(1, '2015-02-15');
+        print_r($data);
+    }
     public function lihat()
     {
         $this->autoRender = false;
