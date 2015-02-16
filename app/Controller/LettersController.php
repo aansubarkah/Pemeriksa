@@ -779,7 +779,7 @@ $this->redirect('indexExpose');
         $users = $this->Letter->Uploader->User->Usercareerview->asLetterDate($userIds, $letter['Letter']['date']);*/
         //print_r($users);
     }
-    public function addAuditCreatePdf($activityId)
+    private function addAuditCreatePdf($activityId)
     {
         //first get activity data from activities table and it related such as activities_users, letters, evidences
         $letter = $this->Letter->find('first', array(
