@@ -154,7 +154,6 @@ class Evidence extends AppModel
             $zip->addFile($filePath, $fileLocalName);
         }
 
-        //$zip->addFile(WWW_ROOT . 'files'. DS . '36.pdf', '36.pdf');
         $zip->close();
         //return true if all ok
         return true;
