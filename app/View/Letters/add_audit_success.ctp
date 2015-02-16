@@ -2,9 +2,9 @@
 /**
  * @var View $this
  */
-$fileLink = '/evidences/download/' . $fileId . '/draft';
-echo $this->Html->link('Unduh Draft ST', $fileLink);
-echo '.';
+$fileLink = '/evidences/download/file/' . $fileId . '/draft';
+//echo $this->Html->link('Unduh Draft ST', $fileLink);
+//echo '.';
 ?>
 <p>
     Berhasil menyimpan Draft ST Pemeriksaan. <?php echo $this->Html->link('Unduh Draft ST', $fileLink); ?>. Halaman ini

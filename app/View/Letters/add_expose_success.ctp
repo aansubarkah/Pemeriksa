@@ -2,9 +2,9 @@
 /**
  * @var View $this
  */
-$fileLink = '/evidences/download/' . $fileId . '/draft';
-echo $this->Html->link('Unduh Draft SP2', $fileLink);
-echo '.';
+$fileLink = '/evidences/download/file/' . $fileId . '/draft';
+//echo $this->Html->link('Unduh Draft SP2', $fileLink);
+//echo '.';
 ?>
 <p>
     Berhasil menyimpan Draft SP2 Ekspose. <?php echo $this->Html->link('Unduh Draft SP2', $fileLink); ?>. Halaman ini

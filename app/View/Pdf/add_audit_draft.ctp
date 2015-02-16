@@ -31,7 +31,7 @@ $pdf->AddPage();
 
 $pdf->setJPEGQuality(75);
 
-$fileName = 'cobaST';
+$fileName = $evidenceId['Evidence']['id'];
 //++++++++++++++++++++++++++++++++++++++++ HEADER +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Image example with resizing
 //          file path                       horizontal align    y pos   height  width   type
@@ -188,282 +188,283 @@ $pdf->writeHTML($table, true, false, false, false, '');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //++++++++++++++++++++++++++++++++++++++++ ADD PAGE TO 2nd DOCUMENT ++++++++++++++++++++++++++++++++++++++++++++++++++++
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-$pdf->SetMargins(10, 5, 10, true);
+foreach ($users as $user) {
+    if ($user['Activityuserview']['duty_id'] != $dutyAT) {
+        $pdf->SetMargins(10, 5, 10, true);
 // add a page
-$pdf->AddPage();
+        $pdf->AddPage();
 
-$pdf->SetFont('times', '', 11);
-$table = '<table nobr="true">
+        $pdf->SetFont('times', '', 11);
+        $table = '<table nobr="true">
     <tbody>
     <tr><td width="325" style="vertical-align: middle; text-align: center;">';
-$table .= '<img src="/img/garuda.jpg" width="100" height="100">';
-$table .= '</td>';
-$table .= '<td width="325">';
-$table .= '<table nobr="true">';
-$table .= '<tbody>';
-$table .= '<tr>';
-$table .= '<td width="100">Lembar ke</td>';
-$table .= '<td width="5">:</td>';
-$table .= '<td width="225">.........................................................</td>';
-$table .= '</tr>';
-$table .= '<tr>';
-$table .= '<td width="100">Kode No.</td>';
-$table .= '<td width="5">:</td>';
-$table .= '<td width="225">.........................................................</td>';
-$table .= '</tr>';
-$table .= '<tr>';
-$table .= '<td width="100">Nomor</td>';
-$table .= '<td width="5">:</td>';
-$table .= '<td width="225">........./SPD/PS/XVIII.SBY/' . $arrDate[1] . '/' . $arrDate[0] . '</td>';
-$table .= '</tr>';
-$table .= '<tr>';
-$table .= '<td width="100"></td>';
-$table .= '<td width="5"></td>';
-$table .= '<td width="225">Tanggal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $month . '&nbsp;' . $arrDate[0] . '</td>';
-$table .= '</tr>';
-$table .= '</tbody>';
-$table .= '</table>';
-$table .= '</td>';
-$table .= '</tr>';
-$table .= '<tr><td width="325" style="vertical-align: middle; text-align: center; font-weight: bold;">BADAN PEMERIKSA KEUANGAN RI</td></tr>';
-$table .= '<tr><td width="325" style="vertical-align: middle; text-align: center; font-weight: bold;">PERWAKILAN PROVINSI JAWA TIMUR</td></tr>';
-$table .= '<tr><td width="325" style="vertical-align: middle; text-align: center;">Jalan Raya Juanda</td></tr>';
-$table .= '<tr><td width="325" style="vertical-align: middle; text-align: center;">Sidoarjo</td></tr>';
-$table .= '</tbody></table>';
-$pdf->writeHTML($table, true, false, false, false, '');
+        $table .= '<img src="/img/garuda.jpg" width="100" height="100">';
+        $table .= '</td>';
+        $table .= '<td width="325">';
+        $table .= '<table nobr="true">';
+        $table .= '<tbody>';
+        $table .= '<tr>';
+        $table .= '<td width="100">Lembar ke</td>';
+        $table .= '<td width="5">:</td>';
+        $table .= '<td width="225">.........................................................</td>';
+        $table .= '</tr>';
+        $table .= '<tr>';
+        $table .= '<td width="100">Kode No.</td>';
+        $table .= '<td width="5">:</td>';
+        $table .= '<td width="225">.........................................................</td>';
+        $table .= '</tr>';
+        $table .= '<tr>';
+        $table .= '<td width="100">Nomor</td>';
+        $table .= '<td width="5">:</td>';
+        $table .= '<td width="225">........./SPD/PS/XVIII.SBY/' . $arrDate[1] . '/' . $arrDate[0] . '</td>';
+        $table .= '</tr>';
+        $table .= '<tr>';
+        $table .= '<td width="100"></td>';
+        $table .= '<td width="5"></td>';
+        $table .= '<td width="225">Tanggal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $month . '&nbsp;' . $arrDate[0] . '</td>';
+        $table .= '</tr>';
+        $table .= '</tbody>';
+        $table .= '</table>';
+        $table .= '</td>';
+        $table .= '</tr>';
+        $table .= '<tr><td width="325" style="vertical-align: middle; text-align: center; font-weight: bold;">BADAN PEMERIKSA KEUANGAN RI</td></tr>';
+        $table .= '<tr><td width="325" style="vertical-align: middle; text-align: center; font-weight: bold;">PERWAKILAN PROVINSI JAWA TIMUR</td></tr>';
+        $table .= '<tr><td width="325" style="vertical-align: middle; text-align: center;">Jalan Raya Juanda</td></tr>';
+        $table .= '<tr><td width="325" style="vertical-align: middle; text-align: center;">Sidoarjo</td></tr>';
+        $table .= '</tbody></table>';
+        $pdf->writeHTML($table, true, false, false, false, '');
 
-$pdf->SetFont('times', 'B', 11);
-$html = '<span style="text-align: center;">SURAT PERJALANAN DINAS (SPD)</span>';
-$pdf->writeHTML($html, true, 0, true, true);
+        $pdf->SetFont('times', 'B', 11);
+        $html = '<span style="text-align: center;">SURAT PERJALANAN DINAS (SPD)</span>';
+        $pdf->writeHTML($html, true, 0, true, true);
 
-$pdf->SetFont('times', '', 11);
-$table = '<table cellspacing="0" cellpadding="1">
+        $pdf->SetFont('times', '', 11);
+        $table = '<table cellspacing="0" cellpadding="1">
     <tbody>';
-$table .= '<tr nobr="true">';
-$table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">1.</td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
-$table .= '<td width="290" style="text-align: justify; border-style: double; border-top: 1px solid #000000;">Pejabat Pembuat Komitmen</td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000; border-right: 1px solid #000000;"></td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
-$table .= '<td width="310" style="text-align: justify; border-style: double;">' . $signer['User']['name'] . '</td>';
-$table .= '</tr>';
-$table .= '<tr nobr="true">';//create newline
-$table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">2.</td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
-$table .= '<td width="290" style="text-align: justify; border-style: double; border-top: 1px solid #000000;">Nama/NIP pegawai yang melaksanakan Perjalanan Dinas</td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000; border-right: 1px solid #000000;"></td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
-$table .= '<td width="310" style="text-align: justify; border-style: double;">' . $users[0]['User']['name'] . '&nbsp;/&nbsp;' . $users[0]['User']['number'] . '</td>';
-$table .= '</tr>';//end line
+        $table .= '<tr nobr="true">';
+        $table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">1.</td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
+        $table .= '<td width="290" style="text-align: justify; border-style: double; border-top: 1px solid #000000;">Pejabat Pembuat Komitmen</td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000; border-right: 1px solid #000000;"></td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
+        $table .= '<td width="310" style="text-align: justify; border-style: double;">' . $signer['User']['name'] . '</td>';
+        $table .= '</tr>';
+        $table .= '<tr nobr="true">';//create newline
+        $table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">2.</td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
+        $table .= '<td width="290" style="text-align: justify; border-style: double; border-top: 1px solid #000000;">Nama/NIP pegawai yang melaksanakan Perjalanan Dinas</td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000; border-right: 1px solid #000000;"></td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
+        $table .= '<td width="310" style="text-align: justify; border-style: double;">' . $user['User']['name'] . '&nbsp;/&nbsp;' . $user['User']['number'] . '</td>';
+        $table .= '</tr>';//end line
 //---------------------------- 3 ---
-$table .= '<tr nobr="true">';//create newline
-$table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">3.</td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
-$table .= '<td width="290" style="text-align: justify; border-style: double; border-top: 1px solid #000000;">a.&nbsp;Pangkat dan Golongan</td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000; border-right: 1px solid #000000;"></td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
-$table .= '<td width="20" style="border-top: 1px solid #000000;">a.</td>';
-$table .= '<td width="290" style="text-align: justify; border-style: double;">' . $users[0]['User']['leveldescription'] . '&nbsp;(' . $users[0]['User']['levelname'] . ')</td>';
-$table .= '</tr>';//end line
-$table .= '<tr nobr="true">';//create newline
-$table .= '<td width="30" style="text-align: center; border-right: 1px solid #000000;"></td>';
-$table .= '<td width="10"></td>';
-$table .= '<td width="290" style="text-align: justify;">b.&nbsp;Jabatan/Instansi</td>';
-$table .= '<td width="10" style="border-right: 1px solid #000000;"></td>';
-$table .= '<td width="10"></td>';
-$table .= '<td width="20">b.</td>';
-$table .= '<td width="290" style="text-align: justify;">' . $users[0]['User']['positionlevelname'] . '&nbsp;/&nbsp;BPK RI Perwakilan Provinsi Jawa Timur</td>';
-$table .= '</tr>';//end line
-$table .= '<tr nobr="true">';//create newline
-$table .= '<td width="30" style="text-align: center; border-right: 1px solid #000000;"></td>';
-$table .= '<td width="10"></td>';
-$table .= '<td width="290" style="text-align: justify;">c.&nbsp;Tingkat biaya perjalanan dinas</td>';
-$table .= '<td width="10" style="border-right: 1px solid #000000;"></td>';
-$table .= '<td width="10"></td>';
-$table .= '<td width="20">c.</td>';
-$table .= '<td width="290" style="text-align: justify;"></td>';
-$table .= '</tr>';//end line
-//---------------------------- 4 ---
-$table .= '<tr nobr="true">';//create newline
-$table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">4.</td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
-$table .= '<td width="290" style="text-align: justify; border-style: double; border-top: 1px solid #000000;">Maksud perjalanan dinas</td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000; border-right: 1px solid #000000;"></td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
-$table .= '<td width="300" style="text-align: justify; border-style: double;">' . $users[0]['Activityuserview']['activitydescription'] . '</td>';
-$table .= '</tr>';//end line
-//---------------------------- 5 ---
-$table .= '<tr nobr="true">';//create newline
-$table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">5.</td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
-$table .= '<td width="290" style="text-align: justify; border-style: double; border-top: 1px solid #000000;">Alat angkutan yang dipergunakan</td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000; border-right: 1px solid #000000;"></td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
-$table .= '<td width="300" style="text-align: justify; border-style: double;">Kendaraan Umum</td>';
-$table .= '</tr>';//end line
-//---------------------------- 6 ---
-$table .= '<tr nobr="true">';//create newline
-$table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">6.</td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
-$table .= '<td width="290" style="text-align: justify; border-style: double; border-top: 1px solid #000000;">a.&nbsp;Tempat berangkat</td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000; border-right: 1px solid #000000;"></td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
-$table .= '<td width="20" style="border-top: 1px solid #000000;">a.</td>';
-$table .= '<td width="290" style="text-align: justify; border-style: double;">' . $city . '</td>';
-$table .= '</tr>';//end line
-$table .= '<tr nobr="true">';//create newline
-$table .= '<td width="30" style="text-align: center; border-right: 1px solid #000000;"></td>';
-$table .= '<td width="10"></td>';
-$table .= '<td width="290" style="text-align: justify;">b.&nbsp;Tempat tujuan</td>';
-$table .= '<td width="10" style="border-right: 1px solid #000000;"></td>';
-$table .= '<td width="10"></td>';
-$table .= '<td width="20">b.</td>';
-$table .= '<td width="290" style="text-align: justify;">' . $entity['Entityview']['name'] . '</td>';
-$table .= '</tr>';//end line
-//---------------------------- 7 ---
-$dateStart = new DateTime($users[0]['Activityuserview']['userstart']);
-$dateEnd = new DateTime($users[0]['Activityuserview']['userend']);
-$dateDiff = $dateEnd->diff($dateStart)->format("%a");
-
-$table .= '<tr nobr="true">';//create newline
-$table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">7.</td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
-$table .= '<td width="290" style="text-align: justify; border-style: double; border-top: 1px solid #000000;">a.&nbsp;Lamanya perjalanan dinas</td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000; border-right: 1px solid #000000;"></td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
-$table .= '<td width="20" style="border-top: 1px solid #000000;">a.</td>';
-$table .= '<td width="290" style="text-align: justify; border-style: double;">' . $dateDiff . '&nbsp;hari</td>';
-$table .= '</tr>';//end line
-$table .= '<tr nobr="true">';//create newline
-$table .= '<td width="30" style="text-align: center; border-right: 1px solid #000000;"></td>';
-$table .= '<td width="10"></td>';
-$table .= '<td width="290" style="text-align: justify;">b.&nbsp;Tanggal berangkat</td>';
-$table .= '<td width="10" style="border-right: 1px solid #000000;"></td>';
-$table .= '<td width="10"></td>';
-$table .= '<td width="20">b.</td>';
-$table .= '<td width="290" style="text-align: justify;"></td>';
-$table .= '</tr>';//end line
-$table .= '<tr nobr="true">';//create newline
-$table .= '<td width="30" style="text-align: center; border-right: 1px solid #000000;"></td>';
-$table .= '<td width="10"></td>';
-$table .= '<td width="290" style="text-align: justify;">c.&nbsp;Tanggal harus kembali</td>';
-$table .= '<td width="10" style="border-right: 1px solid #000000;"></td>';
-$table .= '<td width="10"></td>';
-$table .= '<td width="20">c.</td>';
-$table .= '<td width="290" style="text-align: justify;"></td>';
-$table .= '</tr>';//end line
-//---------------------------- 8 ---
-$table .= '<tr nobr="true">';//create newline
-$table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">8.</td>';
-$table .= '<td width="125" style="text-align: center; border-top: 1px solid #000000; border-bottom: 1px solid #000000;">Pengikut</td>';
-$table .= '<td width="125" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000; border-bottom: 1px solid #000000;">Nama</td>';
-$table .= '<td width="210" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000; border-bottom: 1px solid #000000;">Pangkat/Golongan</td>';
-$table .= '<td width="170" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-bottom: 1px solid #000000;">Jabatan</td>';
-$table .= '</tr>';//end line
-//for followers
-$charArr = array('a', 'b', 'c', 'd', 'e', 'f');
-if(true) {
-    $j = 0;
-    for($i=3; $i<=5; $i++) {
+        $table .= '<tr nobr="true">';//create newline
+        $table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">3.</td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
+        $table .= '<td width="290" style="text-align: justify; border-style: double; border-top: 1px solid #000000;">a.&nbsp;Pangkat dan Golongan</td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000; border-right: 1px solid #000000;"></td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
+        $table .= '<td width="20" style="border-top: 1px solid #000000;">a.</td>';
+        $table .= '<td width="290" style="text-align: justify; border-style: double;">' . $user['User']['leveldescription'] . '&nbsp;(' . $user['User']['levelname'] . ')</td>';
+        $table .= '</tr>';//end line
         $table .= '<tr nobr="true">';//create newline
         $table .= '<td width="30" style="text-align: center; border-right: 1px solid #000000;"></td>';
-        $table .= '<td width="20" style="text-align: center;">' . $charArr[$j] . '.</td>';
-        $table .= '<td width="230" style="text-align: justify; border-right: 1px solid #000000;">' . $users[$i]['User']['name'] . '</td>';
-        $table .= '<td width="210" style="text-align: center; border-right: 1px solid #000000;">' . $users[$i]['User']['leveldescription'] . '&nbsp;(' . $users[$i]['User']['levelname'] . ')</td>';
-        $table .= '<td width="170" style="text-align: center;">' . $users[$i]['User']['positionlevelname'] . '</td>';
+        $table .= '<td width="10"></td>';
+        $table .= '<td width="290" style="text-align: justify;">b.&nbsp;Jabatan/Instansi</td>';
+        $table .= '<td width="10" style="border-right: 1px solid #000000;"></td>';
+        $table .= '<td width="10"></td>';
+        $table .= '<td width="20">b.</td>';
+        $table .= '<td width="290" style="text-align: justify;">' . $user['User']['positionlevelname'] . '&nbsp;/&nbsp;BPK RI Perwakilan Provinsi Jawa Timur</td>';
         $table .= '</tr>';//end line
-        $j++;
-    }
-}
+        $table .= '<tr nobr="true">';//create newline
+        $table .= '<td width="30" style="text-align: center; border-right: 1px solid #000000;"></td>';
+        $table .= '<td width="10"></td>';
+        $table .= '<td width="290" style="text-align: justify;">c.&nbsp;Tingkat biaya perjalanan dinas</td>';
+        $table .= '<td width="10" style="border-right: 1px solid #000000;"></td>';
+        $table .= '<td width="10"></td>';
+        $table .= '<td width="20">c.</td>';
+        $table .= '<td width="290" style="text-align: justify;"></td>';
+        $table .= '</tr>';//end line
+//---------------------------- 4 ---
+        $table .= '<tr nobr="true">';//create newline
+        $table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">4.</td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
+        $table .= '<td width="290" style="text-align: justify; border-style: double; border-top: 1px solid #000000;">Maksud perjalanan dinas</td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000; border-right: 1px solid #000000;"></td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
+        $table .= '<td width="300" style="text-align: justify; border-style: double;">' . $users[0]['Activityuserview']['activitydescription'] . '</td>';
+        $table .= '</tr>';//end line
+//---------------------------- 5 ---
+        $table .= '<tr nobr="true">';//create newline
+        $table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">5.</td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
+        $table .= '<td width="290" style="text-align: justify; border-style: double; border-top: 1px solid #000000;">Alat angkutan yang dipergunakan</td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000; border-right: 1px solid #000000;"></td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
+        $table .= '<td width="300" style="text-align: justify; border-style: double;">Kendaraan Umum</td>';
+        $table .= '</tr>';//end line
+//---------------------------- 6 ---
+        $table .= '<tr nobr="true">';//create newline
+        $table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">6.</td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
+        $table .= '<td width="290" style="text-align: justify; border-style: double; border-top: 1px solid #000000;">a.&nbsp;Tempat berangkat</td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000; border-right: 1px solid #000000;"></td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
+        $table .= '<td width="20" style="border-top: 1px solid #000000;">a.</td>';
+        $table .= '<td width="290" style="text-align: justify; border-style: double;">' . $city . '</td>';
+        $table .= '</tr>';//end line
+        $table .= '<tr nobr="true">';//create newline
+        $table .= '<td width="30" style="text-align: center; border-right: 1px solid #000000;"></td>';
+        $table .= '<td width="10"></td>';
+        $table .= '<td width="290" style="text-align: justify;">b.&nbsp;Tempat tujuan</td>';
+        $table .= '<td width="10" style="border-right: 1px solid #000000;"></td>';
+        $table .= '<td width="10"></td>';
+        $table .= '<td width="20">b.</td>';
+        $table .= '<td width="290" style="text-align: justify;">' . $entity['Entityview']['name'] . '</td>';
+        $table .= '</tr>';//end line
+//---------------------------- 7 ---
+        $dateStart = new DateTime($user['Activityuserview']['userstart']);
+        $dateEnd = new DateTime($user['Activityuserview']['userend']);
+        $dateDiff = $dateEnd->diff($dateStart)->format("%a");
 
-$i = 1;
-/*$table .= '<tr nobr="true">';//create newline
-$table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;"></td>';
-$table .= '<td width="20" style="text-align: center; border-top: 1px solid #000000;">' . $charArr[$j] . '.</td>';
-$table .= '<td width="230" style="text-align: justify; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">' . $usersForSPD[$i]['name'] . '</td>';
-$table .= '<td width="210" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">' . $usersForSPD[$i]['leveldescription'] . '&nbsp;(' . $usersForSPD[$i]['levelname'] . ')</td>';
-$table .= '<td width="170" style="text-align: center; border-style: double; border-top: 1px solid #000000;">' . $usersForSPD[$i]['positionlevelname'] . '</td>';
-$table .= '</tr>';//end line
-/*$table .= '<tr nobr="true">';//create newline
-$table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;"></td>';
-$table .= '<td width="20" style="text-align: center; border-top: 1px solid #000000;">' . $charArr[$j] . '.</td>';
-$table .= '<td width="230" style="text-align: justify; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">' . $usersForSPD[$i]['name'] . '</td>';
-$table .= '<td width="210" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">' . $usersForSPD[$i]['leveldescription'] . '&nbsp;(' . $usersForSPD[$i]['levelname'] . ')</td>';
-$table .= '<td width="170" style="text-align: center; border-style: double; border-top: 1px solid #000000;">' . $usersForSPD[$i]['positionlevelname'] . '</td>';
-$table .= '</tr>';//end line*/
+        $table .= '<tr nobr="true">';//create newline
+        $table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">7.</td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
+        $table .= '<td width="290" style="text-align: justify; border-style: double; border-top: 1px solid #000000;">a.&nbsp;Lamanya perjalanan dinas</td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000; border-right: 1px solid #000000;"></td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
+        $table .= '<td width="20" style="border-top: 1px solid #000000;">a.</td>';
+        $table .= '<td width="290" style="text-align: justify; border-style: double;">' . $dateDiff . '&nbsp;hari</td>';
+        $table .= '</tr>';//end line
+        $table .= '<tr nobr="true">';//create newline
+        $table .= '<td width="30" style="text-align: center; border-right: 1px solid #000000;"></td>';
+        $table .= '<td width="10"></td>';
+        $table .= '<td width="290" style="text-align: justify;">b.&nbsp;Tanggal berangkat</td>';
+        $table .= '<td width="10" style="border-right: 1px solid #000000;"></td>';
+        $table .= '<td width="10"></td>';
+        $table .= '<td width="20">b.</td>';
+        $table .= '<td width="290" style="text-align: justify;"></td>';
+        $table .= '</tr>';//end line
+        $table .= '<tr nobr="true">';//create newline
+        $table .= '<td width="30" style="text-align: center; border-right: 1px solid #000000;"></td>';
+        $table .= '<td width="10"></td>';
+        $table .= '<td width="290" style="text-align: justify;">c.&nbsp;Tanggal harus kembali</td>';
+        $table .= '<td width="10" style="border-right: 1px solid #000000;"></td>';
+        $table .= '<td width="10"></td>';
+        $table .= '<td width="20">c.</td>';
+        $table .= '<td width="290" style="text-align: justify;"></td>';
+        $table .= '</tr>';//end line
+//---------------------------- 8 ---
+        $table .= '<tr nobr="true">';//create newline
+        $table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">8.</td>';
+        $table .= '<td width="125" style="text-align: center; border-top: 1px solid #000000; border-bottom: 1px solid #000000;">Pengikut</td>';
+        $table .= '<td width="125" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000; border-bottom: 1px solid #000000;">Nama</td>';
+        $table .= '<td width="210" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000; border-bottom: 1px solid #000000;">Pangkat/Golongan</td>';
+        $table .= '<td width="170" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-bottom: 1px solid #000000;">Jabatan</td>';
+        $table .= '</tr>';//end line
 
+//for followers
+        if ($user['Activityuserview']['duty_id'] == $dutyKT) {
+            $charASCII = 97;//a
+            foreach ($users as $at) {
+                if ($at['Activityuserview']['duty_id'] == $dutyAT) {
+                    $table .= '<tr nobr="true">';//create newline
+                    $table .= '<td width="30" style="text-align: center; border-right: 1px solid #000000;"></td>';
+                    $table .= '<td width="20" style="text-align: center;">&#' . $charASCII . ';.</td>';
+                    $table .= '<td width="230" style="text-align: justify; border-right: 1px solid #000000;">' . $at['User']['name'] . '</td>';
+                    $table .= '<td width="210" style="text-align: center; border-right: 1px solid #000000;">' . $at['User']['leveldescription'] . '&nbsp;(' . $at['User']['levelname'] . ')</td>';
+                    $table .= '<td width="170" style="text-align: center;">' . $at['User']['positionlevelname'] . '</td>';
+                    $table .= '</tr>';//end line
+                    $charASCII++;
+                }
+            }
+        } else {
+            for ($i = 0; $i < 3; $i++) {
+                $table .= '<tr nobr="true">';//create newline
+                $table .= '<td width="30" style="text-align: center; border-right: 1px solid #000000;"></td>';
+                $table .= '<td width="20" style="text-align: center;"></td>';
+                $table .= '<td width="230" style="text-align: justify; border-right: 1px solid #000000;"></td>';
+                $table .= '<td width="210" style="text-align: center; border-right: 1px solid #000000;"></td>';
+                $table .= '<td width="170" style="text-align: center;"></td>';
+                $table .= '</tr>';//end line
+            }
+        }
+
+        $i = 1;
 //---------------------------- 9 ---
-$table .= '<tr nobr="true">';//create newline
-$table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">9.</td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
-$table .= '<td width="290" style="text-align: justify; border-style: double; border-top: 1px solid #000000;">Pembebanan Anggaran</td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000; border-right: 1px solid #000000;"></td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
-$table .= '<td width="20" style="border-top: 1px solid #000000;"></td>';
-$table .= '<td width="290" style="text-align: justify; border-style: double;"></td>';
-$table .= '</tr>';//end line
-$table .= '<tr nobr="true">';//create newline
-$table .= '<td width="30" style="text-align: center; border-right: 1px solid #000000;"></td>';
-$table .= '<td width="10"></td>';
-$table .= '<td width="290" style="text-align: justify;">a.&nbsp;Instansi</td>';
-$table .= '<td width="10" style="border-right: 1px solid #000000;"></td>';
-$table .= '<td width="10"></td>';
-$table .= '<td width="20">a.</td>';
-$table .= '<td width="290" style="text-align: justify;">BPK RI Perwakilan Provinsi Jawa Timur</td>';
-$table .= '</tr>';//end line
-$table .= '<tr nobr="true">';//create newline
-$table .= '<td width="30" style="text-align: center; border-right: 1px solid #000000;"></td>';
-$table .= '<td width="10"></td>';
-$table .= '<td width="290" style="text-align: justify;">c.&nbsp;Akun</td>';
-$table .= '<td width="10" style="border-right: 1px solid #000000;"></td>';
-$table .= '<td width="10"></td>';
-$table .= '<td width="20">b.</td>';
-$table .= '<td width="290" style="text-align: justify;"></td>';
-$table .= '</tr>';//end line
+        $table .= '<tr nobr="true">';//create newline
+        $table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">9.</td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
+        $table .= '<td width="290" style="text-align: justify; border-style: double; border-top: 1px solid #000000;">Pembebanan Anggaran</td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000; border-right: 1px solid #000000;"></td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000;"></td>';
+        $table .= '<td width="20" style="border-top: 1px solid #000000;"></td>';
+        $table .= '<td width="290" style="text-align: justify; border-style: double;"></td>';
+        $table .= '</tr>';//end line
+        $table .= '<tr nobr="true">';//create newline
+        $table .= '<td width="30" style="text-align: center; border-right: 1px solid #000000;"></td>';
+        $table .= '<td width="10"></td>';
+        $table .= '<td width="290" style="text-align: justify;">a.&nbsp;Instansi</td>';
+        $table .= '<td width="10" style="border-right: 1px solid #000000;"></td>';
+        $table .= '<td width="10"></td>';
+        $table .= '<td width="20">a.</td>';
+        $table .= '<td width="290" style="text-align: justify;">BPK RI Perwakilan Provinsi Jawa Timur</td>';
+        $table .= '</tr>';//end line
+        $table .= '<tr nobr="true">';//create newline
+        $table .= '<td width="30" style="text-align: center; border-right: 1px solid #000000;"></td>';
+        $table .= '<td width="10"></td>';
+        $table .= '<td width="290" style="text-align: justify;">b.&nbsp;Akun</td>';
+        $table .= '<td width="10" style="border-right: 1px solid #000000;"></td>';
+        $table .= '<td width="10"></td>';
+        $table .= '<td width="20">b.</td>';
+        $table .= '<td width="290" style="text-align: justify;"></td>';
+        $table .= '</tr>';//end line
 //---------------------------- 10 ---
-$table .= '<tr nobr="true">';//create newline
-$table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000; border-bottom: 1px solid #000000;">10.</td>';
-$table .= '<td width="10" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000;"></td>';
-$table .= '<td width="610" style="text-align: justify; border-style: double; border-top: 1px solid #000000; border-bottom: 1px solid #000000;">Keterangan lain-lain: Melaksanakan Surat Tugas Kepala Perwakilan BPK RI Provinsi Jawa Timur No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $letter['Letter']['name'] . '&nbsp;Tanggal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $month . '&nbsp;' . $arrDate[0] . '</td>';
-$table .= '</tr>';//end line
+        $table .= '<tr nobr="true">';//create newline
+        $table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000; border-bottom: 1px solid #000000;">10.</td>';
+        $table .= '<td width="10" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000;"></td>';
+        $table .= '<td width="610" style="text-align: justify; border-style: double; border-top: 1px solid #000000; border-bottom: 1px solid #000000;">Keterangan lain-lain: Melaksanakan Surat Tugas Kepala Perwakilan BPK RI Provinsi Jawa Timur No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $letter['Letter']['name'] . '&nbsp;Tanggal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $month . '&nbsp;' . $arrDate[0] . '</td>';
+        $table .= '</tr>';//end line
 
-$table .= '</tbody>';
-$table .= '</table>';
-$pdf->writeHTML($table, true, false, false, false, '');
+        $table .= '</tbody>';
+        $table .= '</table>';
+        $pdf->writeHTML($table, true, false, false, false, '');
 
-//++++++++++++++++++++++++++++++++++++++++ MASTER'S TABLE +++++++++++++++++++++++++++++++++++++++++++++++++++++++
-$pdf->SetFont('times', '', 11);
+//++++++++++++++++++++++++++++++++++++++++ SIGNER'S TABLE +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        $pdf->SetFont('times', '', 11);
 
-$table = '
+        $table = '
 <table nobr="true">
     <tbody>
     <tr>';
-$table .= '<td width="350"></td>';
-$table .= '<td width="100">Dikeluarkan di</td>';
-$table .= '<td width="10">:</td>';
-$table .= '<td width="200">' . $city . '</td>';
-$table .= '</tr>';
-$table .= '<tr>';
-$table .= '<td width="350"></td>';
-$table .= '<td width="100" style="border-bottom: 1px solid #000000;">Pada Tanggal</td>';
-$table .= '<td width="10" style="border-bottom: 1px solid #000000;">:</td>';
-$table .= '<td width="200" style="border-bottom: 1px solid #000000;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $month . '&nbsp;' . $arrDate[0] . '</td>';
-$table .= '</tr>';
-$table .= '<tr>';
-$table .= '<td width="350"></td>';
-$table .= '<td width="310" style="text-align: center;">Pejabat Pembuat Komitmen,<br><br><br></td>';
-$table .= '</tr>';
-$table .= '<tr>';
-$table .= '<td width="350"></td>';
-$table .= '<td width="310" style="text-align: center;">' . $signer['User']['name'] . '</td>';
-$table .= '</tr>';
-$table .= '<tr>';
-$table .= '<td width="350"></td>';
-$table .= '<td width="310" style="text-align: center;">NIP&nbsp;' . $signer['User']['number'] . '</td>';
-$table .= '</tr>';
-$table .= '</tbody></table>';
+        $table .= '<td width="350"></td>';
+        $table .= '<td width="100">Dikeluarkan di</td>';
+        $table .= '<td width="10">:</td>';
+        $table .= '<td width="200">' . $city . '</td>';
+        $table .= '</tr>';
+        $table .= '<tr>';
+        $table .= '<td width="350"></td>';
+        $table .= '<td width="100" style="border-bottom: 1px solid #000000;">Pada Tanggal</td>';
+        $table .= '<td width="10" style="border-bottom: 1px solid #000000;">:</td>';
+        $table .= '<td width="200" style="border-bottom: 1px solid #000000;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $month . '&nbsp;' . $arrDate[0] . '</td>';
+        $table .= '</tr>';
+        $table .= '<tr>';
+        $table .= '<td width="350"></td>';
+        $table .= '<td width="310" style="text-align: center;">Pejabat Pembuat Komitmen,<br><br><br></td>';
+        $table .= '</tr>';
+        $table .= '<tr>';
+        $table .= '<td width="350"></td>';
+        $table .= '<td width="310" style="text-align: center;">' . $signer['User']['name'] . '</td>';
+        $table .= '</tr>';
+        $table .= '<tr>';
+        $table .= '<td width="350"></td>';
+        $table .= '<td width="310" style="text-align: center;">NIP&nbsp;' . $signer['User']['number'] . '</td>';
+        $table .= '</tr>';
+        $table .= '</tbody></table>';
 
-$pdf->writeHTML($table, true, false, false, false, '');
+        $pdf->writeHTML($table, true, false, false, false, '');
+    }
+}
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //++++++++++++++++++++++++++++++++++++++++ ADD PAGE TO 3rd DOCUMENT ++++++++++++++++++++++++++++++++++++++++++++++++++++
