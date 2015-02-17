@@ -18,7 +18,7 @@
 <?php
 echo $this->Form->create('Letter', array(
     "role" => "form",
-    'id' => 'addExposeNumber'
+    'id' => 'addAuditNumber'
 ));
 
 echo $this->Form->input('id', array(
@@ -68,7 +68,7 @@ echo $this->fetch('css');
             format: 'yyyy-mm-dd'
         });
 
-        $('#addExposeNumber').validate({
+        $('#addAuditNumber').validate({
             rules: {
                 'data[Letter][date]': {
                     date: true

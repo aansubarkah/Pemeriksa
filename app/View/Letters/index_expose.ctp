@@ -37,7 +37,7 @@
                             $link = '/activities/view/' . $letter['Letteruserview']['activity_id'] . '/' . $letter['Letteruserview']['activityname'];
                             echo $no . '. ';
 
-                            if ($letter['Letteruserview']['activitydraft']) echo '[Draft]&nbsp;';
+                            if ($letter['Letteruserview']['activitydraft']) echo '<span style="color: red;">[Draft]&nbsp;</span>';
 
                             echo $this->Html->link($linkName, $link);
                             echo '&nbsp;Mengikuti Kegiatan&nbsp;';

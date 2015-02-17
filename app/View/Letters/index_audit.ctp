@@ -37,7 +37,7 @@
                             $link = '/activities/view/' . $letter['Letteruserview']['activity_id'] . '/' . $letter['Letteruserview']['activityname'];
                             echo $no . '. ';
 
-                            if ($letter['Letteruserview']['activitydraft']) echo '[Draft]&nbsp;';
+                            if ($letter['Letteruserview']['activitydraft']) echo '<span style="color: red;">[Draft]&nbsp;</span>';
 
                             echo $this->Html->link($linkName, $link);
                             echo '&nbsp;Mengikuti Kegiatan&nbsp;';
@@ -50,14 +50,19 @@
                                 echo '&nbsp;s.d.&nbsp;';
                                 echo $this->Time->format($letter['Letteruserview']['activityend'], '%e %B %Y');
                             }
-                            echo '.';
+                            echo '.&nbsp;';
 
                             if ($letter['Letteruserview']['activitydraft']) {
-                                echo '&nbsp;';
                                 echo $this->Html->link('Beri Nomor pada Draft ini', array(
                                     'controller' => 'letters',
                                     'action' => 'addAuditNumber',
                                     $letter['Letteruserview']['id']
+                                ));
+                            } else {
+                                echo $this->Html->link('Beri Jadwal', array(
+                                    'controller' => 'letters',
+                                    'action' => 'addAuditDate',
+                                    $letter['Letteruserview']['activity_id']
                                 ));
                             }
 
