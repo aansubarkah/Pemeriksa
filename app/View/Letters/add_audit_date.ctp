@@ -41,4 +41,4 @@
     </div>
 </div>
 <?php
-print_r($letter[0]);
+//@todo add date input to each users
