@@ -230,6 +230,7 @@ Configure::write('Security.salt', 'J4T1mDYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi
  */
 Configure::write('Security.cipherSeed', '11201576859309657453542496749683645');
 
+Configure::write('MinifyAsset', true);
 /**
  * Apply timestamps with the last modified time to static assets (js, css, images).
  * Will append a query string parameter containing the time the file was modified. This is
