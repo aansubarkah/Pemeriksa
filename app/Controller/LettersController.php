@@ -483,9 +483,9 @@ class LettersController extends AppController
         if ($this->request->is(array('post', 'put'))) {
             $this->autoRender = false;
             empty($this->request->data['Letter']['date']) ? $date = date('Y-m-d') : $date = $this->request->data['Letter']['date'];
-            $daysPJ = 'P' . $this->request->data['Letter']['daysPJ'] . 'D';
-            $daysPT = 'P' . $this->request->data['Letter']['daysPT'] . 'D';
-            $daysAT = 'P' . $this->request->data['Letter']['daysKT'] . 'D';
+            $daysPJ = 'P' . ($this->request->data['Letter']['daysPJ'] - 1) . 'D';
+            $daysPT = 'P' . ($this->request->data['Letter']['daysPT'] - 1) . 'D';
+            $daysAT = 'P' . ($this->request->data['Letter']['daysKT'] - 1). 'D';
 
             $startPJ = new DateTime($date);
             $startWPJ = new DateTime($date);
@@ -503,12 +503,12 @@ class LettersController extends AppController
             $endKSB = $endAT;
 
             if (!empty($this->request->data['Letter']['employeesWPJ'])) {
-                $daysWPJ = 'P' . $this->request->data['Letter']['daysWPJ'] . 'D';
+                $daysWPJ = 'P' . ($this->request->data['Letter']['daysWPJ'] - 1). 'D';
                 $endWPJ = $startWPJ->add(new DateInterval($daysWPJ));
                 $endWPJ = $endWPJ->format('Y-m-d');
             }
             if (!empty($this->request->data['Letter']['employeesKSB'])) {
-                $daysKSB = 'P' . $this->request->data['Letter']['daysKSB'] . 'D';
+                $daysKSB = 'P' . ($this->request->data['Letter']['daysKSB'] - 1). 'D';
                 $endKSB = $startKSB->add(new DateInterval($daysKSB));
                 $endKSB = $endKSB->format('Y-m-d');
             }
