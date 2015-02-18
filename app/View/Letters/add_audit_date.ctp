@@ -68,7 +68,7 @@ $options = array(
 echo $this->Form->end($options);
 
 echo $this->Html->css(array('datepicker'));
-echo $this->Html->script(array('bootstrap-datepicker', 'jquery.validate.min', 'jquery.validate.custom.messages'));
+echo $this->Html->script(array('bootstrap-datepicker', 'jquery.validate.min', 'jquery.validate.custom.messages', 'moment'));
 
 echo $this->fetch('script');
 echo $this->fetch('css');
@@ -84,13 +84,16 @@ echo $this->fetch('css');
             format: 'yyyy-mm-dd'
         });
         $('.dateStart').on('change', function () {
-            var day = parseInt($(this).closest('tr').children('td.day').text());
-            var startArr = $(this).val().split('-');
-            var start = new Date(startArr[0], startArr[1]-1, startArr[2]);
-            var end = new Date();
-            end.setDate(start.getDate() + day - 1);
-            console.log(end);
+            var day = parseInt($(this).closest('tr').children('td.day').text()) - 1;
+            var end = moment($(this).val()).add(day, 'd').format('YYYY-MM-DD');
+            $(this).closest('tr').find('input[class="dateEnd"]').val(end);
         });
-        //@todo try to use momentjs to add end date
+        $('.dateEnd').on('change', function () {
+            var start = moment($('.dateStart').val());
+            var end = moment($(this).val());
+            var day = end.diff(start, 'days') + 1;
+            if(day < 1) day = 0;
+            $(this).closest('tr').children('td.day').text(day);
+        });
     });
 </script>
