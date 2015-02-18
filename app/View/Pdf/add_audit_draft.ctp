@@ -93,15 +93,15 @@ foreach ($users as $user) {
     $table .= $user['Activityuserview']['dutyname'];
     $table .= '</td>';
     $table .= '<td nobr="true" width="125" align="center">';
-    //$dateStart = strtotime($user['Activityuserview']['userstart']);
-    //$dateEnd = strtotime($user['Activityuserview']['userend']);
-    //$dateDiff = $dateEnd - $dateStart;
-    //$table .= abs($dateDiff/(60*60*24));
+    $dateStart = strtotime($user['Activityuserview']['userstart']);
+    $dateEnd = strtotime($user['Activityuserview']['userend']);
+    $dateDiff = $dateEnd - $dateStart;
+    $table .= (abs($dateDiff/(60*60*24)) + 1);
     //alternative
-    $dateStart = new DateTime($user['Activityuserview']['userstart']);
-    $dateEnd = new DateTime($user['Activityuserview']['userend']);
-    $dateDiff = $dateEnd->diff($dateStart)->format("%a");
-    $table .= $dateDiff;
+    //$dateStart = new DateTime($user['Activityuserview']['userstart']);
+    //$dateEnd = new DateTime($user['Activityuserview']['userend']);
+    //$dateDiff = $dateEnd->diff($dateStart)->format("%a");
+    //$table .= $dateDiff;
 
     $table .= '</td>';
     $table .= '</tr>';
@@ -323,9 +323,13 @@ foreach ($users as $user) {
         $table .= '<td width="290" style="text-align: justify;">' . $entity['Entityview']['name'] . '</td>';
         $table .= '</tr>';//end line
 //---------------------------- 7 ---
-        $dateStart = new DateTime($user['Activityuserview']['userstart']);
-        $dateEnd = new DateTime($user['Activityuserview']['userend']);
-        $dateDiff = $dateEnd->diff($dateStart)->format("%a");
+        //$dateStart = new DateTime($user['Activityuserview']['userstart']);
+        //$dateEnd = new DateTime($user['Activityuserview']['userend']);
+        //$dateDiff = $dateEnd->diff($dateStart)->format("%a");
+        $dateStart = strtotime($user['Activityuserview']['userstart']);
+        $dateEnd = strtotime($user['Activityuserview']['userend']);
+        $dateDiff = $dateEnd - $dateStart;
+        $dateDiff = abs($dateDiff/(60*60*24)) + 1;
 
         $table .= '<tr nobr="true">';//create newline
         $table .= '<td width="30" style="text-align: center; border-style: double; border-top: 1px solid #000000; border-right: 1px solid #000000;">7.</td>';
