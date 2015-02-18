@@ -18,6 +18,8 @@ class LettersController extends AppController
      */
     public $components = array('Paginator', 'Session');
 
+    //public $helpers = array('Minify.Minify');
+
     /**
      * Breadcrumb for all
      *

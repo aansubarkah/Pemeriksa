@@ -171,7 +171,8 @@ class AppController extends Controller
                 'action' => 'display',
                 'home'
             )*/
-        )
+        ),
+        'Gzip.Gzip'
     );
 
     public function isAuthorized($user)
