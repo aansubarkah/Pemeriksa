@@ -92,9 +92,9 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li>
                                     <?php
-                                    echo $this->Html->link('Kalender', array(
+                                    echo $this->Html->link('Profil', array(
                                         'controller' => 'users',
-                                        'action' => 'calendar'
+                                        'action' => 'index'
                                     ));
                                     ?>
                                 </li>

@@ -139,18 +139,18 @@ echo $this->fetch('css');
 ?>
 <script type="text/javascript">
     $(function () {
-        $('#description').on('keyup', function(event){
+        $('#description').on('keyup', function (event) {
             var description = $(this).val();
             description = description.toLowerCase();
             console.log(description);
-            if(description.indexOf('pemaparan') < 0) {
-                if(description.indexOf('diklat') > -1) {
+            if (description.indexOf('pemaparan') < 0) {
+                if (description.indexOf('diklat') > -1) {
                     $('#exercise').prop('checked', true);
                 }
-                if(description.indexOf('pendidikan dan latihan') > -1) {
+                if (description.indexOf('pendidikan dan latihan') > -1) {
                     $('#exercise').prop('checked', true);
                 }
-                if(description.indexOf('pendidikan latihan') > -1) {
+                if (description.indexOf('pendidikan latihan') > -1) {
                     $('#exercise').prop('checked', true);
                 }
             }
@@ -223,13 +223,26 @@ echo $this->fetch('css');
 
         $('#file').fileupload({
             dataType: 'json',
-            maxFileSize: 1024,
+            maxFileSize: 1000000000,
             add: function (e, data) {
-                $('#progress').show();
-                $('#files').show();
-                $('#files').empty();
-                data.context = $('<p/>').text('Mengunggah...').appendTo('#files');
-                data.submit();
+                var uploadErrors = [];
+                var acceptFileTypes =  /(\.|\/)(gif|jpe?g|png|txt|pdf|doc|docx|xls|xlsx|ppt|pptx|rar|zip|odt|tar|gz)$/i;
+                if (data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+                    uploadErrors.push('Not an accepted file type');
+                }
+                if (data.originalFiles[0]['size'].length && data.originalFiles[0]['size'] > 1000000000) {
+                    uploadErrors.push('Filesize is too big');
+                }
+                if (uploadErrors.length > 0) {
+                    //alert(uploadErrors.join("\n"));
+                    data.context = $('<p/>').text(uploadErrors.join("\n")).appendTo('#files');
+                } else {
+                    $('#progress').show();
+                    $('#files').show();
+                    $('#files').empty();
+                    data.context = $('<p/>').text('Mengunggah...').appendTo('#files');
+                    data.submit();
+                }
             },
             done: function (e, data) {
                 $('#progress').hide();
@@ -253,7 +266,7 @@ echo $this->fetch('css');
         $('#btnSave').on('click', function (event) {
             var isNoEmpty = [];
             var exercise = 0;
-            if($('#exercise').is(':checked')) exercise = 1;
+            if ($('#exercise').is(':checked')) exercise = 1;
 
             var formData = {};
             formData.file = $('#filename').val();
