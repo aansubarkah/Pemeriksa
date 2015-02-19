@@ -64,27 +64,10 @@ class PagesController extends AppController
     public function display()
     {
         $title_for_layout = 'Beranda';
-
-        if ($this->Auth->loggedIn()) {
+        if ($this->Auth->user('id')) {
             $this->redirect(array(
-                'controller' => 'activities',
-                'action' => 'index'
+                'controller' => 'activities'
             ));
-            /*$this->view = 'display_user';
-            $this->Paginator->settings = array(
-                'recursive' => -1,
-                'conditions' => array(
-                    'Letteruserview.activityactive' => true,
-                    'Letteruserview.user_id' => $this->Auth->user('id'),
-                    'Letteruserview.activityusertagged' => true,
-                    'Letteruserview.activitydraft' => false
-                ),
-                'limit' => 10,
-                'order' => array('Letteruserview.date' => 'DESC')
-            );
-
-            $letters = $this->Paginator->paginate('Letteruserview');
-            $this->set(compact('title_for_layout','letters'));*/
         } else {
             $this->Activity->unbindModel(
                 array(
@@ -93,10 +76,10 @@ class PagesController extends AppController
                     'hasMany' => array('ActivitiesUser', 'Transaction')
                 )
             );
-
             $this->Paginator->settings = array(
                 'conditions' => array(
                     'Activity.draft' => 0,
+                    'Activity.public' => 1,
                     'Activity.active' => 1
                 ),
                 'limit' => 10,

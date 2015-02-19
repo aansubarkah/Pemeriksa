@@ -17,6 +17,7 @@ class UsersController extends AppController
      */
     public $components = array('Paginator');
 
+    //public $layout = 'profile';
     /**
      * index method
      *
@@ -24,8 +25,9 @@ class UsersController extends AppController
      */
     public function index()
     {
-        $this->User->recursive = 0;
-        $this->set('users', $this->Paginator->paginate());
+        $this->layout = 'profile';
+        //$this->User->recursive = 0;
+        //$this->set('users', $this->Paginator->paginate());
     }
 
     /**
@@ -151,6 +153,7 @@ class UsersController extends AppController
     {
         parent::beforeFilter();
         $this->Auth->allow('logout');
+        $this->layout = 'profile';
     }
 
 
@@ -206,6 +209,8 @@ class UsersController extends AppController
 
     public function calendar()
     {
+        $this->layout = 'with-menu';
+
         $breadCrumb = array(
             0 => array(
                 'title' => 'Kegiatan',

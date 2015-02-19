@@ -47,20 +47,16 @@ class ActivitiesController extends AppController
             'conditions' => array(
                 'Activityuserview.activityactive' => true,
                 'Activityuserview.user_id' => $this->Auth->user('id'),
-                'Activityuserview.tagged' => true,
-                'Activityuserview.activitydraft' => false
+                'Activityuserview.activitydraft' => false,
+                'NOT' => array(
+                    'Activityuserview.userstart' => null
+                )
             ),
             'limit' => 10,
             'order' => array('Activityuserview.activitystart' => 'DESC')
         );
 
         $letters = $this->Paginator->paginate('Activityuserview');
-        /*$this->Paginator->settings = array(
-            'recursive' => 0,
-            'conditions' => array(
-                'ActivitiesUser.active' => true
-            )
-        );*/
         $this->set(compact('title_for_layout', 'breadCrumb', 'letters'));
     }
 
