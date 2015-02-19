@@ -43,9 +43,25 @@ echo $this->Form->input('id', array(
                     <td><?php echo $user['Letteruserview']['username']; ?></td>
                     <td><?php echo $user['Letteruserview']['dutyname']; ?></td>
                     <td class="day"><?php echo $days; ?></td>
-                    <td><input type="text" class="dateStart"
-                               value="<?php echo $user['Letteruserview']['userstart']; ?>"/></td>
-                    <td><input type="text" class="dateEnd" value="<?php echo $user['Letteruserview']['userend']; ?>"/>
+                    <td>
+                        <?php
+                        echo $this->Form->input('start_' . $user['Letteruserview']['user_id'], array(
+                            'type' => 'text',
+                            'value' => $user['Letteruserview']['userstart'],
+                            'label' => false,
+                            'class' => 'dateStart'
+                        ));
+                        ?>
+                    </td>
+                    <td>
+                        <?php
+                        echo $this->Form->input('end_' . $user['Letteruserview']['user_id'], array(
+                            'type' => 'text',
+                            'value' => $user['Letteruserview']['userend'],
+                            'label' => false,
+                            'class' => 'dateEnd'
+                        ));
+                        ?>
                     </td>
                 </tr>
                 <?php
@@ -89,7 +105,8 @@ echo $this->fetch('css');
             $(this).closest('tr').find('input[class="dateEnd"]').val(end);
         });
         $('.dateEnd').on('change', function () {
-            var start = moment($('.dateStart').val());
+            var start = moment($(this).closest('tr').find('input[class="dateStart"]').val());
+            //var start = moment($('.dateStart').val());
             var end = moment($(this).val());
             var day = end.diff(start, 'days') + 1;
             if(day < 1) day = 0;
