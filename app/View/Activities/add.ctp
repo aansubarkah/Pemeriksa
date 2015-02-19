@@ -111,6 +111,17 @@ echo $this->Form->input('end', array(
 </div>
 
 <?php
+echo $this->Form->input('exercise', array(
+    'type' => 'checkbox',
+    'label' => false,
+    'div' => 'form-group col-sm-9',
+    'id' => 'exercise',
+    'hiddenField' => false,
+    'value' => false,
+    'label' => '&nbsp;Diklat'
+));
+
+
 $options = array(
     'label' => 'Simpan',
     'div' => 'form-group col-sm-9',
@@ -128,6 +139,23 @@ echo $this->fetch('css');
 ?>
 <script type="text/javascript">
     $(function () {
+        $('#description').on('keyup', function(event){
+            var description = $(this).val();
+            description = description.toLowerCase();
+            console.log(description);
+            if(description.indexOf('pemaparan') < 0) {
+                if(description.indexOf('diklat') > -1) {
+                    $('#exercise').prop('checked', true);
+                }
+                if(description.indexOf('pendidikan dan latihan') > -1) {
+                    $('#exercise').prop('checked', true);
+                }
+                if(description.indexOf('pendidikan latihan') > -1) {
+                    $('#exercise').prop('checked', true);
+                }
+            }
+        });
+
         $('#start').datepicker({
             autoclose: true,
             format: 'yyyy-mm-dd'
@@ -224,11 +252,14 @@ echo $this->fetch('css');
 
         $('#btnSave').on('click', function (event) {
             var isNoEmpty = [];
+            var exercise = 0;
+            if($('#exercise').is(':checked')) exercise = 1;
 
             var formData = {};
             formData.file = $('#filename').val();
             formData.name = $('#name').val();
             formData.description = $('#description').val();
+            formData.exercise = exercise;
             formData.start = $('#start').val();
             formData.end = $('#end').val();
             formData.employees = $('#addEmployees').val();

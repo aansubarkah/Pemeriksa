@@ -39,10 +39,10 @@ echo $this->Form->input('id', array(
                 $days = floor($dateDiff / (60 * 60 * 24)) + 1;
                 ?>
                 <tr>
-                    <td><?php echo $i; ?></td>
+                    <td class="text-center"><?php echo $i; ?></td>
                     <td><?php echo $user['Letteruserview']['username']; ?></td>
                     <td><?php echo $user['Letteruserview']['dutyname']; ?></td>
-                    <td class="day"><?php echo $days; ?></td>
+                    <td class="day text-center"><?php echo $days; ?></td>
                     <td>
                         <?php
                         echo $this->Form->input('start_' . $user['Letteruserview']['user_id'], array(
@@ -89,6 +89,14 @@ echo $this->Html->script(array('bootstrap-datepicker', 'jquery.validate.min', 'j
 echo $this->fetch('script');
 echo $this->fetch('css');
 ?>
+<style type="text/css">
+    table thead th {
+        text-align: center;
+    }
+    table tbody td .text-center {
+        text-align: center;
+    }
+</style>
 <script type="text/javascript">
     $(function () {
         $('.dateStart').datepicker({
