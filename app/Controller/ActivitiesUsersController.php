@@ -164,7 +164,8 @@ class ActivitiesUsersController extends AppController
                     'title' => $event['Calendarview']['activitydescription'],
                     'id' => $event['Calendarview']['activity_id'],
                     'start' => $event['Calendarview']['userstart'],
-                    'end' => $event['Calendarview']['userend']
+                    'end' => $event['Calendarview']['userend'] . ' 24:00:00',
+                    'allDay' => true
                 );
             }
         }

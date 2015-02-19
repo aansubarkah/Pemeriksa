@@ -178,6 +178,9 @@ class ActivitiesController extends AppController
                 $description = $this->request->data['description'];
             }
 
+            $public = true;
+            if($this->request->data['exercise'] == 1) $public = false;
+
             if (!isset($this->request->data['start']) || empty($this->request->data['start'])) {
                 $start = date('Y-m-d');
             } else {
@@ -202,6 +205,7 @@ class ActivitiesController extends AppController
 
             $activitiesData = array(
                 'name' => $name,
+                'public' => $public,
                 'description' => $description,
                 'draft' => false,
                 'start' => $start,
@@ -221,7 +225,9 @@ class ActivitiesController extends AppController
             foreach ($employees as $employee) {
                 $usersData[] = array(
                     'activity_id' => $activityId,
-                    'user_id' => $employee
+                    'user_id' => $employee,
+                    'start' => $start,
+                    'end' => $end
                 );
             }
 
