@@ -75,7 +75,7 @@ echo $this->Form->input('id', array(
 <?php
 $options = array(
     'label' => 'Simpan',
-    'div' => 'form-group col-sm-9',
+    'div' => 'form-group col-sm-12',
     'class' => 'form-control',
     'id' => 'btnSave',
     'type' => 'submit'
