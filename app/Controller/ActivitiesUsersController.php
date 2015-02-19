@@ -147,11 +147,12 @@ class ActivitiesUsersController extends AppController
         $events = $this->ActivitiesUser->Activity->Calendarview->find('all', array(
             'recursive' => -1,
             'conditions' => array(
-                'Calendarview.start >=' => $start,
-                'Calendarview.end <=' => $end,
+                'Calendarview.userstart >=' => $start,
+                'Calendarview.userend <=' => $end,
                 'Calendarview.user_id' => $this->Auth->user('id'),
                 'Calendarview.active' => 1,
                 'Calendarview.activityactive' => 1,
+                'Calendarview.tagged' => 1,
                 'Calendarview.activitydraft' => 0
             )
         ));
@@ -162,8 +163,8 @@ class ActivitiesUsersController extends AppController
                 $data[] = array(
                     'title' => $event['Calendarview']['activitydescription'],
                     'id' => $event['Calendarview']['activity_id'],
-                    'start' => $event['Calendarview']['start'],
-                    'end' => $event['Calendarview']['end']
+                    'start' => $event['Calendarview']['userstart'],
+                    'end' => $event['Calendarview']['userend']
                 );
             }
         }

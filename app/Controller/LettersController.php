@@ -962,10 +962,10 @@ class LettersController extends AppController
     {
         if ($this->request->is(array('post', 'put'))) {
             $activityId = $this->request->data['Letter']['id'];
-            //if (!$this->Letter->exists($this->request->data['Letter']['id'])) {
-                //return false;
-            //}
-            //$this->autoRender = false;
+            if (!$this->Letter->Activity->exists($this->request->data['Letter']['id'])) {
+                return false;
+            }
+
             $data = $this->request->data['Letter'];
             $dataToSave = array();
             foreach($data as $key=>$value) {
@@ -981,20 +981,27 @@ class LettersController extends AppController
                     }
                 }
             }
+            //first update activity start and end date to latest user date
+            $dataLen = count($dataToSave) - 1;
+            $this->Letter->Activity->updateAll(array(
+                'Activity.start' => '"' . $dataToSave[$dataLen]['start'] . '"',
+                'Activity.end' => '"' . $dataToSave[$dataLen]['end'] . '"'
+            ), array(
+                'Activity.id' => $activityId,
+                'Activity.active' => true
+            ));
+
+            //second update activitiesusers table
             foreach($dataToSave as $key=>$value) {
                 $user_id = $key;
                 $st = strtotime($value['start']);
                 $en = strtotime($value['end']);
-                //$start = date('Y-m-d', $st);
-                //$end = date('Y-m-d', $en);
                 $days = $en - $st;
-                //echo $key;
-                //echo '&nbsp;' . $start . '&nbsp;' . $end . '&nbsp;' . $days;
-                //echo '<br>';
+
                 $this->Letter->Activity->ActivitiesUser->updateAll(
                     array(
-                        'ActivitiesUser.start' => $value['start'],
-                        'ActivitiesUser.end' => $value['end']
+                        'ActivitiesUser.start' => '"' . $value['start'] . '"',
+                        'ActivitiesUser.end' => '"' . $value['end'] . '"'
                     ),
                     array(
                         'ActivitiesUser.activity_id' => $activityId,
@@ -1018,45 +1025,6 @@ class LettersController extends AppController
                 }
             }
             return $this->redirect(array('action' => 'indexAudit'));
-            //print_r($dataToSave);
-            //print_r($this->request->data);
-
-            /*$name = trim($this->request->data['Letter']['name']);
-            //first save to letters table
-            $this->Letter->id = $this->request->data['Letter']['id'];
-            $this->Letter->set('name', $name);
-            if (!empty($this->request->data['Letter']['date'])) {
-                $this->Letter->set('date', $this->request->data['Letter']['date']);
-            }
-
-            if (!$this->Letter->save()) {
-                $this->Session->setFlash(__('Nomor SP2 tidak dapat disimpan, silahkan ulangi.'));
-                return $this->redirect(array('action' => 'indexExpose'));
-            }
-
-            //second save to activity table
-            $activity = $this->Letter->find('first', array(
-                'recursive' => -1,
-                'conditions' => array(
-                    'Letter.id' => $this->request->data['Letter']['id']
-                ),
-                'fields' => array('Letter.activity_id')
-            ));
-            $this->Letter->Activity->id = $activity['Letter']['activity_id'];
-            $this->Letter->Activity->set(array(
-                'name' => $name,
-                'draft' => false
-            ));
-
-            if (!$this->Letter->Activity->save()) {
-                $this->Session->setFlash(__($activity['Letter']['activity_id']));
-                return $this->redirect(array(
-                    'controller' => 'messages',
-                    'action' => 'savingSuccess'
-                ));
-            }*/
-
-            //return $this->redirect(array('action' => 'indexAudit'));
         }
 
         $title_for_layout = 'Jadwal Pemeriksaan';
