@@ -961,9 +961,65 @@ class LettersController extends AppController
     public function addAuditDate($letterId = null)
     {
         if ($this->request->is(array('post', 'put'))) {
-            if (!$this->Letter->exists($this->request->data['Letter']['id'])) {
-                return false;
+            $activityId = $this->request->data['Letter']['id'];
+            //if (!$this->Letter->exists($this->request->data['Letter']['id'])) {
+                //return false;
+            //}
+            //$this->autoRender = false;
+            $data = $this->request->data['Letter'];
+            $dataToSave = array();
+            foreach($data as $key=>$value) {
+                if($key != 'id') {
+                    $arrKey = explode('_', $key);
+                    $userId = $arrKey[1];
+                    $keyId = $arrKey[0];
+
+                    if($keyId == 'start') {
+                        $dataToSave[$userId]['start'] = $value;
+                    } elseif($keyId == 'end') {
+                        $dataToSave[$userId]['end'] = $value;
+                    }
+                }
             }
+            foreach($dataToSave as $key=>$value) {
+                $user_id = $key;
+                $st = strtotime($value['start']);
+                $en = strtotime($value['end']);
+                //$start = date('Y-m-d', $st);
+                //$end = date('Y-m-d', $en);
+                $days = $en - $st;
+                //echo $key;
+                //echo '&nbsp;' . $start . '&nbsp;' . $end . '&nbsp;' . $days;
+                //echo '<br>';
+                $this->Letter->Activity->ActivitiesUser->updateAll(
+                    array(
+                        'ActivitiesUser.start' => $value['start'],
+                        'ActivitiesUser.end' => $value['end']
+                    ),
+                    array(
+                        'ActivitiesUser.activity_id' => $activityId,
+                        'ActivitiesUser.user_id' => $user_id,
+                        'ActivitiesUser.tagged' => true,
+                        'ActivitiesUser.active' => true
+                    )
+                );
+                if($days < 0) {//if end date before start date, tagged column set to false
+                    $this->Letter->Activity->ActivitiesUser->updateAll(
+                        array(
+                            'ActivitiesUser.tagged' => false
+                        ),
+                        array(
+                            'ActivitiesUser.activity_id' => $activityId,
+                            'ActivitiesUser.user_id' => $user_id,
+                            'ActivitiesUser.tagged' => true,
+                            'ActivitiesUser.active' => true
+                        )
+                    );
+                }
+            }
+            return $this->redirect(array('action' => 'indexAudit'));
+            //print_r($dataToSave);
+            //print_r($this->request->data);
 
             /*$name = trim($this->request->data['Letter']['name']);
             //first save to letters table
@@ -1000,7 +1056,7 @@ class LettersController extends AppController
                 ));
             }*/
 
-            return $this->redirect(array('action' => 'indexAudit'));
+            //return $this->redirect(array('action' => 'indexAudit'));
         }
 
         $title_for_layout = 'Jadwal Pemeriksaan';
