@@ -5,13 +5,16 @@
 $currentController = $this->request->params['controller'];
 $currentAction = $this->request->params['action'];
 $arrMenu = array();//@todo edit this for proper menu list
-$arrMenu[0]['title'] = 'Ekspose';
-$arrMenu[0]['controller'] = 'letters';
-$arrMenu[0]['action'] = 'indexExpose';
-$arrMenu[1]['title'] = 'Pemeriksaan';
-$arrMenu[1]['controller'] = 'letters';
-$arrMenu[1]['action'] = 'indexAudit';
-$arrMenu[2]['title'] = 'Kegiatan';
+$arrMenu[0]['title'] = 'Ringkasan';
+$arrMenu[0]['controller'] = 'users';
+$arrMenu[0]['action'] = 'index';
+$arrMenu[1]['title'] = 'Ganti Password';
+$arrMenu[1]['controller'] = 'users';
+$arrMenu[1]['action'] = 'editPassword';
+$arrMenu[2]['title'] = 'Ganti Username';
+$arrMenu[2]['controller'] = 'users';
+$arrMenu[2]['action'] = 'editUsername';
+/*$arrMenu[2]['title'] = 'Kegiatan';
 $arrMenu[2]['controller'] = 'activities';
 $arrMenu[2]['action'] = 'index';
 $arrMenu[3]['title'] = 'Kalender';
@@ -79,7 +82,7 @@ $arrMenu[6]['action'] = 'password';*/
         <nav class="navbar navbar-default" role="navigation">
             <div class="container">
                 <div class="navbar-header">
-                    <?php echo $this->Html->link('Profil', '/', array('class' => 'navbar-brand')); ?>
+                    <?php echo $this->Html->link('SP2P', '/', array('class' => 'navbar-brand')); ?>
                 </div>
                 <?php
                 /*echo $this->Form->create('Search', array(
@@ -107,13 +110,12 @@ $arrMenu[6]['action'] = 'password';*/
                 <!-- menu di sini -->
                 <div class="col-md-3">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Surat Penugasan</div>
+                        <div class="panel-heading">Profil</div>
                         <div class="list-group">
                             <?php
                             for ($i = 0; $i < 2; $i++) {
                                 $menuClass = 'list-group-item';
-
-                                if ($currentController == 'letters' && $i == 0 && $currentAction == 'indexExpose') $menuClass .= ' disabled';
+                                if ($currentController == 'users' && $i == 0 && $currentAction == 'index') $menuClass .= ' disabled';
                                 if ($currentController == 'letters' && $i == 0 && $currentAction == 'addExpose') $menuClass .= ' disabled';
                                 if ($currentController == 'letters' && $i == 1 && $currentAction == 'indexAudit') $menuClass .= ' disabled';
                                 if ($currentController == 'letters' && $i == 1 && $currentAction == 'addAudit') $menuClass .= ' disabled';
@@ -127,12 +129,24 @@ $arrMenu[6]['action'] = 'password';*/
                                     )
                                 );
                             }
+                            if(AuthComponent::user('username') !== AuthComponent::user('number')) {
+                                if ($currentController == 'users' && $currentAction == 'editUsername') $menuClass .= ' disabled';
+                                echo $this->Html->link($arrMenu[2]['title'],
+                                    array(
+                                        'controller' => $arrMenu[2]['controller'],
+                                        'action' => $arrMenu[2]['action']
+                                    ),
+                                    array(
+                                        'class' => $menuClass
+                                    )
+                                );
+                            }
                             ?>
                         </div>
                         <div class="panel-heading">Kegiatan</div>
                         <div class="list-group">
                             <?php
-                            for ($i = 2; $i < 4; $i++) {
+                            for ($i = 0; $i < 2; $i++) {
                                 $menuClass = 'list-group-item';
 
                                 //if ($currentController == 'activities' && $i == 2 && $currentAction == 'index') $menuClass .= ' disabled';
