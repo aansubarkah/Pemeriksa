@@ -17,6 +17,19 @@ class UsersController extends AppController
      */
     public $components = array('Paginator');
 
+    /**
+     * Breadcrumb for all
+     *
+     * @var array
+     */
+    private $breadCrumb = array(
+        0 => array(
+            'title' => 'Profil',
+            'controller' => 'users',
+            'action' => '/'
+        )
+    );
+
     //public $layout = 'profile';
     /**
      * index method
@@ -26,8 +39,22 @@ class UsersController extends AppController
     public function index()
     {
         $this->layout = 'profile';
-        //$this->User->recursive = 0;
-        //$this->set('users', $this->Paginator->paginate());
+        $breadCrumb = $this->breadCrumb;
+        $breadCrumb[1] = array(
+            'title' => 'Ringkasan',
+            'controller' => 'users',
+            'action' => '/'
+        );
+
+        $title_for_layout = 'Ringkasan';
+        $user = $this->User->find('first', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'User.id' => $this->Auth->user('id')
+            )
+        ));
+
+        $this->set(compact('title_for_layout', 'breadCrumb', 'user'));
     }
 
     /**
