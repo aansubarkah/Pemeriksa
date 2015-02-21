@@ -1,7 +1,7 @@
 <?php
 /**
  * @var View $this
- * @todo use momentjs to format birthdate
+ * @todo create edit password and username, if username same with number column
  */
 ?>
 <h4>
