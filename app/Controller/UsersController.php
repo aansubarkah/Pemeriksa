@@ -53,8 +53,62 @@ class UsersController extends AppController
                 'User.id' => $this->Auth->user('id')
             )
         ));
+        $departement = $this->User->DepartementsUser->find('first', array(
+            'recursive' => 0,
+            'conditions' => array(
+                'DepartementsUser.user_id' => $this->Auth->user('id'),
+                'DepartementsUser.end' => null,
+                'DepartementsUser.active' => true
+            ),
+            'order' => array(
+                'DepartementsUser.start' => 'DESC'
+            )
+        ));
+        $education = $this->User->EducationsUser->find('first', array(
+            'recursive' => 0,
+            'conditions' => array(
+                'EducationsUser.user_id' => $this->Auth->user('id'),
+                'EducationsUser.active' => true
+            ),
+            'order' => array(
+                'EducationsUser.education_id' => 'DESC'
+            )
+        ));
+        $level = $this->User->LevelsUser->find('first', array(
+            'recursive' => 0,
+            'conditions' => array(
+                'LevelsUser.user_id' => $this->Auth->user('id'),
+                'LevelsUser.end' => null,
+                'LevelsUser.active' => true
+            ),
+            'order' => array(
+                'LevelsUser.start' => 'DESC'
+            )
+        ));
+        $role = $this->User->RolesUser->find('first', array(
+            'recursive' => 0,
+            'conditions' => array(
+                'RolesUser.user_id' => $this->Auth->user('id'),
+                'RolesUser.end' => null,
+                'RolesUser.active' => true
+            ),
+            'order' => array(
+                'RolesUser.start' => 'DESC'
+            )
+        ));
+        $positionlevel = $this->User->UsersPositionlevel->find('first', array(
+            'recursive' => 0,
+            'conditions' => array(
+                'UsersPositionlevel.user_id' => $this->Auth->user('id'),
+                'UsersPositionlevel.end' => null,
+                'UsersPositionlevel.active' => true
+            ),
+            'order' => array(
+                'UsersPositionlevel.start' => 'DESC'
+            )
+        ));
 
-        $this->set(compact('title_for_layout', 'breadCrumb', 'user'));
+        $this->set(compact('title_for_layout', 'breadCrumb', 'user', 'departement', 'education', 'level', 'role', 'positionlevel'));
     }
 
     /**
