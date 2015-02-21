@@ -6,6 +6,7 @@ App::uses('AppModel', 'Model');
  *
  * @property User $User
  * @property Userroleview $Userroleview
+ * @property RolesUser $RolesUser
  */
 class Role extends AppModel
 {
@@ -69,6 +70,19 @@ class Role extends AppModel
     public $hasMany = array(
         'Userroleview' => array(
             'className' => 'Userroleview',
+            'foreignKey' => 'role_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
+        'RolesUser' => array(
+            'className' => 'RolesUser',
             'foreignKey' => 'role_id',
             'dependent' => false,
             'conditions' => '',

@@ -30,6 +30,10 @@ App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
  * @property Activityuserview $Activityuserview
  * @property Job $Job
  * @property JobsUser $JobsUser
+ * @property EducationsUser $EducationsUser
+ * @property LevelsUser $LevelsUser
+ * @property RolesUser $RolesUser
+ * @property UsersPositionlevel $UsersPositionlevel
  */
 class User extends AppModel
 {
@@ -299,6 +303,58 @@ class User extends AppModel
         ),
         'JobsUser' => array(
             'className' => 'JobsUser',
+            'foreignKey' => 'user_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
+        'EducationsUser' => array(
+            'className' => 'EducationsUser',
+            'foreignKey' => 'user_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
+        'LevelsUser' => array(
+            'className' => 'LevelsUser',
+            'foreignKey' => 'user_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
+        'RolesUser' => array(
+            'className' => 'RolesUser',
+            'foreignKey' => 'user_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
+        'UsersPositionlevel' => array(
+            'className' => 'UsersPositionlevel',
             'foreignKey' => 'user_id',
             'dependent' => false,
             'conditions' => '',

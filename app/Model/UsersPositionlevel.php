@@ -6,6 +6,7 @@ App::uses('AppModel', 'Model');
  *
  * @property User $User
  * @property Positionlevel $Positionlevel
+ * @property UsersPositionlevel $UsersPositionlevel
  */
 class UsersPositionlevel extends AppModel
 {
@@ -79,6 +80,27 @@ class UsersPositionlevel extends AppModel
             'conditions' => '',
             'fields' => '',
             'order' => ''
+        )
+    );
+
+    /**
+     * hasMany associations
+     *
+     * @var array
+     */
+    public $hasMany = array(
+        'UsersPositionlevel' => array(
+            'className' => 'UsersPositionlevel',
+            'foreignKey' => 'positionlevel_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
         )
     );
 }

@@ -5,6 +5,7 @@ App::uses('AppModel', 'Model');
  * Education Model
  *
  * @property User $User
+ * @property EducationsUser $EducationsUser
  */
 class Education extends AppModel
 {
@@ -67,6 +68,27 @@ class Education extends AppModel
             'limit' => '',
             'offset' => '',
             'finderQuery' => '',
+        )
+    );
+
+    /**
+     * hasMany associations
+     *
+     * @var array
+     */
+    public $hasMany = array(
+        'EducationsUser' => array(
+            'className' => 'EducationsUser',
+            'foreignKey' => 'education_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
         )
     );
 
