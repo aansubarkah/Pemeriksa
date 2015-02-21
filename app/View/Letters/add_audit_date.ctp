@@ -84,7 +84,7 @@ $options = array(
 echo $this->Form->end($options);
 
 echo $this->Html->css(array('datepicker'));
-echo $this->Html->script(array('bootstrap-datepicker', 'jquery.validate.min', 'jquery.validate.custom.messages', 'moment'));
+echo $this->Html->script(array('bootstrap-datepicker', 'jquery.validate.min', 'jquery.validate.custom.messages', 'moment.min'));
 
 echo $this->fetch('script');
 echo $this->fetch('css');
