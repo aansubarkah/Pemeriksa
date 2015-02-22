@@ -14,12 +14,18 @@ $arrMenu[1]['action'] = 'editPassword';
 $arrMenu[2]['title'] = 'Ganti Username';
 $arrMenu[2]['controller'] = 'users';
 $arrMenu[2]['action'] = 'editUsername';
-/*$arrMenu[2]['title'] = 'Kegiatan';
-$arrMenu[2]['controller'] = 'activities';
-$arrMenu[2]['action'] = 'index';
-$arrMenu[3]['title'] = 'Kalender';
-$arrMenu[3]['controller'] = 'users';
-$arrMenu[3]['action'] = 'calendar';
+$arrMenu[3]['title'] = 'Pendidikan';
+$arrMenu[3]['controller'] = 'educations';
+$arrMenu[3]['action'] = 'indexUser';
+$arrMenu[4]['title'] = 'Unit Kerja';
+$arrMenu[4]['controller'] = 'departements';
+$arrMenu[4]['action'] = 'indexUser';
+$arrMenu[5]['title'] = 'Pangkat/Gol';
+$arrMenu[5]['controller'] = 'levels';
+$arrMenu[5]['action'] = 'indexUser';
+$arrMenu[6]['title'] = 'Peran';
+$arrMenu[6]['controller'] = 'roles';
+$arrMenu[6]['action'] = 'indexUser';
 /*$arrMenu[1]['title'] = 'Informasi Dasar';
 $arrMenu[1]['action'] = 'basicinfo';
 $arrMenu[2]['title'] = 'Pangkat/Golongan';
@@ -118,7 +124,6 @@ $arrMenu[6]['action'] = 'password';*/
                                 if ($currentController == 'users' && $i == 0 && $currentAction == 'index') $menuClass .= ' disabled';
                                 if ($currentController == 'users' && $i == 0 && $currentAction == 'edit') $menuClass .= ' disabled';
                                 if ($currentController == 'users' && $i == 1 && $currentAction == 'editPassword') $menuClass .= ' disabled';
-                                //if ($currentController == 'users' && $i == 2 && $currentAction == 'editUsername') $menuClass .= ' disabled';
                                 echo $this->Html->link($arrMenu[$i]['title'],
                                     array(
                                         'controller' => $arrMenu[$i]['controller'],
@@ -136,6 +141,30 @@ $arrMenu[6]['action'] = 'password';*/
                                     array(
                                         'controller' => $arrMenu[2]['controller'],
                                         'action' => $arrMenu[2]['action']
+                                    ),
+                                    array(
+                                        'class' => $menuClass
+                                    )
+                                );
+                            }
+                            ?>
+                        </div>
+                        <div class="panel-heading">Karir</div>
+                        <div class="list-group">
+                            <?php
+                            //@todo user timeline
+                            //https://github.com/juanbrujo/jQuery-Timelinr
+                            //https://github.com/technotarek/timeliner
+                            for ($i = 3; $i < 7; $i++) {
+                                $menuClass = 'list-group-item';
+                                if ($currentController == 'educations' && $i == 3) $menuClass .= ' disabled';
+                                if ($currentController == 'departements' && $i == 4) $menuClass .= ' disabled';
+                                if ($currentController == 'levels' && $i == 5) $menuClass .= ' disabled';
+                                if ($currentController == 'roles' && $i == 6) $menuClass .= ' disabled';
+                                echo $this->Html->link($arrMenu[$i]['title'],
+                                    array(
+                                        'controller' => $arrMenu[$i]['controller'],
+                                        'action' => $arrMenu[$i]['action']
                                     ),
                                     array(
                                         'class' => $menuClass

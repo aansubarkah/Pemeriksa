@@ -53,9 +53,8 @@
         $spanDownload = ' <span class="glyphicon glyphicon-pencil"></span>';
         echo $this->Html->link($spanDownload,
             array(
-                'controller' => 'users',
-                'action' => 'edit',
-                $user['User']['id']
+                'controller' => 'educations',
+                'action' => 'indexUser'
             ),
             array('escape' => false));
     }
