@@ -11,30 +11,73 @@
     <small>NIP</small>
     &nbsp;<?php echo $user['User']['number']; ?></h4>
 <h4>
+    <small>No Karpeg</small>
+    &nbsp;<?php
+    if (empty($user['User']['cardnumber'])) {
+        $spanDownload = ' <span class="glyphicon glyphicon-pencil"></span>';
+    } else {
+        $spanDownload = $user['User']['cardnumber'];
+    }
+    echo $this->Html->link($spanDownload,
+        array(
+            'controller' => 'users',
+            'action' => 'edit',
+            $user['User']['id']
+        ),
+        array('escape' => false));
+    ?>
+</h4>
+<h4>
     <small>Tempat, Tanggal Lahir</small>
-    &nbsp;<?php echo $user['User']['birthplace']; ?>,&nbsp;<span
-        id="birthdate"></span></h4>
+    &nbsp;<?php
+    if (empty($user['User']['birthplace'])) {
+        $spanDownload = ' <span class="glyphicon glyphicon-pencil"></span>';
+    } else {
+        $spanDownload = $user['User']['birthplace'] . ',&nbsp;' . '<span id="birthdate"></span>';
+    }
+    echo $this->Html->link($spanDownload,
+        array(
+            'controller' => 'users',
+            'action' => 'edit',
+            $user['User']['id']
+        ),
+        array('escape' => false));
+    ?>
+</h4>
 <h4>
     <small>Pendidikan Terakhir</small>
-    <?php if (count($education) > 0) echo $education['Education']['description']; ?>
+    <?php
+    if (count($education) > 0) {
+        echo $education['Education']['description'];
+    } else {
+        $spanDownload = ' <span class="glyphicon glyphicon-pencil"></span>';
+        echo $this->Html->link($spanDownload,
+            array(
+                'controller' => 'users',
+                'action' => 'edit',
+                $user['User']['id']
+            ),
+            array('escape' => false));
+    }
+    ?>
 </h4>
 <h4>
     <small>Unit Kerja</small>
     &nbsp;<?php echo $departement['Departement']['description']; ?></h4>
 <h4>
     <small>Pangkat/Gol</small>
-    <?php if (count($level) > 0) echo $level['Level']['description'] . '&nbsp;(' . $level['Level']['name'] . ')'; ?>
+    <?php if (count($level) > 0) echo $level['Userlevelview']['leveldescription'] . '&nbsp;(' . $level['Userlevelview']['levelname'] . ')'; ?>
 </h4>
 <h4>
     <small>Jenjang</small>
-    <?php if (count($positionlevel) > 0) echo $positionlevel['Positionlevel']['name']; ?>
+    <?php if (count($level) > 0) echo $level['Userlevelview']['positionlevelname']; ?>
 </h4>
 <h4>
     <small>Peran</small>
     <?php if (count($role) > 0) echo $role['Role']['description']; ?>
 </h4>
 <?php
-//print_r($positionlevel);
+//print_r($level);
 echo $this->Html->script(array('moment-with-locales.min'));
 echo $this->fetch('script');
 ?>

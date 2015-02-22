@@ -116,7 +116,7 @@ $arrMenu[6]['action'] = 'password';*/
                             for ($i = 0; $i < 2; $i++) {
                                 $menuClass = 'list-group-item';
                                 if ($currentController == 'users' && $i == 0 && $currentAction == 'index') $menuClass .= ' disabled';
-                                if ($currentController == 'letters' && $i == 0 && $currentAction == 'addExpose') $menuClass .= ' disabled';
+                                if ($currentController == 'users' && $i == 0 && $currentAction == 'edit') $menuClass .= ' disabled';
                                 if ($currentController == 'letters' && $i == 1 && $currentAction == 'indexAudit') $menuClass .= ' disabled';
                                 if ($currentController == 'letters' && $i == 1 && $currentAction == 'addAudit') $menuClass .= ' disabled';
                                 echo $this->Html->link($arrMenu[$i]['title'],
