@@ -505,4 +505,21 @@ class User extends AppModel
         return true;
     }
 
+    public function comparePassword($user_id, $pass)
+    {
+        $correct = false;
+        $user = $this->find('first', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'User.active' => 1,
+                'User.id' => $user_id
+            )
+        ));
+        if (!empty($user)) {
+            $storedHash = $user['User']['password'];
+            $newHash = Security::hash($pass, 'blowfish', $storedHash);
+            $correct = strcmp($storedHash, $newHash) == 0;
+        }
+        return $correct;
+    }
 }
