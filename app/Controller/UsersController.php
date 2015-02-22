@@ -277,6 +277,62 @@ class UsersController extends AppController
         $this->set(compact('title_for_layout', 'breadCrumb'));
     }
 
+    public function isUsernameBelongsToUser()
+    {
+        $data = false;
+        if (isset($this->request->data['username'])) {
+            $username = trim($this->request->data['username']);
+            $user = $this->User->find('first', array(
+                'recursive' => -1,
+                'conditions' => array(
+                    'User.active' => 1,
+                    'User.username' => $username
+                )
+            ));
+            if (!empty($user)) {
+                if ($user['User']['id'] == $this->Auth->user('id')) $data = true;
+            } else {
+                $data = true;
+            }
+        }
+
+        $this->set(compact('data'));
+        $this->set('_serialize', 'data');
+    }
+
+    public function editUsername()
+    {
+        $id = $this->Auth->user('id');
+        $breadCrumb = $this->breadCrumb;
+        $breadCrumb[1] = array(
+            'title' => 'Ubah Username',
+            'controller' => 'users',
+            'action' => 'editUsername'
+        );
+
+        $title_for_layout = 'Ubah Username';
+
+        if (!$this->User->exists($id)) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+        if ($this->request->is(array('post', 'put'))) {
+            $this->request->data['User']['username'] = trim($this->request->data['User']['username']);
+            if ($this->User->save($this->request->data)) {
+                return $this->redirect(array('action' => 'index'));
+            } else {
+                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+            }
+        }
+        $user = $this->User->find('first', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'User.id' => $this->Auth->user('id'),
+                'User.active' => true
+            )
+        ));
+        $this->set(compact('title_for_layout', 'breadCrumb', 'user'));
+    }
+
     /**
      * delete method
      *
