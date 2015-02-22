@@ -74,15 +74,15 @@ class UsersController extends AppController
                 'EducationsUser.education_id' => 'DESC'
             )
         ));
-        $level = $this->User->LevelsUser->find('first', array(
-            'recursive' => 0,
+        $level = $this->User->Userlevelview->find('first', array(
+            'recursive' => -1,
             'conditions' => array(
-                'LevelsUser.user_id' => $this->Auth->user('id'),
-                'LevelsUser.end' => null,
-                'LevelsUser.active' => true
+                'Userlevelview.user_id' => $this->Auth->user('id'),
+                'Userlevelview.end' => null,
+                'Userlevelview.active' => true
             ),
             'order' => array(
-                'LevelsUser.start' => 'DESC'
+                'Userlevelview.start' => 'DESC'
             )
         ));
         $role = $this->User->RolesUser->find('first', array(
@@ -96,19 +96,8 @@ class UsersController extends AppController
                 'RolesUser.start' => 'DESC'
             )
         ));
-        $positionlevel = $this->User->UsersPositionlevel->find('first', array(
-            'recursive' => 0,
-            'conditions' => array(
-                'UsersPositionlevel.user_id' => $this->Auth->user('id'),
-                'UsersPositionlevel.end' => null,
-                'UsersPositionlevel.active' => true
-            ),
-            'order' => array(
-                'UsersPositionlevel.start' => 'DESC'
-            )
-        ));
 
-        $this->set(compact('title_for_layout', 'breadCrumb', 'user', 'departement', 'education', 'level', 'role', 'positionlevel'));
+        $this->set(compact('title_for_layout', 'breadCrumb', 'user', 'departement', 'education', 'level', 'role'));
     }
 
     /**
@@ -164,30 +153,41 @@ class UsersController extends AppController
      */
     public function edit($id = null)
     {
-        if (!$this->User->exists($id)) {
-            throw new NotFoundException(__('Invalid user'));
-        }
-        if ($this->request->is(array('post', 'put'))) {
-            if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash(__('The user has been saved.'));
-                return $this->redirect(array('action' => 'index'));
-            } else {
-                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+        if($id == $this->Auth->user('id')) {
+            $breadCrumb = $this->breadCrumb;
+            $breadCrumb[1] = array(
+                'title' => 'Ubah',
+                'controller' => 'users',
+                'action' => 'edit'
+            );
+
+            $title_for_layout = 'Ubah Ringkasan Profil';
+            $user = $this->User->find('first', array(
+                'recursive' => -1,
+                'conditions' => array(
+                    'User.id' => $this->Auth->user('id')
+                )
+            ));
+            if (!$this->User->exists($id)) {
+                throw new NotFoundException(__('Invalid user'));
             }
+            if ($this->request->is(array('post', 'put'))) {
+                if ($this->User->save($this->request->data)) {
+                    $this->Session->setFlash(__('The user has been saved.'));
+                    return $this->redirect(array('action' => 'index'));
+                } else {
+                    $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+                }
+            }
+            $this->set(compact('title_for_layout', 'breadCrumb', 'user'));
         } else {
-            $options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
-            $this->request->data = $this->User->find('first', $options);
+            $this->redirect(
+                array(
+                    'controller' => 'users',
+                    'action' => 'index'
+                )
+            );
         }
-        $groups = $this->User->Group->find('list');
-        $activities = $this->User->Activity->find('list');
-        $departements = $this->User->Departement->find('list');
-        $educations = $this->User->Education->find('list');
-        $levels = $this->User->Level->find('list');
-        $roles = $this->User->Role->find('list');
-        $periods = $this->User->Period->find('list');
-        $positionlevels = $this->User->Positionlevel->find('list');
-        $positions = $this->User->Position->find('list');
-        $this->set(compact('groups', 'activities', 'departements', 'educations', 'levels', 'roles', 'periods', 'positionlevels', 'positions'));
     }
 
     /**
