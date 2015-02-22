@@ -153,7 +153,7 @@ class UsersController extends AppController
      */
     public function edit($id = null)
     {
-        if($id == $this->Auth->user('id')) {
+        if ($id == $this->Auth->user('id')) {
             $breadCrumb = $this->breadCrumb;
             $breadCrumb[1] = array(
                 'title' => 'Ubah',
@@ -173,7 +173,7 @@ class UsersController extends AppController
             }
             if ($this->request->is(array('post', 'put'))) {
                 if ($this->User->save($this->request->data)) {
-                    $this->Session->setFlash(__('The user has been saved.'));
+                    //$this->Session->setFlash(__('The user has been saved.'));
                     return $this->redirect(array('action' => 'index'));
                 } else {
                     $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
@@ -188,6 +188,93 @@ class UsersController extends AppController
                 )
             );
         }
+    }
+
+    public function isNumberBelongsToUser()
+    {
+        $data = false;
+        if (isset($this->request->data['number'])) {
+            $number = trim($this->request->data['number']);
+            $user = $this->User->find('first', array(
+                'recursive' => -1,
+                'conditions' => array(
+                    'User.active' => 1,
+                    'User.number' => $number
+                )
+            ));
+            if (!empty($user)) {
+                if ($user['User']['id'] == $this->Auth->user('id')) $data = true;
+            } else {
+                $data = true;
+            }
+        }
+
+        $this->set(compact('data'));
+        $this->set('_serialize', 'data');
+    }
+
+    public function isCardnumberBelongsToUser()
+    {
+        $data = false;
+        if (isset($this->request->data['cardnumber'])) {
+            $cardNumber = trim($this->request->data['cardnumber']);
+            $user = $this->User->find('first', array(
+                'recursive' => -1,
+                'conditions' => array(
+                    'User.active' => 1,
+                    'User.cardnumber' => $cardNumber
+                )
+            ));
+            if (!empty($user)) {
+                if ($user['User']['id'] == $this->Auth->user('id')) $data = true;
+            } else {
+                $data = true;
+            }
+        }
+
+        $this->set(compact('data'));
+        $this->set('_serialize', 'data');
+    }
+
+    public function isPasswordCorrect()
+    {
+        $data = false;
+        if (isset($this->request->data['oldPassword'])) {
+            $data = $this->User->comparePassword($this->Auth->user('id'), $this->request->data['oldPassword']);
+
+        }
+
+        $this->set(compact('data'));
+        $this->set('_serialize', 'data');
+    }
+
+    public function editPassword()
+    {
+        $id = $this->Auth->user('id');
+        $breadCrumb = $this->breadCrumb;
+        $breadCrumb[1] = array(
+            'title' => 'Ubah Password',
+            'controller' => 'users',
+            'action' => 'editPassword'
+        );
+
+        $title_for_layout = 'Ubah Password';
+
+        if (!$this->User->exists($id)) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+        if ($this->request->is(array('post', 'put'))) {
+            if ($this->User->comparePassword($this->Auth->user('id'), $this->request->data['User']['oldPassword'])) {
+                if ($this->User->save($this->request->data)) {
+                    return $this->redirect(array('action' => 'index'));
+                } else {
+                    $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+                }
+            } else {
+                $this->Session->setFlash(__('Password lama tidak sesuai'));
+            }
+        }
+        $this->set(compact('title_for_layout', 'breadCrumb'));
     }
 
     /**
