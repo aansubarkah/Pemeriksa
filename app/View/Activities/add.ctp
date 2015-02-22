@@ -118,7 +118,7 @@ echo $this->Form->input('exercise', array(
     'id' => 'exercise',
     'hiddenField' => false,
     'value' => false,
-    'label' => '&nbsp;Diklat'
+    'label' => '&nbsp;Diklat?'
 ));
 
 

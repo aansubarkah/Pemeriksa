@@ -117,8 +117,8 @@ $arrMenu[6]['action'] = 'password';*/
                                 $menuClass = 'list-group-item';
                                 if ($currentController == 'users' && $i == 0 && $currentAction == 'index') $menuClass .= ' disabled';
                                 if ($currentController == 'users' && $i == 0 && $currentAction == 'edit') $menuClass .= ' disabled';
-                                if ($currentController == 'letters' && $i == 1 && $currentAction == 'indexAudit') $menuClass .= ' disabled';
-                                if ($currentController == 'letters' && $i == 1 && $currentAction == 'addAudit') $menuClass .= ' disabled';
+                                if ($currentController == 'users' && $i == 1 && $currentAction == 'editPassword') $menuClass .= ' disabled';
+                                //if ($currentController == 'users' && $i == 2 && $currentAction == 'editUsername') $menuClass .= ' disabled';
                                 echo $this->Html->link($arrMenu[$i]['title'],
                                     array(
                                         'controller' => $arrMenu[$i]['controller'],
@@ -130,32 +130,12 @@ $arrMenu[6]['action'] = 'password';*/
                                 );
                             }
                             if(AuthComponent::user('username') !== AuthComponent::user('number')) {
-                                if ($currentController == 'users' && $currentAction == 'editUsername') $menuClass .= ' disabled';
+                                $menuClass = 'list-group-item';
+                                if ($currentController == 'users' && $i == 2 && $currentAction == 'editUsername') $menuClass .= ' disabled';
                                 echo $this->Html->link($arrMenu[2]['title'],
                                     array(
                                         'controller' => $arrMenu[2]['controller'],
                                         'action' => $arrMenu[2]['action']
-                                    ),
-                                    array(
-                                        'class' => $menuClass
-                                    )
-                                );
-                            }
-                            ?>
-                        </div>
-                        <div class="panel-heading">Kegiatan</div>
-                        <div class="list-group">
-                            <?php
-                            for ($i = 0; $i < 2; $i++) {
-                                $menuClass = 'list-group-item';
-
-                                //if ($currentController == 'activities' && $i == 2 && $currentAction == 'index') $menuClass .= ' disabled';
-                                if ($currentController == 'activities' && $i == 2) $menuClass .= ' disabled';
-                                if ($currentController == 'users' && $i == 3 && $currentAction == 'calendar') $menuClass .= ' disabled';
-                                echo $this->Html->link($arrMenu[$i]['title'],
-                                    array(
-                                        'controller' => $arrMenu[$i]['controller'],
-                                        'action' => $arrMenu[$i]['action']
                                     ),
                                     array(
                                         'class' => $menuClass
