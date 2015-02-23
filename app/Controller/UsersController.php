@@ -453,6 +453,18 @@ class UsersController extends AppController
         $this->set(compact('title_for_layout', 'breadCrumb'));
         $this->set(array('title_for_layout', 'breadCrumb'));
     }
+
+    public function timeline() {
+        $breadCrumb = $this->breadCrumb;
+        $breadCrumb[1] = array(
+            'title' => 'Kronologi',
+            'controller' => 'users',
+            'action' => 'timeline'
+        );
+
+        $title_for_layout = 'Kronologi';
+        $this->set(compact('title_for_layout', 'breadCrumb'));
+    }
 }
 /**
  * ALTER ALGORITHM=UNDEFINED DEFINER=`user`@`%` SQL SECURITY DEFINER VIEW `calendarviews` AS select `a`.`id` AS `id`,`a`.`activity_id` AS `activity_id`,`a`.`user_id` AS `user_id`,`a`.`tagged` AS `tagged`,`a`.`active` AS `active`,`b`.`name` AS `activityname`,`b`.`description` AS `activitydescription`,`b`.`start` AS `start`,`b`.`end` AS `end`,`b`.`uploader_id` AS `uploader_id`,`b`.`active` AS `activityactive`,`u`.`name` AS `username`,`u`.`fullname` AS `userfullname`,`u`.`active` AS `useractive` from ((`activities_users` `a` left join `activities` `b` on((`a`.`activity_id` = `b`.`id`))) left join `users` `u` on((`a`.`user_id` = `u`.`id`)))
