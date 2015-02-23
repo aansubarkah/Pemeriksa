@@ -2,42 +2,36 @@
 /**
  * @var View $this
  */
-echo $this->Form->create('LevelsUser', array(
+echo $this->Form->create('RolesUser', array(
     "role" => "form",
-    'id' => 'editUser'
-));
-
-echo $this->Form->input('id', array(
-    'type' => 'hidden',
-    'value' => $user['LevelsUser']['id']
+    'id' => 'addUser'
 ));
 
 echo '<div class="form-group col-sm-9">';
-echo $this->Form->select('level_id', $level, array(
+echo $this->Form->select('role_id', $role, array(
     'label' => false,
     'class' => 'form-control',
-    'id' => 'level_id',
-    'value' => $user['LevelsUser']['level_id']
+    'id' => 'role_id'
 ));
 echo '</div>';
 
 echo $this->Form->input('start', array(
+    'required' => false,
     'type' => 'text',
     'label' => false,
     'div' => 'form-group col-sm-9',
     'class' => 'form-control',
     'id' => 'start',
-    'value' => $user['LevelsUser']['start'],
     'placeholder' => 'Tanggal Mulai (Jika dikosongkan sistem akan menggunakan tanggal hari ini)'
 ));
 
 echo $this->Form->input('end', array(
+    'required' => false,
     'type' => 'text',
     'label' => false,
     'div' => 'form-group col-sm-9',
     'class' => 'form-control',
     'id' => 'end',
-    'value' => $user['LevelsUser']['end'],
     'placeholder' => 'Tanggal Berakhir (Dapat dikosongkan)'
 ));
 
@@ -68,9 +62,9 @@ echo $this->fetch('css');
             format: 'yyyy-mm-dd'
         });
 
-        $('#editUser').validate({
+        $('#addUser').validate({
             rules: {
-                'data[LevelsUser][level_id]': {
+                'data[RolesUser][role_id]': {
                     required: true
                 }
             }

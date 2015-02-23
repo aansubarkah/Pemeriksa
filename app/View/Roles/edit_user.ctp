@@ -2,22 +2,22 @@
 /**
  * @var View $this
  */
-echo $this->Form->create('LevelsUser', array(
+echo $this->Form->create('RolesUser', array(
     "role" => "form",
     'id' => 'editUser'
 ));
 
 echo $this->Form->input('id', array(
     'type' => 'hidden',
-    'value' => $user['LevelsUser']['id']
+    'value' => $user['RolesUser']['id']
 ));
 
 echo '<div class="form-group col-sm-9">';
-echo $this->Form->select('level_id', $level, array(
+echo $this->Form->select('role_id', $role, array(
     'label' => false,
     'class' => 'form-control',
-    'id' => 'level_id',
-    'value' => $user['LevelsUser']['level_id']
+    'id' => 'role_id',
+    'value' => $user['RolesUser']['role_id']
 ));
 echo '</div>';
 
@@ -27,7 +27,7 @@ echo $this->Form->input('start', array(
     'div' => 'form-group col-sm-9',
     'class' => 'form-control',
     'id' => 'start',
-    'value' => $user['LevelsUser']['start'],
+    'value' => $user['RolesUser']['start'],
     'placeholder' => 'Tanggal Mulai (Jika dikosongkan sistem akan menggunakan tanggal hari ini)'
 ));
 
@@ -37,7 +37,7 @@ echo $this->Form->input('end', array(
     'div' => 'form-group col-sm-9',
     'class' => 'form-control',
     'id' => 'end',
-    'value' => $user['LevelsUser']['end'],
+    'value' => $user['RolesUser']['end'],
     'placeholder' => 'Tanggal Berakhir (Dapat dikosongkan)'
 ));
 
