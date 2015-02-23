@@ -454,7 +454,8 @@ class UsersController extends AppController
         $this->set(array('title_for_layout', 'breadCrumb'));
     }
 
-    public function timeline() {
+    public function timeline()
+    {
         $breadCrumb = $this->breadCrumb;
         $breadCrumb[1] = array(
             'title' => 'Kronologi',
@@ -462,10 +463,128 @@ class UsersController extends AppController
             'action' => 'timeline'
         );
 
+        $data = array();
+        $user = $this->User->find('first', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'User.id' => $this->Auth->user('id')
+            )
+        ));
+        $data[] = array(
+            'date' => $user['User']['birthdate'],
+            'icon' => 'user',
+            'name' => 'Lahir',
+            'description' => 'Lahir'
+        );
+
+        $dateAsEmployeeYear = substr($user['User']['number'], 8, 4);
+        $dateAsEmployeeMonth = substr($user['User']['number'], 12, 2);
+        $data[] = array(
+            'date' => $dateAsEmployeeYear . '-' . $dateAsEmployeeMonth . '-1',
+            'icon' => 'phone-alt',
+            'name' => 'Karir',
+            'description' => 'PNS'
+        );
+
+        //education
+        $education = $this->User->EducationsUser->find('all', array(
+            'recursive' => 0,
+            'conditions' => array(
+                'EducationsUser.user_id' => $this->Auth->user('id'),
+                'EducationsUser.active' => 1
+            ),
+            'order' => array(
+                'EducationsUser.date' => 'ASC'
+            )
+        ));
+        if (count($education) > 0) {
+            foreach ($education as $ed) {
+                $data[] = array(
+                    'date' => $ed['EducationsUser']['date'],
+                    'icon' => 'send',
+                    'name' => 'Pendidikan',
+                    'description' => $ed['Education']['description']
+                );
+            }
+        }
+        //level
+        $level = $this->User->Userlevelview->find('all', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'Userlevelview.user_id' => $this->Auth->user('id'),
+                'Userlevelview.active' => 1
+            ),
+            'order' => array(
+                'Userlevelview.start' => 'ASC'
+            )
+        ));
+        if (count($level) > 0) {
+            foreach ($level as $le) {
+                $data[] = array(
+                    'date' => $le['Userlevelview']['start'],
+                    'icon' => 'tower',
+                    'name' => 'Pangkat',
+                    'description' => $le['Userlevelview']['leveldescription']
+                );
+            }
+        }
+        //departement
+        $departement = $this->User->Userdepartementview->find('all', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'Userdepartementview.user_id' => $this->Auth->user('id'),
+                'Userdepartementview.active' => 1
+            ),
+            'order' => array(
+                'Userdepartementview.start' => 'ASC'
+            )
+        ));
+        if (count($departement) > 0) {
+            foreach ($departement as $de) {
+                $data[] = array(
+                    'date' => $de['Userdepartementview']['start'],
+                    'icon' => 'envelope',
+                    'name' => 'Unit Kerja',
+                    'description' => $de['Userdepartementview']['departementdescription']
+                );
+            }
+        }
+
+        //role
+        $roles = $this->User->Userroleview->find('all', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'Userroleview.user_id' => $this->Auth->user('id'),
+                'Userroleview.active' => 1
+            ),
+            'order' => array(
+                'Userroleview.start' => 'ASC'
+            )
+        ));
+        if (count($roles) > 0) {
+            foreach ($roles as $role) {
+                $data[] = array(
+                    'date' => $role['Userroleview']['start'],
+                    'icon' => 'briefcase',
+                    'name' => 'Peran',
+                    'description' => $role['Userroleview']['roledescription']
+                );
+            }
+        }
+
+        //sort data
+        //alternative
+        usort($data, function ($a, $b) {
+            return $a['date'] - $b['date'];
+        });
+        /*foreach ($data as $row) {
+            foreach ($row as $key => $value) {
+                ${$key}[] = $value;
+            }
+        }
+        array_multisort($date, SORT_ASC, $data);*/
+
         $title_for_layout = 'Kronologi';
-        $this->set(compact('title_for_layout', 'breadCrumb'));
+        $this->set(compact('title_for_layout', 'breadCrumb', 'data'));
     }
 }
-/**
- * ALTER ALGORITHM=UNDEFINED DEFINER=`user`@`%` SQL SECURITY DEFINER VIEW `calendarviews` AS select `a`.`id` AS `id`,`a`.`activity_id` AS `activity_id`,`a`.`user_id` AS `user_id`,`a`.`tagged` AS `tagged`,`a`.`active` AS `active`,`b`.`name` AS `activityname`,`b`.`description` AS `activitydescription`,`b`.`start` AS `start`,`b`.`end` AS `end`,`b`.`uploader_id` AS `uploader_id`,`b`.`active` AS `activityactive`,`u`.`name` AS `username`,`u`.`fullname` AS `userfullname`,`u`.`active` AS `useractive` from ((`activities_users` `a` left join `activities` `b` on((`a`.`activity_id` = `b`.`id`))) left join `users` `u` on((`a`.`user_id` = `u`.`id`)))
- */
