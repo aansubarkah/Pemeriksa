@@ -71,7 +71,7 @@ class UsersController extends AppController
                 'EducationsUser.active' => true
             ),
             'order' => array(
-                'EducationsUser.education_id' => 'DESC'
+                'EducationsUser.date' => 'DESC'
             )
         ));
         $level = $this->User->Userlevelview->find('first', array(

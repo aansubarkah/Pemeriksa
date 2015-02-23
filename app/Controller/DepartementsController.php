@@ -148,4 +148,160 @@ class DepartementsController extends AppController
         $this->set(compact('data'));
         $this->set('_serialize', 'data');
     }
+
+    public function indexUser()
+    {
+        $this->layout = 'profile';
+        $breadCrumb = array(
+            0 => array(
+                'title' => 'Profil',
+                'controller' => 'users',
+                'action' => '/'
+            ),
+            1 => array(
+                'title' => 'Unit Kerja',
+                'controller' => 'departements',
+                'action' => 'indexUser'
+            )
+        );
+        $title_for_layout = 'Unit Kerja';
+
+        /**
+         * This controller's action use Userdepartementview model
+         *
+         * @var array
+         * @var Userdepartementview $Userdepartementview
+         */
+        $this->uses = array('Userdepartementview');
+
+        $conditions = array(
+            'Userdepartementview.active' => true,
+            'Userdepartementview.user_id' => $this->Auth->user('id')
+        );
+
+        $this->Paginator->settings = array(
+            'recursive' => -1,
+            'conditions' => $conditions,
+            'limit' => 10,
+            'order' => array('Userdepartementview.start' => 'DESC')
+        );
+
+        $departements = $this->Paginator->paginate('Userdepartementview');
+
+        $this->set(compact('title_for_layout', 'breadCrumb', 'departements'));
+    }
+
+    public function addUser()
+    {
+        if ($this->request->is(array('post'))) {
+            $this->Departement->DepartementsUser->create();
+            $this->request->data['DepartementsUser']['user_id'] = $this->Auth->user('id');
+            if (!isset($this->request->data['DepartementsUser']['start']) || empty($this->request->data['DepartementsUser']['start'])) {
+                $this->request->data['DepartementsUser']['start'] = date('Y-m-d');
+            }
+
+            if ($this->Departement->DepartementsUser->save($this->request->data)) {
+                return $this->redirect(array('action' => 'indexUser'));
+            } else {
+                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+            }
+        }
+
+        $this->layout = 'profile';
+        $breadCrumb = array(
+            0 => array(
+                'title' => 'Profil',
+                'controller' => 'users',
+                'action' => '/'
+            ),
+            1 => array(
+                'title' => 'Unit Kerja',
+                'controller' => 'departements',
+                'action' => 'indexUser'
+            ),
+            2 => array(
+                'title' => 'Tambah',
+                'controller' => 'departements',
+                'action' => 'addUser'
+            )
+        );
+
+        $title_for_layout = 'Unit Kerja';
+
+        $departement = $this->Departement->find('list', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'Departement.active' => true,
+                'NOT' => array(
+                    'Departement.parent_id' => null
+                )
+            ),
+            'order' => array(
+                'Departement.description' => 'ASC'
+            )
+        ));
+
+        $this->set(compact('title_for_layout', 'breadCrumb', 'departement'));
+    }
+
+    public function editUser($id = null)
+    {
+        if ($this->request->is(array('post', 'put'))) {
+            if (!isset($this->request->data['DepartementsUser']['start']) || empty($this->request->data['DepartementsUser']['start'])) {
+                $this->request->data['DepartementsUser']['start'] = date('Y-m-d');
+            }
+
+            if ($this->Departement->DepartementsUser->save($this->request->data)) {
+                return $this->redirect(array('action' => 'indexUser'));
+            } else {
+                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+                $id = $this->request->data['EducationsUser']['id'];
+            }
+        }
+        $user = $this->Departement->DepartementsUser->find('first', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'DepartementsUser.user_id' => $this->Auth->user('id'),
+                'DepartementsUser.id' => $id,
+                'DepartementsUser.active' => 1
+            )
+        ));
+        if (!empty($user)) {
+            $this->layout = 'profile';
+            $breadCrumb = array(
+                0 => array(
+                    'title' => 'Profil',
+                    'controller' => 'users',
+                    'action' => '/'
+                ),
+                1 => array(
+                    'title' => 'Unit Kerja',
+                    'controller' => 'departements',
+                    'action' => 'indexUser'
+                ),
+                2 => array(
+                    'title' => 'Ubah',
+                    'controller' => 'departements',
+                    'action' => 'editUser'
+                )
+            );
+
+            $title_for_layout = 'Unit Kerja';
+
+            $departement = $this->Departement->find('list', array(
+                'recursive' => -1,
+                'conditions' => array(
+                    'Departement.active' => true
+                )
+            ));
+
+            $this->set(compact('title_for_layout', 'breadCrumb', 'user', 'departement'));
+        } else {
+            return $this->redirect(array(
+                'controller' => 'educations',
+                'action' => 'indexUser'
+            ));
+        }
+
+    }
 }
