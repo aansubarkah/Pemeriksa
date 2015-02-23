@@ -48,16 +48,16 @@
     <small>Pendidikan Terakhir</small>
     <?php
     if (count($education) > 0) {
-        echo $education['Education']['description'];
+        $spanDownload = $education['Education']['description'];
     } else {
         $spanDownload = ' <span class="glyphicon glyphicon-pencil"></span>';
-        echo $this->Html->link($spanDownload,
-            array(
-                'controller' => 'educations',
-                'action' => 'indexUser'
-            ),
-            array('escape' => false));
     }
+    echo $this->Html->link($spanDownload,
+        array(
+            'controller' => 'educations',
+            'action' => 'indexUser'
+        ),
+        array('escape' => false));
     ?>
 </h4>
 <h4>
@@ -76,7 +76,6 @@
     <?php if (count($role) > 0) echo $role['Role']['description']; ?>
 </h4>
 <?php
-//print_r($level);
 echo $this->Html->script(array('moment-with-locales.min'));
 echo $this->fetch('script');
 ?>

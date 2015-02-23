@@ -134,7 +134,7 @@ $arrMenu[6]['action'] = 'password';*/
                                     )
                                 );
                             }
-                            if(AuthComponent::user('username') !== AuthComponent::user('number')) {
+                            if(AuthComponent::user('username') == AuthComponent::user('number')) {
                                 $menuClass = 'list-group-item';
                                 if ($currentController == 'users' && $i == 2 && $currentAction == 'editUsername') $menuClass .= ' disabled';
                                 echo $this->Html->link($arrMenu[2]['title'],
