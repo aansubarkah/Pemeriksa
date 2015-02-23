@@ -62,30 +62,66 @@
 </h4>
 <h4>
     <small>Unit Kerja</small>
-    &nbsp;<?php echo $departement['Departement']['description']; ?></h4>
-<h4>
-    <small>Pangkat/Gol</small>
-    <?php if (count($level) > 0) echo $level['Userlevelview']['leveldescription'] . '&nbsp;(' . $level['Userlevelview']['levelname'] . ')'; ?>
-</h4>
-<h4>
-    <small>Jenjang</small>
-    <?php if (count($level) > 0) echo $level['Userlevelview']['positionlevelname']; ?>
-</h4>
-<h4>
-    <small>Peran</small>
-    <?php if (count($role) > 0) echo $role['Role']['description']; ?>
-</h4>
-<?php
-echo $this->Html->script(array('moment-with-locales.min'));
-echo $this->fetch('script');
-?>
-<script type="text/javascript">
-    $(function () {
-        moment.locale('id');
-        var birthdate = moment("<?php echo $user['User']['birthdate'];?>",
-            'YYYY-MM-DD'
-        ).
-            format('D MMMM YYYY');
-        $('#birthdate').html(birthdate);
-    });
-</script>
+    <?php
+    if (count($departement) > 0) {
+        $spanDownload = $departement['Departement']['description'];
+    } else {
+        $spanDownload = ' <span class="glyphicon glyphicon-pencil"></span>';
+    }
+    echo $this->Html->link($spanDownload,
+        array(
+            'controller' => 'departements',
+            'action' => 'indexUser'
+        ),
+        array('escape' => false));
+    ?>
+    <h4>
+        <small>Pangkat/Gol</small>
+        <?php
+        if (count($level) > 0) {
+            $spanDownload = $level['Userlevelview']['leveldescription'] . ' (' . $level['Userlevelview']['levelname'] . ')';
+        } else {
+            $spanDownload = ' <span class="glyphicon glyphicon-pencil"></span>';
+        }
+        echo $this->Html->link($spanDownload,
+            array(
+                'controller' => 'levels',
+                'action' => 'indexUser'
+            ),
+            array('escape' => false));
+        ?>
+    </h4>
+    <h4>
+        <small>Jenjang</small>
+        <?php if (count($level) > 0) echo $level['Userlevelview']['positionlevelname']; ?>
+    </h4>
+    <h4>
+        <small>Peran</small>
+        <?php
+        if (count($role) > 0) {
+            $spanDownload = $role['Role']['description'];
+        } else {
+            $spanDownload = ' <span class="glyphicon glyphicon-pencil"></span>';
+        }
+        echo $this->Html->link($spanDownload,
+            array(
+                'controller' => 'roles',
+                'action' => 'indexUser'
+            ),
+            array('escape' => false));
+        ?>
+    </h4>
+    <?php
+    echo $this->Html->script(array('moment-with-locales.min'));
+    echo $this->fetch('script');
+    ?>
+    <script type="text/javascript">
+        $(function () {
+            moment.locale('id');
+            var birthdate = moment("<?php echo $user['User']['birthdate'];?>",
+                'YYYY-MM-DD'
+            ).
+                format('D MMMM YYYY');
+            $('#birthdate').html(birthdate);
+        });
+    </script>

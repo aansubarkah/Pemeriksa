@@ -40,7 +40,7 @@
                             if ($letter['Letteruserview']['activitydraft']) echo '<span style="color: red;">[Draft]&nbsp;</span>';
 
                             echo $this->Html->link($linkName, $link);
-                            echo '&nbsp;Mengikuti Kegiatan&nbsp;';
+                            echo '&nbsp;Melaksanakan&nbsp;';
                             echo $letter['Letteruserview']['activitydescription'];
                             echo '&nbsp;sebagai&nbsp;';
                             echo '<strong>' . $letter['Letteruserview']['dutyname'] . '</strong>';

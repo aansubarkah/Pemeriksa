@@ -28,7 +28,7 @@
                             echo $no . '. ';
 
                             echo $this->Html->link($linkName, $link);
-                            echo '&nbsp;Mengikuti Kegiatan&nbsp;';
+                            echo '&nbsp;';
                             echo $letter['Activityuserview']['activitydescription'];
                             echo '&nbsp;sebagai&nbsp;';
                             echo '<strong>' . $letter['Activityuserview']['dutyname'] . '</strong>';
