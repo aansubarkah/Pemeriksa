@@ -255,7 +255,7 @@ class DepartementsController extends AppController
                 return $this->redirect(array('action' => 'indexUser'));
             } else {
                 $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
-                $id = $this->request->data['EducationsUser']['id'];
+                $id = $this->request->data['LevelsUser']['id'];
             }
         }
         $user = $this->Departement->DepartementsUser->find('first', array(
@@ -298,7 +298,7 @@ class DepartementsController extends AppController
             $this->set(compact('title_for_layout', 'breadCrumb', 'user', 'departement'));
         } else {
             return $this->redirect(array(
-                'controller' => 'educations',
+                'controller' => 'departements',
                 'action' => 'indexUser'
             ));
         }

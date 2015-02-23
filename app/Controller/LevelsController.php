@@ -205,23 +205,23 @@ class LevelsController extends AppController
     public function editUser($id = null)
     {
         if ($this->request->is(array('post', 'put'))) {
-            if (!isset($this->request->data['DepartementsUser']['start']) || empty($this->request->data['DepartementsUser']['start'])) {
-                $this->request->data['DepartementsUser']['start'] = date('Y-m-d');
+            if (!isset($this->request->data['LevelsUser']['start']) || empty($this->request->data['LevelsUser']['start'])) {
+                $this->request->data['LevelsUser']['start'] = date('Y-m-d');
             }
 
-            if ($this->Departement->DepartementsUser->save($this->request->data)) {
+            if ($this->Level->LevelsUser->save($this->request->data)) {
                 return $this->redirect(array('action' => 'indexUser'));
             } else {
                 $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
-                $id = $this->request->data['EducationsUser']['id'];
+                $id = $this->request->data['LevelsUser']['id'];
             }
         }
-        $user = $this->Departement->DepartementsUser->find('first', array(
+        $user = $this->Level->LevelsUser->find('first', array(
             'recursive' => -1,
             'conditions' => array(
-                'DepartementsUser.user_id' => $this->Auth->user('id'),
-                'DepartementsUser.id' => $id,
-                'DepartementsUser.active' => 1
+                'LevelsUser.user_id' => $this->Auth->user('id'),
+                'LevelsUser.id' => $id,
+                'LevelsUser.active' => 1
             )
         ));
         if (!empty($user)) {
@@ -233,30 +233,30 @@ class LevelsController extends AppController
                     'action' => '/'
                 ),
                 1 => array(
-                    'title' => 'Unit Kerja',
-                    'controller' => 'departements',
+                    'title' => 'Pangkat/Gol',
+                    'controller' => 'levels',
                     'action' => 'indexUser'
                 ),
                 2 => array(
                     'title' => 'Ubah',
-                    'controller' => 'departements',
+                    'controller' => 'levels',
                     'action' => 'editUser'
                 )
             );
 
-            $title_for_layout = 'Unit Kerja';
+            $title_for_layout = 'Pangkat/Gol';
 
-            $departement = $this->Departement->find('list', array(
+            $level = $this->Level->find('list', array(
                 'recursive' => -1,
                 'conditions' => array(
-                    'Departement.active' => true
+                    'Level.active' => true
                 )
             ));
 
-            $this->set(compact('title_for_layout', 'breadCrumb', 'user', 'departement'));
+            $this->set(compact('title_for_layout', 'breadCrumb', 'user', 'level'));
         } else {
             return $this->redirect(array(
-                'controller' => 'educations',
+                'controller' => 'levels',
                 'action' => 'indexUser'
             ));
         }
