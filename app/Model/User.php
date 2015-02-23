@@ -34,6 +34,7 @@ App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
  * @property LevelsUser $LevelsUser
  * @property RolesUser $RolesUser
  * @property UsersPositionlevel $UsersPositionlevel
+ * @property Userseducationview $Userseducationview
  */
 class User extends AppModel
 {
@@ -355,6 +356,19 @@ class User extends AppModel
         ),
         'UsersPositionlevel' => array(
             'className' => 'UsersPositionlevel',
+            'foreignKey' => 'user_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
+        'Userseducationview' => array(
+            'className' => 'Userseducationview',
             'foreignKey' => 'user_id',
             'dependent' => false,
             'conditions' => '',

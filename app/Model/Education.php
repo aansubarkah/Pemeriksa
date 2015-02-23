@@ -6,6 +6,7 @@ App::uses('AppModel', 'Model');
  *
  * @property User $User
  * @property EducationsUser $EducationsUser
+ * @property Userseducationview $Userseducationview
  */
 class Education extends AppModel
 {
@@ -79,6 +80,19 @@ class Education extends AppModel
     public $hasMany = array(
         'EducationsUser' => array(
             'className' => 'EducationsUser',
+            'foreignKey' => 'education_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
+        'Userseducationview' => array(
+            'className' => 'Userseducationview',
             'foreignKey' => 'education_id',
             'dependent' => false,
             'conditions' => '',
