@@ -112,4 +112,102 @@ class EducationsController extends AppController
         }
         return $this->redirect(array('action' => 'index'));
     }
+
+    public function indexUser() {
+        $this->layout = 'profile';
+        $breadCrumb = array(
+            0 => array(
+                'title' => 'Profil',
+                'controller' => 'users',
+                'action' => '/'
+            ),
+            1 => array(
+                'title' => 'Pendidikan',
+                'controller' => 'educations',
+                'action' => 'indexUser'
+            )
+        );
+        $title_for_layout = 'Pendidikan';
+
+        /**
+         * This controller's action use Usereducationview model
+         *
+         * @var array
+         * @var Usereducationview $Usereducationview
+         */
+        $this->uses = array('Usereducationview');
+
+        $conditions = array(
+            'Usereducationview.active' => true,
+            'Usereducationview.user_id' => $this->Auth->user('id')
+        );
+
+        $this->Paginator->settings = array(
+            'recursive' => -1,
+            'conditions' => $conditions,
+            'limit' => 10,
+            'order' => array('Usereducationview.date' => 'DESC')
+        );
+
+        $educations = $this->Paginator->paginate('Usereducationview');
+
+        $this->set(compact('title_for_layout', 'breadCrumb', 'educations'));
+    }
+
+    public function addUser() {
+        if ($this->request->is(array('post'))) {
+            $this->Education->EducationsUser->create();
+            $this->request->data['EducationsUser']['user_id'] = $this->Auth->user('id');
+            if ($this->Education->EducationsUser->save($this->request->data)) {
+                return $this->redirect(array('action' => 'indexUser'));
+            } else {
+                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+            }
+        }
+
+        $this->layout = 'profile';
+        $breadCrumb = array(
+            0 => array(
+                'title' => 'Profil',
+                'controller' => 'users',
+                'action' => '/'
+            ),
+            1 => array(
+                'title' => 'Pendidikan',
+                'controller' => 'educations',
+                'action' => 'indexUser'
+            ),
+            2 => array(
+                'title' => 'Tambah',
+                'controller' => 'educations',
+                'action' => 'addUser'
+            )
+        );
+
+        $title_for_layout = 'Pendidikan';
+
+        $education = $this->Education->find('list', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'Education.active' => true
+            )
+        ));
+
+        $this->set(compact('title_for_layout', 'breadCrumb', 'education'));
+    }
+
+    public function editUser($id = null){
+        if ($this->request->is(array('post', 'put'))) {
+            //@todo add code to edit educations date
+        }
+        $user = $this->Education->EducationsUser->find('first', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'EducationsUser.user_id' => $this->Auth->user('id'),
+                'EducationsUser.id' => $id,
+                'EducationsUser.active' => 1
+            )
+        ));
+
+    }
 }
