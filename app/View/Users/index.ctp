@@ -1,7 +1,6 @@
 <?php
 /**
  * @var View $this
- * @todo create edit password and username, if username same with number column
  */
 ?>
 <h4>

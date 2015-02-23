@@ -4,7 +4,7 @@
  */
 $currentController = $this->request->params['controller'];
 $currentAction = $this->request->params['action'];
-$arrMenu = array();//@todo edit this for proper menu list
+$arrMenu = array();
 $arrMenu[0]['title'] = 'Ringkasan';
 $arrMenu[0]['controller'] = 'users';
 $arrMenu[0]['action'] = 'index';
@@ -26,20 +26,9 @@ $arrMenu[5]['action'] = 'indexUser';
 $arrMenu[6]['title'] = 'Peran';
 $arrMenu[6]['controller'] = 'roles';
 $arrMenu[6]['action'] = 'indexUser';
-/*$arrMenu[1]['title'] = 'Informasi Dasar';
-$arrMenu[1]['action'] = 'basicinfo';
-$arrMenu[2]['title'] = 'Pangkat/Golongan';
-$arrMenu[2]['action'] = 'level';
-$arrMenu[3]['title'] = 'Jabatan';
-$arrMenu[3]['action'] = 'positionlevel';
-$arrMenu[4]['title'] = 'Unit Kerja';
-$arrMenu[4]['action'] = 'departement';
-$arrMenu[5]['title'] = 'Atasan';
-$arrMenu[5]['action'] = 'chief';
-$arrMenu[6]['title'] = 'Ubah Password';
-$arrMenu[6]['action'] = 'password';*/
-
-//$countArrMenu = count($arrMenu);
+$arrMenu[7]['title'] = 'Kronologi';
+$arrMenu[7]['controller'] = 'users';
+$arrMenu[7]['action'] = 'timeline';
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -155,12 +144,13 @@ $arrMenu[6]['action'] = 'password';*/
                             //@todo user timeline
                             //https://github.com/juanbrujo/jQuery-Timelinr
                             //https://github.com/technotarek/timeliner
-                            for ($i = 3; $i < 7; $i++) {
+                            for ($i = 3; $i < 8; $i++) {
                                 $menuClass = 'list-group-item';
                                 if ($currentController == 'educations' && $i == 3) $menuClass .= ' disabled';
                                 if ($currentController == 'departements' && $i == 4) $menuClass .= ' disabled';
                                 if ($currentController == 'levels' && $i == 5) $menuClass .= ' disabled';
                                 if ($currentController == 'roles' && $i == 6) $menuClass .= ' disabled';
+                                if ($currentController == 'users' && $i == 7 && $currentAction == 'timeline') $menuClass .= ' disabled';
                                 echo $this->Html->link($arrMenu[$i]['title'],
                                     array(
                                         'controller' => $arrMenu[$i]['controller'],
