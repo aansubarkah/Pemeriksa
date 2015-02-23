@@ -113,7 +113,8 @@ class EducationsController extends AppController
         return $this->redirect(array('action' => 'index'));
     }
 
-    public function indexUser() {
+    public function indexUser()
+    {
         $this->layout = 'profile';
         $breadCrumb = array(
             0 => array(
@@ -154,10 +155,15 @@ class EducationsController extends AppController
         $this->set(compact('title_for_layout', 'breadCrumb', 'educations'));
     }
 
-    public function addUser() {
+    public function addUser()
+    {
         if ($this->request->is(array('post'))) {
             $this->Education->EducationsUser->create();
             $this->request->data['EducationsUser']['user_id'] = $this->Auth->user('id');
+            if (!isset($this->request->data['EducationsUser']['date']) || empty($this->request->data['EducationsUser']['date'])) {
+                $this->request->data['EducationsUser']['date'] = date('Y-m-d');
+            }
+
             if ($this->Education->EducationsUser->save($this->request->data)) {
                 return $this->redirect(array('action' => 'indexUser'));
             } else {
@@ -196,9 +202,19 @@ class EducationsController extends AppController
         $this->set(compact('title_for_layout', 'breadCrumb', 'education'));
     }
 
-    public function editUser($id = null){
+    public function editUser($id = null)
+    {
         if ($this->request->is(array('post', 'put'))) {
-            //@todo add code to edit educations date
+            if (!isset($this->request->data['EducationsUser']['date']) || empty($this->request->data['EducationsUser']['date'])) {
+                $this->request->data['EducationsUser']['date'] = date('Y-m-d');
+            }
+
+            if ($this->Education->EducationsUser->save($this->request->data)) {
+                return $this->redirect(array('action' => 'indexUser'));
+            } else {
+                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+                $id = $this->request->data['EducationsUser']['id'];
+            }
         }
         $user = $this->Education->EducationsUser->find('first', array(
             'recursive' => -1,
@@ -208,6 +224,42 @@ class EducationsController extends AppController
                 'EducationsUser.active' => 1
             )
         ));
+        if (!empty($user)) {
+            $this->layout = 'profile';
+            $breadCrumb = array(
+                0 => array(
+                    'title' => 'Profil',
+                    'controller' => 'users',
+                    'action' => '/'
+                ),
+                1 => array(
+                    'title' => 'Pendidikan',
+                    'controller' => 'educations',
+                    'action' => 'indexUser'
+                ),
+                2 => array(
+                    'title' => 'Ubah',
+                    'controller' => 'educations',
+                    'action' => 'addUser'
+                )
+            );
+
+            $title_for_layout = 'Pendidikan';
+
+            $education = $this->Education->find('list', array(
+                'recursive' => -1,
+                'conditions' => array(
+                    'Education.active' => true
+                )
+            ));
+
+            $this->set(compact('title_for_layout', 'breadCrumb', 'user', 'education'));
+        } else {
+            return $this->redirect(array(
+                'controller' => 'educations',
+                'action' => 'indexUser'
+            ));
+        }
 
     }
 }
