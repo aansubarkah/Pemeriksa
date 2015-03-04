@@ -126,7 +126,8 @@ class DepartementsUsersController extends AppController
                 $conditions = array(
                     'Userdepartementview.active' => true,
                     'Userdepartementview.useractive' => true,
-                    'Userdepartementview.departement_id' => $q
+                    'Userdepartementview.departement_id' => $q,
+                    'Userdepartementview.end' => null
                 );
             }
 
@@ -139,38 +140,15 @@ class DepartementsUsersController extends AppController
                 )
             ));
 
-
-            /*if ($q == 'all') {
-                $conditions = array('NOT' => array(
-                    'DepartementsUser.active' => 0,
-                    'DepartementsUser.departement_id' => $this->departementSekretariat
-
-                ));
-            } else {
-                $conditions = array('DepartementsUser.active' => 1,
-                    'DepartementsUser.departement_id' => $q);
-            }*/
-
-            /*$tags = $this->DepartementsUser->find('all', array(
-                'recursive' => 1,
-                'conditions' => $conditions
-            ));*/
-
-
             $data = array();
             $i = 0;
             foreach ($tags as $tag) {
-                //$data[$i] = $tag['User']['name'];
-                //$data[$i]['value'] = $tag['User']['id'];
-                //$data[$i]['text'] = $tag['User']['name'];
                 $data[$i]['value'] = $tag['Userdepartementview']['user_id'];
                 $data[$i]['text'] = $tag['Userdepartementview']['username'];
                 $i++;
             }
 
             usort($data, $this->buildSorter('text'));
-
-            //asort($data);
 
             $this->set(compact('data'));
             $this->set('_serialize', 'data');
