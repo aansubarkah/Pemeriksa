@@ -317,7 +317,7 @@ $options = array(
 echo $this->Form->end($options);
 
 echo $this->Html->css(array('datepicker', 'bootstrap-tagsinput', 'typeahead-style'));
-echo $this->Html->script(array('bootstrap-datepicker', 'typeahead.bundle.min', 'bootstrap-tagsinput.min', 'jquery.validate.min', 'jquery.validate.custom.messages'));
+echo $this->Html->script(array('bootstrap-datepicker', 'locales/bootstrap-datepicker.id', 'typeahead.bundle.min', 'bootstrap-tagsinput.min', 'jquery.validate.min', 'jquery.validate.custom.messages'));
 
 echo $this->fetch('script');
 echo $this->fetch('css');

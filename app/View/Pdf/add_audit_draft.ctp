@@ -198,7 +198,7 @@ foreach ($users as $user) {
         $table = '<table nobr="true">
     <tbody>
     <tr><td width="325" style="vertical-align: middle; text-align: center;">';
-        $table .= '<img src="/img/garuda.jpg" width="100" height="100">';
+        $table .= '<img src="' . APP . 'webroot/img/garuda.jpg" width="100" height="100">';
         $table .= '</td>';
         $table .= '<td width="325">';
         $table .= '<table nobr="true">';
