@@ -132,7 +132,7 @@ $options = array(
 echo $this->Form->end($options);
 
 echo $this->Html->css(array('datepicker', 'bootstrap-tagsinput', 'jquery-file-upload/jquery.fileupload'));
-echo $this->Html->script(array('bootstrap-datepicker', 'typeahead.bundle.min', 'bootstrap-tagsinput.min', 'fileupload/vendor/jquery.ui.widget', 'fileupload/jquery.iframe-transport', 'fileupload/jquery.fileupload'));
+echo $this->Html->script(array('bootstrap-datepicker','locales/bootstrap-datepicker.id', 'typeahead.bundle.min', 'bootstrap-tagsinput.min', 'fileupload/vendor/jquery.ui.widget', 'fileupload/jquery.iframe-transport', 'fileupload/jquery.fileupload'));
 
 echo $this->fetch('script');
 echo $this->fetch('css');
@@ -158,12 +158,16 @@ echo $this->fetch('css');
 
         $('#start').datepicker({
             autoclose: true,
-            format: 'yyyy-mm-dd'
+            format: 'yyyy-mm-dd',
+            language: 'id',
+            weekStart: 1
         });
 
         $('#end').datepicker({
             autoclose: true,
-            format: 'yyyy-mm-dd'
+            format: 'yyyy-mm-dd',
+            language: 'id',
+            weekStart: 1
         });
 
         var tags = new Bloodhound({

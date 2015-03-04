@@ -111,17 +111,23 @@ echo $this->fetch('css');
     $(function () {
         $('#start').datepicker({
             autoclose: true,
-            format: 'yyyy-mm-dd'
+            format: 'yyyy-mm-dd',
+            language: 'id',
+            weekStart: 1
         });
 
         $('#end').datepicker({
             autoclose: true,
-            format: 'yyyy-mm-dd'
+            format: 'yyyy-mm-dd',
+            language: 'id',
+            weekStart: 1
         });
 
         $('#date').datepicker({
             autoclose: true,
-            format: 'yyyy-mm-dd'
+            format: 'yyyy-mm-dd',
+            language: 'id',
+            weekStart: 1
         });
 
         var tags = new Bloodhound({

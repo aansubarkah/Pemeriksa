@@ -52,7 +52,7 @@ $options = array(
 echo $this->Form->end($options);
 
 echo $this->Html->css(array('datepicker'));
-echo $this->Html->script(array('bootstrap-datepicker', 'jquery.validate.min', 'jquery.validate.custom.messages'));
+echo $this->Html->script(array('bootstrap-datepicker','locales/bootstrap-datepicker.id', 'jquery.validate.min', 'jquery.validate.custom.messages'));
 
 echo $this->fetch('script');
 echo $this->fetch('css');
@@ -61,11 +61,15 @@ echo $this->fetch('css');
     $(function () {
         $('#start').datepicker({
             autoclose: true,
-            format: 'yyyy-mm-dd'
+            format: 'yyyy-mm-dd',
+            language: 'id',
+            weekStart: 1
         });
         $('#end').datepicker({
             autoclose: true,
-            format: 'yyyy-mm-dd'
+            format: 'yyyy-mm-dd',
+            language: 'id',
+            weekStart: 1
         });
 
         $('#editUser').validate({

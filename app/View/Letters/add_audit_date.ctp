@@ -101,11 +101,15 @@ echo $this->fetch('css');
     $(function () {
         $('.dateStart').datepicker({
             autoclose: true,
-            format: 'yyyy-mm-dd'
+            format: 'yyyy-mm-dd',
+            language: 'id',
+            weekStart: 1
         });
         $('.dateEnd').datepicker({
             autoclose: true,
-            format: 'yyyy-mm-dd'
+            format: 'yyyy-mm-dd',
+            language: 'id',
+            weekStart: 1
         });
         $('.dateStart').on('change', function () {
             var day = parseInt($(this).closest('tr').children('td.day').text()) - 1;

@@ -65,7 +65,9 @@ echo $this->fetch('css');
     $(function () {
         $('#date').datepicker({
             autoclose: true,
-            format: 'yyyy-mm-dd'
+            format: 'yyyy-mm-dd',
+            language: 'id',
+            weekStart: 1
         });
 
         $('#addAuditNumber').validate({
